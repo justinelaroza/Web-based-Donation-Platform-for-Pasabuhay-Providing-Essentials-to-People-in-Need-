@@ -56,24 +56,39 @@
                 </div>
                 <div class="full-name">
                     <div class="name-field">
-                        <label>First Name:</label>
-                        <input type="text" name="firstname" placeholder="First Name">
+                        <label>Full Name:</label>
+                        <input type="text" name="fullname" placeholder="Full Name">
                     </div>
                     <div class="name-field">
-                        <label>Last Name:</label>
-                        <input type="text" name="lastname" placeholder="Last Name">
+                        <label>Username:</label>
+                        <input type="text" name="username" placeholder="Username">
                     </div>
                     </div>
                 <div class="other-input">
                     <label>Address:</label>
                     <input type="text" name="address" placeholder="Address">
-                    <label>Contact Number:</label>
-                    <input type="number" name="contact" placeholder="Contact Number">
-                    <label>Email Address:</label>
-                    <input type="email" name="email" placeholder="Email">
-                    <label>Password:</label>
-                    <input type="password" name="other-password" placeholder="Password">
                 </div>
+                <div class="parent">
+                    <div class="child">
+                        <label>Email Address:</label>
+                        <input type="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="child">
+                        <label>Contact Number:</label>
+                        <input type="number" name="contact" placeholder="Contact Number">
+                    </div>
+                </div>
+                <div class="parent">
+                    <div class="child">
+                        <label>Password:</label>
+                        <input type="password" name="orig-password" placeholder="Password">
+                    </div>
+                    <div class="child">
+                        <label>Confirm Password:</label>
+                        <input type="password" name="confirm-password" placeholder="Password">
+                    </div>
+                </div>
+                <button name="new-account">Register</button>
                 
             </form>
         </div>
