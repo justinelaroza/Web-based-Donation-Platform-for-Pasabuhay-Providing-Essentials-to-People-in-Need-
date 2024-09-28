@@ -1,0 +1,172 @@
+@font-face {
+    font-family: 'Cinzel';
+    src: url('/fonts/Cinzel/Cinzel-VariableFont_wght.ttf') format('truetype');
+  }
+
+@font-face {
+    font-family: 'Anton';
+    src: url('/fonts/Anton/Anton-Regular.ttf') format('truetype');
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cinzel", serif;
+}
+
+.middle-section {
+    height: 80vh;
+    width: 80vw;
+    background-image: url('./pictures/redcross.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1); /*horizontal vertical then gano kaitim */
+    display: flex;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: seagreen;
+}
+
+.wrapper {
+    background: lightgray;
+    width: 35%;
+    height: 85%;
+    background-color: rgb(218, 213, 213);
+    position: relative;
+    border-radius: 20px;
+    border: solid 1px rgb(218, 213, 213);
+    margin: 3.5% 0 5% 4%;
+    border: 1.5px solid black;
+    box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.5);
+
+}
+
+.wrapper label {
+    font-family: "Cinzel", serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.wrapper h1 {
+    font-size: 40px;
+    text-align: center;
+    margin-top: 21%;
+    letter-spacing: 2px;
+    margin-bottom: 7%;
+    color: seagreen;
+}
+
+.wrapper .input-box {
+    width: 80%;
+    height: 60px;
+    margin-top: 8%;
+    margin-left: 10%;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid gray;
+    border-radius: 20px;
+    font-size: 20px;
+    padding-left: 20px;
+    letter-spacing: .5px;
+    margin-top: 1%;
+}
+
+.input-box input:focus {
+    border: 2px solid seagreen;
+}
+
+.input-box input:focus ~ label {
+    color: seagreen;
+}
+
+.input-box img {
+    position: absolute;
+    right: 13%;
+    transform: translateY(70%);
+    width: 5%;
+}
+
+.wrapper .forgot {
+    text-align: right;
+    margin-right: 10%;
+    margin-top: 4%;
+    margin-bottom: 3%;
+    font-size: 15px;
+}
+
+.forgot input {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: .5px;
+}
+
+.wrapper .error-message {
+   text-align: center;
+   color: rgba(255, 0, 0, 0.87);
+   font-weight: bold;
+   margin-top: 6%;
+}
+
+.wrapper button {
+    width: 80%;
+    height: 70px;
+    margin-top: 2%;
+    margin-left: 10%;
+    border: none;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background-color:coral;
+    color: white;
+    transition: opacity 0.3s ease;
+}
+
+.wrapper button:hover {
+    cursor: pointer;
+    opacity: .8;
+}
+
+.wrapper .register {
+    text-align: center;
+    margin-top: 5%;
+}
+
+.wrapper-right {
+    background: lightgray;
+    width: 53%;
+    height: 100%;
+    background-color: rgb(218, 213, 213);
+    position: relative;
+    border: solid 1px rgb(218, 213, 213);
+    margin: 0 0 0 8%;
+    border: 1.5px solid black;
+    box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.register input {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: .5px;
+}
