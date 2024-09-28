@@ -72,6 +72,8 @@
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS); //filter any malicious codes 
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
 
+            //test
+
             $sqlSelect = "SELECT * FROM user_data WHERE username = '$username'"; // this query will see if the value is not there/there
             $sqlResult = mysqli_query($connection, $sqlSelect); //result neto ay id 1, username user, password pass, this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
             
