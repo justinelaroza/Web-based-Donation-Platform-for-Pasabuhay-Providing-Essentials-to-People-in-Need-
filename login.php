@@ -51,6 +51,29 @@
         </div>
         <div class="wrapper-right" <?php if(isset($_GET['show'])) { echo $_GET['show']; }?>>
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+                <div class="register">
+                    <h1>REGISTER</h1>
+                </div>
+                <div class="full-name">
+                    <div class="name-field">
+                        <label>First Name:</label>
+                        <input type="text" name="firstname" placeholder="First Name">
+                    </div>
+                    <div class="name-field">
+                        <label>Last Name:</label>
+                        <input type="text" name="lastname" placeholder="Last Name">
+                    </div>
+                    </div>
+                <div class="other-input">
+                    <label>Address:</label>
+                    <input type="text" name="address" placeholder="Address">
+                    <label>Contact Number:</label>
+                    <input type="number" name="contact" placeholder="Contact Number">
+                    <label>Email Address:</label>
+                    <input type="email" name="email" placeholder="Email">
+                    <label>Password:</label>
+                    <input type="password" name="other-password" placeholder="Password">
+                </div>
                 
             </form>
         </div>
