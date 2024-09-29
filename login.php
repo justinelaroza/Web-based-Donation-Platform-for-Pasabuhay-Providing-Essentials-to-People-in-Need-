@@ -50,18 +50,19 @@
             </form>
         </div>
         <div class="wrapper-right" <?php if(isset($_GET['show'])) { echo $_GET['show']; }?>>
+
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="register">
                     <h1>REGISTER</h1>
                 </div>
                 <div class="full-name">
                     <div class="name-field">
-                        <label>Full Name:</label>
-                        <input type="text" name="fullname" placeholder="Full Name">
+                        <label>First Name:</label>
+                        <input type="text" name="firstname" placeholder="First Name">
                     </div>
                     <div class="name-field">
-                        <label>Username:</label>
-                        <input type="text" name="username" placeholder="Username">
+                        <label>Last Name:</label>
+                        <input type="text" name="lastname" placeholder="Last Name">
                     </div>
                     </div>
                 <div class="other-input">
@@ -74,22 +75,31 @@
                         <input type="email" name="email" placeholder="Email">
                     </div>
                     <div class="child">
-                        <label>Contact Number:</label>
-                        <input type="number" name="contact" placeholder="Contact Number">
+                        <label>Username:</label>
+                        <input type="text" name="user-register" placeholder="Username">
                     </div>
                 </div>
                 <div class="parent">
                     <div class="child">
                         <label>Password:</label>
-                        <input type="password" name="orig-password" placeholder="Password">
+                        <input type="password" name="orig-pass" placeholder="Password">
                     </div>
                     <div class="child">
                         <label>Confirm Password:</label>
-                        <input type="password" name="confirm-password" placeholder="Password">
+                        <input type="password" name="confirm-pass" placeholder="Password">
                     </div>
                 </div>
-                <button name="new-account">Register</button>
-                
+                <div class="error-message-reg">
+                    <?php 
+                        if (isset($_GET['fillReg'])) {
+                            echo $_GET['fillReg'];
+                        }
+                        if (isset($_GET['passMatch'])) {
+                            echo $_GET['passMatch'];
+                        }
+                    ?>
+                </div>
+                <button name="new-register">Register</button>
             </form>
         </div>
     </div>
@@ -112,7 +122,7 @@
 
             //test
 
-            $sqlSelect = "SELECT * FROM user_data WHERE username = '$username'"; // this query will see if the value is not there/there
+            $sqlSelect = "SELECT * FROM login_data WHERE username = '$username'"; // this query will see if the value is not there/there
             $sqlResult = mysqli_query($connection, $sqlSelect); //result neto ay id 1, username user, password pass, this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
             
             if(mysqli_num_rows($sqlResult) > 0) { // counts kung ilang row yung nakita if atleast 1 yung row
@@ -146,6 +156,35 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
         header("Location: login.php?show=" . urldecode($show));
     }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new-register'])) {
+
+        if(empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['address']) || empty($_POST['email']) || empty($_POST['user-register']) || empty($_POST['orig-pass']) || empty($_POST['confirm-pass'])) {     
+            $fillReg = 'Register all your details!';
+            header("Location: login.php?show=" . urldecode($show) . "&fillReg=" . urldecode($fillReg));
+            exit();
+        }
+        else {
+            $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
+            $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
+            $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $userRegister = filter_input(INPUT_POST, 'user-register', FILTER_SANITIZE_SPECIAL_CHARS);
+            $origPass = filter_input(INPUT_POST, 'orig-pass', FILTER_SANITIZE_SPECIAL_CHARS);
+            $confirmPass = filter_input(INPUT_POST, 'confirm-pass', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            if ($_POST['orig-pass'] != $_POST['confirm-pass']) {
+                $passMatch = 'Passwords do not match!';
+                header("Location: login.php?show=" . urldecode($show) . "&passMatch=" . urlencode($passMatch));
+                exit();
+            }
+            echo 'test';
+            $slqInsert = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$origPass', '$confirmPass')";  
+        }
+
+    }
+
+    //email at username naka unique
 
     //$hashPass = password_hash($password, PASSWORD_DEFAULT);
 
