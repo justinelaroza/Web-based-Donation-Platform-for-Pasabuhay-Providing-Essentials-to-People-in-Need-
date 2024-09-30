@@ -1,6 +1,7 @@
 <?php 
     include('db.php');
     /** @var mysqli $connection */ // This tells the editor that $connection is a mysqli object.
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +50,7 @@
                 </div>
             </form>
         </div>
-        <div class="wrapper-right" <?php if(isset($_GET['show'])) { echo $_GET['show']; }?>>
+        <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>
 
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="register">
@@ -91,11 +92,13 @@
                 </div>
                 <div class="error-message-reg">
                     <?php 
-                        if (isset($_GET['fillReg'])) {
-                            echo $_GET['fillReg'];
+                        if (isset($_SESSION['fillReg'])) {
+                            echo $_SESSION['fillReg'];
+                            unset($_SESSION['fillReg']);
                         }
-                        if (isset($_GET['passMatch'])) {
-                            echo $_GET['passMatch'];
+                        if (isset($_SESSION['passMatch'])) {
+                            echo $_SESSION['passMatch'];
+                            unset($_SESSION['passMatch']);
                         }
                     ?>
                 </div>
@@ -118,7 +121,7 @@
         }
         else {
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS); //filter any malicious codes 
-            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+            $password = $_POST['password'];
 
             //test
 
@@ -151,17 +154,18 @@
         } 
     }
 
-    $show = "style='display: block !important'"; //#proud
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
-        header("Location: login.php?show=" . urldecode($show));
+        $_SESSION['show'] = "style='display: block !important'";
+        header("Location: login.php");
+        exit();
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new-register'])) {
 
         if(empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['address']) || empty($_POST['email']) || empty($_POST['user-register']) || empty($_POST['orig-pass']) || empty($_POST['confirm-pass'])) {     
-            $fillReg = 'Register all your details!';
-            header("Location: login.php?show=" . urldecode($show) . "&fillReg=" . urldecode($fillReg));
+            $_SESSION['fillReg'] = 'Register all your details!';
+            $_SESSION['show'] = "style='display: block !important'";
+            header("Location: login.php");
             exit();
         }
         else {
@@ -170,16 +174,19 @@
             $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $userRegister = filter_input(INPUT_POST, 'user-register', FILTER_SANITIZE_SPECIAL_CHARS);
-            $origPass = filter_input(INPUT_POST, 'orig-pass', FILTER_SANITIZE_SPECIAL_CHARS);
-            $confirmPass = filter_input(INPUT_POST, 'confirm-pass', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            if ($_POST['orig-pass'] != $_POST['confirm-pass']) {
-                $passMatch = 'Passwords do not match!';
-                header("Location: login.php?show=" . urldecode($show) . "&passMatch=" . urlencode($passMatch));
+            $origPass = $_POST['orig-pass'];
+            $confirmPass = $_POST['confirm-pass'];
+
+            if ($origPass != $confirmPass) {
+                $_SESSION['passMatch'] = 'Passwords do not match!';
+                $_SESSION['show'] = "style='display: block !important'";
+                header("Location: login.php");
                 exit();
             }
             echo 'test';
             $slqInsert = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$origPass', '$confirmPass')";  
+            
         }
 
     }
