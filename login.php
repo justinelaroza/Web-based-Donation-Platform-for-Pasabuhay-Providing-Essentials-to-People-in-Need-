@@ -15,7 +15,7 @@
 <body>
     <div class="middle-section">
         <div class="wrapper">
-            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="top-area">
                     <h1>WELCOME</h1>
                 </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>
 
-            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="register">
                     <h1>REGISTER</h1>
                 </div>
@@ -100,6 +100,14 @@
                             echo $_SESSION['passMatch'];
                             unset($_SESSION['passMatch']);
                         }
+                        if(isset($_SESSION['usedEmail'])) {
+                            echo $_SESSION['usedEmail'];
+                            unset($_SESSION['usedEmail']);
+                        }
+                        if(isset($_SESSION['usedUser'])) {
+                            echo $_SESSION['usedUser'];
+                            unset($_SESSION['usedUser']);
+                        }
                     ?>
                 </div>
                 <button name="new-register">Register</button>
@@ -123,10 +131,8 @@
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS); //filter any malicious codes 
             $password = $_POST['password'];
 
-            //test
-
             $sqlSelect = "SELECT * FROM login_data WHERE username = '$username'"; // this query will see if the value is not there/there
-            $sqlResult = mysqli_query($connection, $sqlSelect); //result neto ay id 1, username user, password pass, this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
+            $sqlResult = mysqli_query($connection, $sqlSelect); //this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
             
             if(mysqli_num_rows($sqlResult) > 0) { // counts kung ilang row yung nakita if atleast 1 yung row
 
@@ -168,7 +174,9 @@
             header("Location: login.php");
             exit();
         }
+        
         else {
+
             $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
             $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
             $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -178,28 +186,45 @@
             $origPass = $_POST['orig-pass'];
             $confirmPass = $_POST['confirm-pass'];
 
+            // check if email is already in use
+            $queryCheckEmail = "SELECT * FROM register_data WHERE email = '$email'";
+            $resultCheckEmail = mysqli_query($connection, $queryCheckEmail);
+            if (mysqli_num_rows($resultCheckEmail) > 0) {
+                $_SESSION['usedEmail'] = 'Email is already in use!';
+                $_SESSION['show'] = "style='display: block !important'";
+                header("Location: login.php");
+                exit();
+            }
+            // check if username is already in use
+            $queryCheckuser = "SELECT * FROM register_data WHERE username = '$userRegister'";
+            $resultCheckUser = mysqli_query($connection, $queryCheckuser);
+            if (mysqli_num_rows($resultCheckUser) > 0) {
+                $_SESSION['usedUser'] = 'Username is already in use!';
+                $_SESSION['show'] = "style='display: block !important'";
+                header("Location: login.php");
+                exit();
+            }
+            //check if the passwords match
             if ($origPass != $confirmPass) {
                 $_SESSION['passMatch'] = 'Passwords do not match!';
                 $_SESSION['show'] = "style='display: block !important'";
                 header("Location: login.php");
                 exit();
+            } 
+            //registering the user input to the database
+            else {
+                $hashPass = password_hash($origPass, PASSWORD_DEFAULT); //hash the password before going to db
+
+                $slqInsertReg = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$hashPass')";  
+                $sqlInsertLog = "INSERT INTO login_data(username, password) VALUES ('$userRegister', '$hashPass')";
+
+                mysqli_query($connection, $slqInsertReg); //irurun ang query
+                mysqli_query($connection, $sqlInsertLog ); 
+
             }
-            echo 'test';
-            $slqInsert = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$origPass', '$confirmPass')";  
-            
         }
 
     }
-
-    //email at username naka unique
-
-    //$hashPass = password_hash($password, PASSWORD_DEFAULT);
-
-    //$sqlInsert = "INSERT INTO user_data(username, password) VALUES ('$username', '$hashPass')";
-
-    //mysqli_query($connection, $sqlInsert);
-
-    
 
 /*
     $to = "larozajustine15@gmail.com"; // Change this to the recipient's email
