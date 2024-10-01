@@ -50,7 +50,7 @@
                 </div>
             </form>
         </div>
-        <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>
+        <div class="wrapper-right" <?php echo $_SESSION['show'];?>> <!-- if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); } -->
 
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="register">
@@ -111,6 +111,22 @@
                     ?>
                 </div>
                 <button name="new-register">Register</button>
+                <div class="code-container">
+                    <div class="code-label">
+                        <label>Code sent to: Email@gmail.com</label>
+                    </div>
+                    <div class="code-input">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                    </div>
+                    <div class="submit-code-parent">
+                        <input type="submit" name="code-submit" value="Submit" class="submit-code-button">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -119,7 +135,11 @@
 </html>
 
 <?php
-    
+
+    function styleReveal() {
+        $_SESSION['show'] = "style='display: block !important'";
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
         if(empty($_POST['username']) || empty($_POST['password'])) {
@@ -133,7 +153,7 @@
 
             $sqlSelect = "SELECT * FROM login_data WHERE username = '$username'"; // this query will see if the value is not there/there
             $sqlResult = mysqli_query($connection, $sqlSelect); //this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
-            
+
             if(mysqli_num_rows($sqlResult) > 0) { // counts kung ilang row yung nakita if atleast 1 yung row
 
                 $row = mysqli_fetch_assoc($sqlResult); //yung nakuhang result ay gagawing associative array para ma gamit yung data, parang magiging key => value pair, array yung $row = {id=>1, username=>just, password=>123hgasdy%^}
@@ -161,7 +181,7 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
-        $_SESSION['show'] = "style='display: block !important'";
+        styleReveal();
         header("Location: login.php");
         exit();
     }
@@ -170,7 +190,7 @@
 
         if(empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['address']) || empty($_POST['email']) || empty($_POST['user-register']) || empty($_POST['orig-pass']) || empty($_POST['confirm-pass'])) {     
             $_SESSION['fillReg'] = 'Register all your details!';
-            $_SESSION['show'] = "style='display: block !important'";
+            styleReveal();
             header("Location: login.php");
             exit();
         }
@@ -191,7 +211,7 @@
             $resultCheckEmail = mysqli_query($connection, $queryCheckEmail);
             if (mysqli_num_rows($resultCheckEmail) > 0) {
                 $_SESSION['usedEmail'] = 'Email is already in use!';
-                $_SESSION['show'] = "style='display: block !important'";
+                styleReveal();
                 header("Location: login.php");
                 exit();
             }
@@ -200,19 +220,21 @@
             $resultCheckUser = mysqli_query($connection, $queryCheckuser);
             if (mysqli_num_rows($resultCheckUser) > 0) {
                 $_SESSION['usedUser'] = 'Username is already in use!';
-                $_SESSION['show'] = "style='display: block !important'";
+                styleReveal();
                 header("Location: login.php");
                 exit();
             }
             //check if the passwords match
             if ($origPass != $confirmPass) {
                 $_SESSION['passMatch'] = 'Passwords do not match!';
-                $_SESSION['show'] = "style='display: block !important'";
+                styleReveal();
                 header("Location: login.php");
                 exit();
             } 
             //registering the user input to the database
             else {
+                
+
                 $hashPass = password_hash($origPass, PASSWORD_DEFAULT); //hash the password before going to db
 
                 $slqInsertReg = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$hashPass')";  
@@ -225,6 +247,8 @@
         }
 
     }
+
+    //prepared statements for sql queries
 
 /*
     $to = "larozajustine15@gmail.com"; // Change this to the recipient's email
