@@ -303,13 +303,12 @@ body {
     border-color: seagreen;
 }
 
-.wrapper-right button {
+.wrapper-right button {   /* display: none; */
     width: 30%;
     font-size: 25px;
     background-color:seagreen;
     margin-left: 35%;
     cursor: pointer;
-    /* display: none; */
 }
 
 .wrapper-right button:hover {
@@ -351,11 +350,12 @@ body {
     margin-top: 2%;
 }
 
-.wrapper-right .code-container {
+.wrapper-right .code-container { /*display: block*/
     margin: 3% 20% 0 20%;
     border: 2px gray solid;
     border-radius: 10px;
     box-shadow: 0 0 5px black;
+    display: none;
 }
 
 .code-container .submit-code-parent {
