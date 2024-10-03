@@ -104,7 +104,9 @@
                         }
                     ?>
                 </div>
-                <button name="new-register" <?php if(isset($_SESSION['hideReg'])) { echo $_SESSION['hideReg']; unset($_SESSION['hideReg']); }?>>Register</button>
+                    <button name="new-register" <?php if(isset($_SESSION['hideReg'])) { echo $_SESSION['hideReg']; unset($_SESSION['hideReg']); }?>>Register</button>
+            </form>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="code-container" <?php if(isset($_SESSION['revealReg'])) { echo $_SESSION['revealReg']; unset($_SESSION['revealReg']); }?>>
                     <div class="code-label">
                         <label>Code sent to: Email@gmail.com</label>
@@ -118,9 +120,8 @@
                         <input type="text" maxlength="1" name="sixthNum">
                     </div>
                     <div class="submit-code-parent">
-                        <input type="submit" name="codeSub" class="submit-code-button">
+                        <input type="submit" name="codeSub" class="submit-code-button" value="Submit">
                     </div>
-                </div>
             </form>
         </div>
     </div>

@@ -106,30 +106,33 @@
                 styleReveal();
 
                 $randomNum = [];
-                    for ($i = 0; $i < 6; $i++) {
-                        $randomNum[$i] = rand(0, 9); 
-                    }
-
-                foreach ($randomNum as $num) {
-                    echo $num;
+                for ($i = 0; $i < 6; $i++) {
+                    $randomNum[$i] = rand(0, 9); 
                 }
 
-                if (isset($_POST['codeSub'])) {
-                    echo 'pindot';
-                    if (isset($_POST['firstNum'], $_POST['secondNum'], $_POST['thirdNum'], $_POST['fourthNum'], $_POST['fifthNum'], $_POST['sixthNum']) ) {
+                $_SESSION['randomNum'] = $randomNum;
 
-                        if ($_POST['firstNum'] == $randomNum[0] && $_POST['secondNum'] == $randomNum[1] && $_POST['thirdNum'] == $randomNum[2] && $_POST['fourthNum'] == $randomNum[3] && $_POST['fifthNum'] == $randomNum[4] && $_POST['sixthNum'] == $randomNum[5]) { 
-                            echo "Code is correct!";
-                            unset($_SESSION['randomNum']);
-                        } else {
-                            echo "Code is incorrect!";
-                        }
+                /*
+                    $to = "larozajustine15@gmail.com"; // Change this to the recipient's email
+
+                    // Subject of the email
+                    $subject = "Test Email from PHP";
+                    
+                    // Message to send
+                    $message = "Hello, this is a test email from PHP.";
+                    
+                    // Additional headers
+                    $headers = "From: pasabuhay.donations@gmail.com" . "\r\n" .  // Use your authenticated email here
+                            "Reply-To: pasabuhay.donations@gmail.com" . "\r\n" . 
+                            "X-Mailer: PHP/" . phpversion();
+                    
+                    // Send the email
+                    if (mail($to, $subject, $message, $headers)) {
+                        echo "Email sent successfully!";
+                    } else {
+                        echo "Failed to send email.";
                     }
-                    else {
-                        echo 'set codes';
-                        //$_SESSION['codeError'] = 'Please enter the verification code!';
-                    }
-                } 
+                */
 
                 /*
                 if (!isset($_SESSION['randomNum'])) { //if wala pang random code na nakuha si user para di paulit ulit na mag random code pag nag refresh
@@ -142,6 +145,22 @@
                     $randomNum = $_SESSION['randomNum']; //if nakakuha na code si user tas ni refresh for some reason yung prev code padin makukuha
                 }
                 
+                */
+
+            }
+        }
+
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['codeSub'])) {
+
+        if (isset($_POST['firstNum'], $_POST['secondNum'], $_POST['thirdNum'], $_POST['fourthNum'], $_POST['fifthNum'], $_POST['sixthNum'])  && 
+        !empty($_POST['firstNum']) && !empty($_POST['secondNum']) && !empty($_POST['thirdNum']) && !empty($_POST['fourthNum']) && !empty($_POST['fifthNum']) && !empty($_POST['sixthNum'])) { //we have !empty kasi naseset padin as empty string ""
+
+            if ($_POST['firstNum'] ==  $_SESSION['randomNum'][0] && $_POST['secondNum'] ==  $_SESSION['randomNum'][1] && $_POST['thirdNum'] ==  $_SESSION['randomNum'][2] && $_POST['fourthNum'] ==  $_SESSION['randomNum'][3] && $_POST['fifthNum'] ==  $_SESSION['randomNum'][4] && $_POST['sixthNum'] ==  $_SESSION['randomNum'][5]) { 
+                echo "Code is correct!";
+                unset($_SESSION['randomNum']);
+                /*
                 $hashPass = password_hash($origPass, PASSWORD_DEFAULT); //hash the password before going to db
 
                 $slqInsertReg = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$hashPass')";  
@@ -150,35 +169,23 @@
                 mysqli_query($connection, $slqInsertReg); //irurun ang query
                 mysqli_query($connection, $sqlInsertLog ); 
                 */
-
+                echo 'registered succesfully';
+                //header('Location: index.php'); //redirect to main page
+            } else {
+                echo "Code is incorrect!";
+                unset($_SESSION['randomNum']);
+                //dapat marertain yung code pati info
             }
         }
-
-    }
+        else {
+            echo 'set codes';
+            unset($_SESSION['randomNum']);
+            //$_SESSION['codeError'] = 'Please enter the verification code!';
+            //dapat marertain yung code pati info
+        }
+    } 
 
     //prepared statements for sql queries
-
-/*
-    $to = "larozajustine15@gmail.com"; // Change this to the recipient's email
-
-    // Subject of the email
-    $subject = "Test Email from PHP";
-    
-    // Message to send
-    $message = "Hello, this is a test email from PHP.";
-    
-    // Additional headers
-    $headers = "From: pasabuhay.donations@gmail.com" . "\r\n" .  // Use your authenticated email here
-               "Reply-To: pasabuhay.donations@gmail.com" . "\r\n" . 
-               "X-Mailer: PHP/" . phpversion();
-    
-    // Send the email
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Email sent successfully!";
-    } else {
-        echo "Failed to send email.";
-    }
-*/
 
 include('login-form.php'); // Include the HTML form after processing the logic kase nag eerror ng Cannot modify header information - headers already sent need muna manuna lgic kesa html
 mysqli_close($connection);
