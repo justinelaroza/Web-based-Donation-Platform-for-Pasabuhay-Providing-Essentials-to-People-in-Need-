@@ -7,6 +7,12 @@
         $_SESSION['show'] = "style='display: block !important'";
     }
 
+    function verificationReveal() {
+        $_SESSION['revealReg'] = "style='display: block !important'";
+        $_SESSION['hideReg'] = "style='display: none !important'";
+        styleReveal();
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
         if(empty($_POST['username']) || empty($_POST['password'])) {
@@ -48,12 +54,25 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
+        unset($_SESSION['randomNum']); //para kada pindot ng new register mag uunset yung code therefore magsesend ulit bago code
+        unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister']);
         styleReveal();
         header("Location: login.php");
         exit();
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new-register'])) {
+
+        if (!isset($_SESSION['randomNum'])) { 
+            $randomNum = [];
+            for ($i = 0; $i < 6; $i++) {
+                $randomNum[$i] = rand(0, 9); 
+            }
+            $_SESSION['randomNum'] = $randomNum;
+            
+        } else {
+            $randomNum = $_SESSION['randomNum']; 
+        }
 
         if(empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['address']) || empty($_POST['email']) || empty($_POST['user-register']) || empty($_POST['orig-pass']) || empty($_POST['confirm-pass'])) {     
             $_SESSION['fillReg'] = 'Register all your details!';
@@ -71,13 +90,21 @@
             $userRegister = filter_input(INPUT_POST, 'user-register', FILTER_SANITIZE_SPECIAL_CHARS);
 
             $origPass = $_POST['orig-pass'];
-            $confirmPass = $_POST['confirm-pass'];
+            $confirmPass = $_POST['confirm-pass']; //di nato session kasi dito sa form lang naman to gagamitin to
+
+            $_SESSION['firstname'] = $firstname;
+            $_SESSION['lastname'] = $lastname;
+            $_SESSION['address'] = $address;
+            $_SESSION['email'] = $email;
+            $_SESSION['userRegister'] = $userRegister;
+            $_SESSION['origPass'] = $origPass;
 
             // check if email is already in use
             $queryCheckEmail = "SELECT * FROM register_data WHERE email = '$email'";
             $resultCheckEmail = mysqli_query($connection, $queryCheckEmail);
             if (mysqli_num_rows($resultCheckEmail) > 0) {
                 $_SESSION['usedEmail'] = 'Email is already in use!';
+                unset($_SESSION['email']);
                 styleReveal();
                 header("Location: login.php");
                 exit();
@@ -87,6 +114,7 @@
             $resultCheckUser = mysqli_query($connection, $queryCheckuser);
             if (mysqli_num_rows($resultCheckUser) > 0) {
                 $_SESSION['usedUser'] = 'Username is already in use!';
+                unset($_SESSION['userRegister']);
                 styleReveal();
                 header("Location: login.php");
                 exit();
@@ -98,94 +126,63 @@
                 header("Location: login.php");
                 exit();
             } 
-            //registering the user input to the database
             else {
                 
-                $_SESSION['revealReg'] = "style='display: block !important'";
-                $_SESSION['hideReg'] = "style='display: none !important'";
-                styleReveal();
+                verificationReveal();
 
-                $randomNum = [];
-                for ($i = 0; $i < 6; $i++) {
-                    $randomNum[$i] = rand(0, 9); 
-                }
+                $to = "$email"; // Change this to the recipient's email
 
-                $_SESSION['randomNum'] = $randomNum;
-
-                /*
-                    $to = "larozajustine15@gmail.com"; // Change this to the recipient's email
-
-                    // Subject of the email
-                    $subject = "Test Email from PHP";
+                // Subject of the email
+                $subject = "Verification Code";
                     
-                    // Message to send
-                    $message = "Hello, this is a test email from PHP.";
+                // Message to send
+                $message = "Hello, this is a test email from PHP. Your code is " . implode(' ', $randomNum); //to concatenate the array elements into a string
                     
-                    // Additional headers
-                    $headers = "From: pasabuhay.donations@gmail.com" . "\r\n" .  // Use your authenticated email here
+                // Additional headers
+                $headers = "From: pasabuhay.donations@gmail.com" . "\r\n" . 
                             "Reply-To: pasabuhay.donations@gmail.com" . "\r\n" . 
                             "X-Mailer: PHP/" . phpversion();
                     
-                    // Send the email
-                    if (mail($to, $subject, $message, $headers)) {
-                        echo "Email sent successfully!";
-                    } else {
-                        echo "Failed to send email.";
-                    }
-                */
-
-                /*
-                if (!isset($_SESSION['randomNum'])) { //if wala pang random code na nakuha si user para di paulit ulit na mag random code pag nag refresh
-                    $randomNum = [];
-                    for ($i = 0; $i < 6; $i++) {
-                        $randomNum[$i] = rand(0, 9); 
-                    }
-                    $_SESSION['randomNum'] = $randomNum;
+                // Send the email
+                if (mail($to, $subject, $message, $headers)) {
+                    $_SESSION['emailSent'] = "Email sent successfully!";
                 } else {
-                    $randomNum = $_SESSION['randomNum']; //if nakakuha na code si user tas ni refresh for some reason yung prev code padin makukuha
+                    $_SESSION['emailFail'] = 'Email was not sent';
                 }
-                
-                */
-
+                        
             }
         }
 
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['codeSub'])) {
-
+       
         if (isset($_POST['firstNum'], $_POST['secondNum'], $_POST['thirdNum'], $_POST['fourthNum'], $_POST['fifthNum'], $_POST['sixthNum'])  && 
         !empty($_POST['firstNum']) && !empty($_POST['secondNum']) && !empty($_POST['thirdNum']) && !empty($_POST['fourthNum']) && !empty($_POST['fifthNum']) && !empty($_POST['sixthNum'])) { //we have !empty kasi naseset padin as empty string ""
 
             if ($_POST['firstNum'] ==  $_SESSION['randomNum'][0] && $_POST['secondNum'] ==  $_SESSION['randomNum'][1] && $_POST['thirdNum'] ==  $_SESSION['randomNum'][2] && $_POST['fourthNum'] ==  $_SESSION['randomNum'][3] && $_POST['fifthNum'] ==  $_SESSION['randomNum'][4] && $_POST['sixthNum'] ==  $_SESSION['randomNum'][5]) { 
-                echo "Code is correct!";
-                unset($_SESSION['randomNum']);
-                /*
-                $hashPass = password_hash($origPass, PASSWORD_DEFAULT); //hash the password before going to db
+                verificationReveal();
 
-                $slqInsertReg = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('$firstname', '$lastname', '$address', '$email', '$userRegister', '$hashPass')";  
-                $sqlInsertLog = "INSERT INTO login_data(username, password) VALUES ('$userRegister', '$hashPass')";
+                $_SESSION['codeCorrect'] = 'Registered Succesfuly!';
+                
+                $hashPass = password_hash($_SESSION['origPass'], PASSWORD_DEFAULT); //hash the password before going to db
+
+                $slqInsertReg = "INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES ('".$_SESSION['firstname']."', '".$_SESSION['lastname']."', '".$_SESSION['address']."', '".$_SESSION['email']."', '".$_SESSION['userRegister']."', '$hashPass')";  
+                $sqlInsertLog = "INSERT INTO login_data(username, password) VALUES ('".$_SESSION['userRegister']."', '$hashPass')";
 
                 mysqli_query($connection, $slqInsertReg); //irurun ang query
                 mysqli_query($connection, $sqlInsertLog ); 
-                */
-                echo 'registered succesfully';
-                //header('Location: index.php'); //redirect to main page
+                                                    
             } else {
-                echo "Code is incorrect!";
-                unset($_SESSION['randomNum']);
-                //dapat marertain yung code pati info
-            }
+                verificationReveal();
+                $_SESSION['wrongCode'] = 'Invalid verification code!';     
+            }  
         }
         else {
-            echo 'set codes';
-            unset($_SESSION['randomNum']);
-            //$_SESSION['codeError'] = 'Please enter the verification code!';
-            //dapat marertain yung code pati info
+            verificationReveal();
+            $_SESSION['codeError'] = 'Please enter the verification code!';
         }
     } 
-
-    //prepared statements for sql queries
 
 include('login-form.php'); // Include the HTML form after processing the logic kase nag eerror ng Cannot modify header information - headers already sent need muna manuna lgic kesa html
 mysqli_close($connection);

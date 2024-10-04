@@ -53,25 +53,25 @@
                 <div class="full-name">
                     <div class="name-field">
                         <label>First Name:</label>
-                        <input type="text" name="firstname" placeholder="First Name">
+                        <input type="text" name="firstname" placeholder="First Name" value="<?php echo $_SESSION['firstname'] ?? ''; ?>"> <!--The ?? operator returns the value on its left side if it exists and is not null. If the value on its left side is null or doesn't exist, it returns the value on its right side. -->
                     </div>
                     <div class="name-field">
                         <label>Last Name:</label>
-                        <input type="text" name="lastname" placeholder="Last Name">
+                        <input type="text" name="lastname" placeholder="Last Name" value="<?php echo $_SESSION['lastname'] ?? ''; ?>">
                     </div>
                     </div>
                 <div class="other-input">
                     <label>Address:</label>
-                    <input type="text" name="address" placeholder="Address">
+                    <input type="text" name="address" placeholder="Address" value="<?php echo $_SESSION['address'] ?? ''; ?>">
                 </div>
                 <div class="parent">
                     <div class="child">
                         <label>Email Address:</label>
-                        <input type="email" name="email" placeholder="Email">
+                        <input type="email" name="email" placeholder="Email" value="<?php echo $_SESSION['email'] ?? ''; ?>">
                     </div>
                     <div class="child">
                         <label>Username:</label>
-                        <input type="text" name="user-register" placeholder="Username">
+                        <input type="text" name="user-register" placeholder="Username" value="<?php echo $_SESSION['userRegister']?? ''; ?>">
                     </div>
                 </div>
                 <div class="parent">
@@ -102,6 +102,30 @@
                             echo $_SESSION['usedUser'];
                             unset($_SESSION['usedUser']);
                         }
+                        if(isset($_SESSION['codeError'])) {
+                            echo $_SESSION['codeError'];
+                            unset($_SESSION['codeError']);
+                        }
+                        if(isset($_SESSION['wrongCode'])) {
+                            echo $_SESSION['wrongCode'];
+                            unset($_SESSION['wrongCode']);
+                        }
+                        if(isset($_SESSION['emailFail'])) {
+                            echo $_SESSION['emailFail'];
+                            unset($_SESSION['emailFail']);
+                        }
+                    ?>
+                </div>
+                <div class="correct-message-reg">
+                    <?php 
+                        if (isset($_SESSION['codeCorrect'])) {
+                            echo $_SESSION['codeCorrect'];
+                            unset($_SESSION['codeCorrect']);
+                        }
+                        if (isset($_SESSION['emailSent'])) {
+                            echo $_SESSION['emailSent'];
+                            unset($_SESSION['emailSent']);
+                        }    
                     ?>
                 </div>
                     <button name="new-register" <?php if(isset($_SESSION['hideReg'])) { echo $_SESSION['hideReg']; unset($_SESSION['hideReg']); }?>>Register</button>

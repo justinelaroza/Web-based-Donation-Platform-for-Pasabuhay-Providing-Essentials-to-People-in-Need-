@@ -183,7 +183,7 @@ body {
 .wrapper-right .register {
     font-size: 100%;
     text-align: center;
-    margin-top: 9%;
+    margin-top: 5%;
     letter-spacing: 2px;
     margin-bottom: none;
     color: seagreen;
@@ -317,6 +317,12 @@ body {
 
 .wrapper-right .error-message-reg {
     margin-top: 1%;
+}
+.wrapper-right .correct-message-reg {
+    margin-top: 1%;
+    text-align: center;
+    color: green;
+    font-weight: bold;
 }
 
 .code-input {
