@@ -34,6 +34,7 @@
 
                 if (password_verify($password, $hashPassDb)) {
                     //pass is correct
+                    unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister'], $_SESSION['origPass']);
                     header('Location: index.php');
                     exit(); // used to stop further execution of code na pede mag interfere sa redirection
                 }
@@ -55,7 +56,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
         unset($_SESSION['randomNum']); //para kada pindot ng new register mag uunset yung code therefore magsesend ulit bago code
-        unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister']);
+        unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister'], $_SESSION['origPass']);
         styleReveal();
         header("Location: login.php");
         exit();
@@ -183,6 +184,10 @@
             $_SESSION['codeError'] = 'Please enter the verification code!';
         }
     } 
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['forgot-button'])) {
+        $_SESSION['forgot-reveal'] = "style='display: block !important'";
+    }
 
 include('login-form.php'); // Include the HTML form after processing the logic kase nag eerror ng Cannot modify header information - headers already sent need muna manuna lgic kesa html
 mysqli_close($connection);

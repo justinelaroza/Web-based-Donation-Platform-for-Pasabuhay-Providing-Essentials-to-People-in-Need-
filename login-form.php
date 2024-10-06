@@ -44,8 +44,19 @@
                 </div>
             </form>
         </div>
+        <div class="forgot-wrapper"<?php if(isset($_SESSION['forgot-reveal'])) { echo $_SESSION['forgot-reveal']; unset($_SESSION['forgot-reveal']); }?>>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                <div class="reset">
+                    <h1>RESET PASSWORD</h1>
+                </div>
+                <div class="forgot-input">
+                    <label>Email Used:</label>
+                    <input type="email" name="forgot-email" placeholder="Email">
+                </div>
+                <input type="submit" class="forgot-submit" value="Submit">
+            </form>
+        </div>
         <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>
-
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="register">
                     <h1>REGISTER</h1>
@@ -59,7 +70,7 @@
                         <label>Last Name:</label>
                         <input type="text" name="lastname" placeholder="Last Name" value="<?php echo $_SESSION['lastname'] ?? ''; ?>">
                     </div>
-                    </div>
+                </div>
                 <div class="other-input">
                     <label>Address:</label>
                     <input type="text" name="address" placeholder="Address" value="<?php echo $_SESSION['address'] ?? ''; ?>">
