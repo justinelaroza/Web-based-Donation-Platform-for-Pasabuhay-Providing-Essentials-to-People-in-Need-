@@ -325,7 +325,7 @@ body {
     font-weight: bold;
 }
 
-.code-input {
+.code-input, .code-input-forgot {
     display: flex;
     justify-content: center;
     gap: 1%;
@@ -336,7 +336,7 @@ body {
     margin-bottom: 3%;
 }
 
-.code-input input {
+.code-input input, .code-input-forgot input {
     width: 10%;
     height: 100%;
     text-align: center;
@@ -347,16 +347,16 @@ body {
     transition: border-color 0.3s ease;
 }
 
-.code-input input:focus {
+.code-input input:focus, .code-input-forgot input:focus {
     border-color: seagreen;
 }
 
-.wrapper-right .code-label {
+.wrapper-right .code-label, .forgot-wrapper .code-label-forgot {
     text-align: center;
     margin-top: 2%;
 }
 
-.wrapper-right .code-container { /*display: block*/
+.wrapper-right .code-container, .forgot-wrapper .code-container-forgot { /*display: block*/
     margin: 3% 20% 0 20%;
     border: 2px gray solid;
     border-radius: 10px;
@@ -364,14 +364,14 @@ body {
     display: none;
 }
 
-.code-container .submit-code-parent {
+.code-container .submit-code-parent, .code-container-forgot .submit-code-parent-forgot {
     display: flex;
     justify-content: center;      /* Center horizontally */
     align-items: center;  
     height: 50px;   
 }
 
-.code-container .submit-code-button {
+.code-container .submit-code-button, .code-container-forgot .submit-code-button-forgot{
     background-color: seagreen;
     border: none;
     cursor: pointer; 
@@ -386,14 +386,14 @@ body {
 
 .forgot-wrapper .reset {
     text-align: center;
-    margin-top: 10%;
+    margin-top: 16%;
     color: red;
 }
 
 .forgot-wrapper .forgot-input {
     width: 80%;
     height: 80px;
-    margin: 6% 0 0 9%;
+    margin: 6% 0 18% 9%;
 }
 
 .forgot-input input {
@@ -406,6 +406,7 @@ body {
     letter-spacing: .5px;
     margin-top: 1%;
     padding-left: 2%;
+    margin-bottom: 1%;
 }
 
 .forgot-wrapper .forgot-submit {
@@ -421,9 +422,16 @@ body {
     margin: 1% 0 0 74.5%;
 }
 
-.forgot-wrapper .error-message-forgot {
+.error-message-forgot, .correct-message-forgot {
     text-align: center;
-    color: red;
     font-size: 100%;
     margin-top: 1.5%;
+}
+
+.forgot-wrapper .error-message-forgot {
+    color: red;
+}
+
+.forgot-wrapper .correct-message-forgot {
+    color: green;
 }

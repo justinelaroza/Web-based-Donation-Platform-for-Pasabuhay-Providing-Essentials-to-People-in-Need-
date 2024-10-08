@@ -44,6 +44,7 @@
                 </div>
             </form>
         </div>
+        
         <div class="forgot-wrapper"<?php if(isset($_SESSION['forgot-reveal'])) { echo $_SESSION['forgot-reveal']; unset($_SESSION['forgot-reveal']); }?>>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="reset">
@@ -52,6 +53,8 @@
                 <div class="forgot-input">
                     <label>Email Used:</label>
                     <input type="email" name="forgot-email" placeholder="Email">
+                    <label>New Password:</label>
+                    <input type="password" name="forgot-pass" placeholder="New Password">
                 </div>
                 <div class="error-message-forgot">
                         <?php 
@@ -63,11 +66,54 @@
                                 echo $_SESSION['noEmail'];
                                 unset($_SESSION['noEmail']);
                             }
+                            if (isset($_SESSION['emailFailForgot'])) {
+                                echo $_SESSION['emailFailForgot'];
+                                unset($_SESSION['emailFailForgot']);
+                            }
+                            if (isset($_SESSION['codeErrorForgot'])) {
+                                echo $_SESSION['codeErrorForgot'];
+                                unset($_SESSION['codeErrorForgot']);
+                            }
+                            if (isset($_SESSION['wrongCodeForgot'])) {
+                                echo $_SESSION['wrongCodeForgot'];
+                                unset($_SESSION['wrongCodeForgot']);
+                            }
                        ?>
                 </div>
-                <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit">
+                <div class="correct-message-forgot">
+                    <?php 
+                        if (isset($_SESSION['emailSentForgot'])) {
+                            echo $_SESSION['emailSentForgot'];
+                            unset($_SESSION['emailSentForgot']);
+                        }
+                        if (isset($_SESSION['codeCorrectForgot'])) {
+                            echo $_SESSION['codeCorrectForgot'];
+                            unset($_SESSION['codeCorrectForgot']);
+                        }
+                    ?>
+                </div>
+                <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit" <?php if(isset($_SESSION['hideForgot'])) { echo $_SESSION['hideForgot']; unset($_SESSION['hideForgot']); }?>>
+            </form>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                <div class="code-container-forgot" <?php if(isset($_SESSION['revealForgot'])) { echo $_SESSION['revealForgot']; unset($_SESSION['revealForgot']); }?>>
+                    <div class="code-label-forgot">
+                        <label>Code sent to: <?php echo $_SESSION['emailForgot']?></label>
+                    </div>
+                    <div class="code-input-forgot">
+                        <input type="text" maxlength="1" name="firstForgot">
+                        <input type="text" maxlength="1" name="secondForgot">
+                        <input type="text" maxlength="1" name="thirdForgot">
+                        <input type="text" maxlength="1" name="fourthForgot">
+                        <input type="text" maxlength="1" name="fifthForgot">
+                        <input type="text" maxlength="1" name="sixthForgot">
+                    </div>
+                    <div class="submit-code-parent-forgot">
+                        <input type="submit" name="codeSubForgot" class="submit-code-button-forgot" value="Submit">
+                    </div>
+                </div>
             </form>
         </div>
+        
         <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="register">
@@ -156,7 +202,7 @@
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="code-container" <?php if(isset($_SESSION['revealReg'])) { echo $_SESSION['revealReg']; unset($_SESSION['revealReg']); }?>>
                     <div class="code-label">
-                        <label>Code sent to: Email@gmail.com</label>
+                        <label>Code sent to: <?php echo $_SESSION['email'] ?></label>
                     </div>
                     <div class="code-input">
                         <input type="text" maxlength="1" name="firstNum">
