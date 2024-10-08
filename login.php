@@ -3,14 +3,22 @@
     /** @var mysqli $connection */ // This tells the editor that $connection is a mysqli object.
     session_start();
 
-    function styleReveal() {
-        $_SESSION['show'] = "style='display: block !important'";
-    }
+    const DISPLAY_BLOCK = "style='display: block !important'";
+    const DISPLAY_NONE = "style='display: none !important'";
 
     function verificationReveal() {
-        $_SESSION['revealReg'] = "style='display: block !important'";
-        $_SESSION['hideReg'] = "style='display: none !important'";
-        styleReveal();
+        $_SESSION['show'] = DISPLAY_BLOCK;
+        $_SESSION['revealReg'] = DISPLAY_BLOCK; //papakita si code verification
+        $_SESSION['hideReg'] = DISPLAY_NONE; //aalis yung register button
+    }
+
+    function redirectExit() { //way para mag stop ng execution ng next line of codes
+        header("Location: login.php"); 
+        exit();
+    }
+
+    function sanitizeInput($field, $filter = FILTER_SANITIZE_SPECIAL_CHARS) { //function to sanitize inputs
+        return filter_input(INPUT_POST, $field, $filter);
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
@@ -21,10 +29,10 @@
             exit();
         }
         else {
-            $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS); //filter any malicious codes 
+            $username = sanitizeInput('username'); //filter any malicious codes 
             $password = $_POST['password'];
 
-            $sqlSelect = "SELECT * FROM login_data WHERE username = '$username'"; // this query will see if the value is not there/there
+            $sqlSelect = "SELECT username FROM login_data WHERE username = '$username'"; // this query will see if the value is not there/there
             $sqlResult = mysqli_query($connection, $sqlSelect); //this will execute the sql query into the database getting result and should be stored in a variable; cannot be used directly
 
             if(mysqli_num_rows($sqlResult) > 0) { // counts kung ilang row yung nakita if atleast 1 yung row
@@ -57,9 +65,8 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register-button'])) {
         unset($_SESSION['randomNum']); //para kada pindot ng new register mag uunset yung code therefore magsesend ulit bago code
         unset($_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister'], $_SESSION['origPass']);
-        styleReveal();
-        header("Location: login.php");
-        exit();
+        $_SESSION['show'] = DISPLAY_BLOCK;
+        redirectExit();
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new-register'])) {
@@ -77,18 +84,19 @@
 
         if(empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['address']) || empty($_POST['email']) || empty($_POST['user-register']) || empty($_POST['orig-pass']) || empty($_POST['confirm-pass'])) {     
             $_SESSION['fillReg'] = 'Register all your details!';
-            styleReveal();
-            header("Location: login.php");
-            exit();
+            $_SESSION['show'] = DISPLAY_BLOCK;
+            redirectExit();
         }
         
         else {
 
-            $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_SPECIAL_CHARS);
-            $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_SPECIAL_CHARS);
-            $address = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_SPECIAL_CHARS);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $userRegister = filter_input(INPUT_POST, 'user-register', FILTER_SANITIZE_SPECIAL_CHARS);
+            $_SESSION['show'] = DISPLAY_BLOCK;
+
+            $firstname = sanitizeInput('firstname');
+            $lastname = sanitizeInput('lastname');
+            $address = sanitizeInput('address');
+            $email = sanitizeInput('email', FILTER_SANITIZE_EMAIL);
+            $userRegister = sanitizeInput('user-register');
 
             $origPass = $_POST['orig-pass'];
             $confirmPass = $_POST['confirm-pass']; //di nato session kasi dito sa form lang naman to gagamitin to
@@ -101,31 +109,25 @@
             $_SESSION['origPass'] = $origPass;
 
             // check if email is already in use
-            $queryCheckEmail = "SELECT * FROM register_data WHERE email = '$email'";
+            $queryCheckEmail = "SELECT email FROM register_data WHERE email = '$email'";
             $resultCheckEmail = mysqli_query($connection, $queryCheckEmail);
             if (mysqli_num_rows($resultCheckEmail) > 0) {
                 $_SESSION['usedEmail'] = 'Email is already in use!';
-                unset($_SESSION['email']);
-                styleReveal();
-                header("Location: login.php");
-                exit();
+                unset($_SESSION['email']); //para maalis yung nilagay ni user na email, para di mag stay sa input field
+                redirectExit(); //kaya may ganto kasi need natin yung exit() kasi tutuloy yang code, pag magkatulad pass tutuloy yan
             }
             // check if username is already in use
-            $queryCheckuser = "SELECT * FROM register_data WHERE username = '$userRegister'";
+            $queryCheckuser = "SELECT username FROM register_data WHERE username = '$userRegister'";
             $resultCheckUser = mysqli_query($connection, $queryCheckuser);
             if (mysqli_num_rows($resultCheckUser) > 0) {
                 $_SESSION['usedUser'] = 'Username is already in use!';
                 unset($_SESSION['userRegister']);
-                styleReveal();
-                header("Location: login.php");
-                exit();
+                redirectExit();
             }
             //check if the passwords match
             if ($origPass != $confirmPass) {
                 $_SESSION['passMatch'] = 'Passwords do not match!';
-                styleReveal();
-                header("Location: login.php");
-                exit();
+                redirectExit();
             } 
             else {
                 
@@ -157,12 +159,13 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['codeSub'])) {
+
+        verificationReveal();
        
         if (isset($_POST['firstNum'], $_POST['secondNum'], $_POST['thirdNum'], $_POST['fourthNum'], $_POST['fifthNum'], $_POST['sixthNum'])  && 
         !empty($_POST['firstNum']) && !empty($_POST['secondNum']) && !empty($_POST['thirdNum']) && !empty($_POST['fourthNum']) && !empty($_POST['fifthNum']) && !empty($_POST['sixthNum'])) { //we have !empty kasi naseset padin as empty string ""
 
             if ($_POST['firstNum'] ==  $_SESSION['randomNum'][0] && $_POST['secondNum'] ==  $_SESSION['randomNum'][1] && $_POST['thirdNum'] ==  $_SESSION['randomNum'][2] && $_POST['fourthNum'] ==  $_SESSION['randomNum'][3] && $_POST['fifthNum'] ==  $_SESSION['randomNum'][4] && $_POST['sixthNum'] ==  $_SESSION['randomNum'][5]) { 
-                verificationReveal();
 
                 $_SESSION['codeCorrect'] = 'Registered Succesfuly!';
                 
@@ -175,18 +178,38 @@
                 mysqli_query($connection, $sqlInsertLog ); 
                                                     
             } else {
-                verificationReveal();
                 $_SESSION['wrongCode'] = 'Invalid verification code!';     
             }  
         }
         else {
-            verificationReveal();
             $_SESSION['codeError'] = 'Please enter the verification code!';
         }
     } 
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['forgot-button'])) {
-        $_SESSION['forgot-reveal'] = "style='display: block !important'";
+        $_SESSION['forgot-reveal'] = DISPLAY_BLOCK;
+    }
+
+    if (isset($_POST['forgot-submit'])) {
+        if (isset($_POST['forgot-email']) && !empty($_POST['forgot-email'])) {
+            $_SESSION['forgot-reveal'] = DISPLAY_BLOCK;
+            $emailForgot = $_POST['forgot-email'];
+
+            $queryEmailForgot = "SELECT email FROM register_data WHERE email = '$emailForgot'";
+            $resultEmailForgot = mysqli_query($connection, $queryEmailForgot);
+
+            if (mysqli_num_rows($resultEmailForgot) > 0) {
+                echo 'nasa db';
+
+            }
+            else {
+                $_SESSION['noEmail'] = 'Email is not yet registered!';
+            }
+        }
+        else {
+            $_SESSION['forgot-reveal'] = DISPLAY_BLOCK;
+            $_SESSION['forgotError'] = 'Please enter an email address.';
+        }
     }
 
 include('login-form.php'); // Include the HTML form after processing the logic kase nag eerror ng Cannot modify header information - headers already sent need muna manuna lgic kesa html

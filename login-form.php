@@ -53,7 +53,19 @@
                     <label>Email Used:</label>
                     <input type="email" name="forgot-email" placeholder="Email">
                 </div>
-                <input type="submit" class="forgot-submit" value="Submit">
+                <div class="error-message-forgot">
+                        <?php 
+                            if (isset($_SESSION['forgotError'])) {
+                                echo $_SESSION['forgotError'];
+                                unset($_SESSION['forgotError']);
+                            }
+                            if (isset($_SESSION['noEmail'])) {
+                                echo $_SESSION['noEmail'];
+                                unset($_SESSION['noEmail']);
+                            }
+                       ?>
+                </div>
+                <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit">
             </form>
         </div>
         <div class="wrapper-right" <?php if(isset($_SESSION['show'])) { echo $_SESSION['show']; unset($_SESSION['show']); }?>>

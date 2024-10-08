@@ -418,5 +418,12 @@ body {
     font-weight: bold;
     color: white;
     font-size: 100%;
-    margin: 3% 0 0 74.5%;
+    margin: 1% 0 0 74.5%;
+}
+
+.forgot-wrapper .error-message-forgot {
+    text-align: center;
+    color: red;
+    font-size: 100%;
+    margin-top: 1.5%;
 }
