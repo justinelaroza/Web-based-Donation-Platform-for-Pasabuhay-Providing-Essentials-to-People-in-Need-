@@ -214,7 +214,7 @@
 
                 $_SESSION['emailForgot'] = $emailForgot;
                 $_SESSION['newPassForgot'] = $newPass;
-
+                
                 //send email
                 
                 $to = "$emailForgot";
@@ -227,8 +227,8 @@
                     $_SESSION['emailSentForgot'] = "Email sent successfully!";
                 } else {
                     $_SESSION['emailFailForgot'] = 'Email was not sent';
-                }
-                    
+                } 
+
             }
             else {
                 $_SESSION['noEmail'] = 'Email is not yet registered!';
@@ -248,7 +248,7 @@
         $_SESSION['hideForgot'] = DISPLAY_NONE;
 
         if (isset($_POST['firstForgot'], $_POST['secondForgot'], $_POST['thirdForgot'], $_POST['fourthForgot'], $_POST['fifthForgot'], $_POST['sixthForgot'])  && 
-        !empty($_POST['firstForgot']) && !empty($_POST['secondForgot']) && !empty($_POST['thirdForgot']) && !empty($_POST['fourthForgot']) && !empty($_POST['fifthForgot']) && !empty($_POST['sixthForgot'])) { 
+        !empty($_POST['firstForgot']) || !empty($_POST['secondForgot']) || !empty($_POST['thirdForgot']) || !empty($_POST['fourthForgot']) || !empty($_POST['fifthForgot']) || !empty($_POST['sixthForgot'])) { 
 
             if ($_POST['firstForgot'] ==  $_SESSION['randomNumForgot'][0] && $_POST['secondForgot'] ==  $_SESSION['randomNumForgot'][1] && $_POST['thirdForgot'] ==  $_SESSION['randomNumForgot'][2] 
             && $_POST['fourthForgot'] ==  $_SESSION['randomNumForgot'][3] && $_POST['fifthForgot'] ==  $_SESSION['randomNumForgot'][4] && $_POST['sixthForgot'] ==  $_SESSION['randomNumForgot'][5]) { 

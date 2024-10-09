@@ -392,8 +392,15 @@ body {
 
 .forgot-wrapper .forgot-input {
     width: 80%;
-    height: 80px;
-    margin: 6% 0 18% 9%;
+    height: 9vh;
+}
+
+#firstchild {
+    margin: 6% 0 0 9%;
+}
+
+#secondchild {
+    margin: 2% 0 0 9%;
 }
 
 .forgot-input input {

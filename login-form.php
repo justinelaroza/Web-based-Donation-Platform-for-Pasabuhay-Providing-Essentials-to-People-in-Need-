@@ -50,9 +50,11 @@
                 <div class="reset">
                     <h1>RESET PASSWORD</h1>
                 </div>
-                <div class="forgot-input">
+                <div class="forgot-input" id="firstchild">
                     <label>Email Used:</label>
                     <input type="email" name="forgot-email" placeholder="Email">
+                </div>
+                <div class="forgot-input" id="secondchild">
                     <label>New Password:</label>
                     <input type="password" name="forgot-pass" placeholder="New Password">
                 </div>
