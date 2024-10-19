@@ -25,11 +25,13 @@
                 </div>
                 <div class="error-message">
                     <?php
-                        if (isset($_GET['invalid'])) {
-                            echo $_GET['invalid']; // mag pprint to ng error message from the error handling sa php sa baba
+                        if (isset($_SESSION['invalid'])) {
+                            echo $_SESSION['invalid'];
+                            unset($_SESSION['invalid']);
                         }
-                        if (isset($_GET['fill'])) {
-                            echo $_GET['fill'];
+                        if (isset($_SESSION['fill'])) {
+                            echo $_SESSION['fill'];
+                            unset($_SESSION['fill']);
                         }
                     ?>
                 </div>
