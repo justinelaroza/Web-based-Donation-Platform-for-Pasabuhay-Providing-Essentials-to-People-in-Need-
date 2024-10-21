@@ -259,7 +259,6 @@
                 $stmtLog->execute();
 
                 $_SESSION['codeCorrect'] = 'Registered Successfully!';
-                unset($_SESSION['show']); //para maalis yung register form
                 RedundancyUtil::redirectExit();                                      
             } else {
                 $_SESSION['wrongCode'] = 'Invalid verification code!';     
@@ -351,7 +350,6 @@
                 $stmtUpdateLog->execute();
 
                 $_SESSION['codeCorrectForgot'] = 'Updated Succesfuly!';
-                unset($_SESSION['forgot-reveal']); //para maalis yung forgot form
                 RedundancyUtil::redirectExit();                          
             } else {
                 $_SESSION['wrongCodeForgot'] = 'Invalid verification code!';     
