@@ -26,7 +26,7 @@
                 <div class="error-message">
                     <?php
                         $sessionKeys = ['invalid', 'fill'];
-                        RedundancyUtil::SessionManagerArray($sessionKeys);
+                        RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
                 <div class="forgot">
@@ -41,7 +41,7 @@
             </form>
         </div>
         
-        <div class="forgot-wrapper"<?php RedundancyUtil::SessionManagerSingle('forgot-reveal'); ?>>
+        <div class="forgot-wrapper"<?php RedundancyUtil::sessionManager('forgot-reveal'); ?>>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="reset">
                     <h1>RESET PASSWORD</h1>
@@ -57,19 +57,19 @@
                 <div class="error-message-forgot">
                         <?php 
                             $sessionKeys = ['forgotError', 'noEmail', 'emailFailForgot', 'codeErrorForgot', 'wrongCodeForgot'];
-                            RedundancyUtil::SessionManagerArray($sessionKeys);
+                            RedundancyUtil::sessionManager($sessionKeys);
                        ?>
                 </div>
                 <div class="correct-message-forgot">
                     <?php 
                         $sessionKeys = ['emailSentForgot', 'codeCorrectForgot'];
-                        RedundancyUtil::SessionManagerArray($sessionKeys);
+                        RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
-                <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit" <?php RedundancyUtil::SessionManagerSingle('hideForgot'); ?>>
+                <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit" <?php RedundancyUtil::sessionManager('hideForgot'); ?>>
             </form>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <div class="code-container-forgot" <?php RedundancyUtil::SessionManagerSingle('revealForgot'); ?>>
+                <div class="code-container-forgot" <?php RedundancyUtil::sessionManager('revealForgot'); ?>>
                     <div class="code-label-forgot">
                         <label>Code sent to: <?php echo $_SESSION['emailForgot']?></label>
                     </div>
@@ -88,7 +88,7 @@
             </form>
         </div>
         
-        <div class="wrapper-right" <?php RedundancyUtil::SessionManagerSingle('show'); ?>>
+        <div class="wrapper-right" <?php RedundancyUtil::sessionManager('show'); ?>>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="register">
                     <h1>REGISTER</h1>
@@ -130,19 +130,19 @@
                 <div class="error-message-reg">
                     <?php 
                         $sessionKeys = ['fillReg', 'passMatch', 'usedEmail', 'usedUser', 'codeError', 'wrongCode', 'emailFail'];
-                        RedundancyUtil::SessionManagerArray($sessionKeys);
+                        RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
                 <div class="correct-message-reg">
                     <?php 
                         $sessionKeys = ['codeCorrect', 'emailSent'];
-                        RedundancyUtil::SessionManagerArray($sessionKeys);
+                        RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
-                    <button name="new-register" <?php RedundancyUtil::SessionManagerSingle('hideReg'); ?>>Register</button>
+                    <button name="new-register" <?php RedundancyUtil::sessionManager('hideReg'); ?>>Register</button>
             </form>
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <div class="code-container" <?php RedundancyUtil::SessionManagerSingle('revealReg');?>>
+                <div class="code-container" <?php RedundancyUtil::sessionManager('revealReg');?>>
                     <div class="code-label">
                         <label>Code sent to: <?php echo $_SESSION['email'] ?></label>
                     </div>
