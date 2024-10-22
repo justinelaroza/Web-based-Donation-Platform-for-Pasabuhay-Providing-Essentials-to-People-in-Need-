@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="login-form.css">
 </head>
 <body>
     <div class="middle-section">
@@ -16,12 +16,12 @@
                 <div class="input-box">
                     <label>Username:</label>
                     <input type="text" name="username" placeholder="Username">
-                    <img src="./pictures/user-picture.png" alt="user-picture">
+                    <img src="../pictures/user-picture.png" alt="user-picture">
                 </div>
                 <div class="input-box">
                     <label>Password:</label>
                     <input type="password" name="password" placeholder="Password">
-                    <img src="./pictures/pass-picture.png" alt="pass-picture">
+                    <img src="../pictures/pass-picture.png" alt="pass-picture">
                 </div>
                 <div class="error-message">
                     <?php

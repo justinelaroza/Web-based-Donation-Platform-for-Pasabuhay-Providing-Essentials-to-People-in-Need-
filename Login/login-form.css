@@ -1,24 +1,14 @@
-@font-face {
-    font-family: 'Cinzel';
-    src: url('/fonts/Cinzel/Cinzel-VariableFont_wght.ttf') format('truetype');
-  }
-
-@font-face {
-    font-family: 'Anton';
-    src: url('/fonts/Anton/Anton-Regular.ttf') format('truetype');
-  }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Cinzel", serif;
+    font-family: serif;
 }
 
 .middle-section {
     height: 80vh;
     width: 80vw;
-    background-image: url('./pictures/0x0.png');
+    background-image: url('../pictures/0x0.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -31,7 +21,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('./pictures/light-bg.jpg');
+    background-image: url('../pictures/light-bg.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -52,7 +42,6 @@ body {
 }
 
 .wrapper label {
-    font-family: "Cinzel", serif;
     font-size: 17px;
     letter-spacing: 2px;
 }
@@ -211,7 +200,6 @@ body {
 }
 
 .wrapper-right .full-name label {
-    font-family: "Cinzel", serif;
     font-size: 17px;
     letter-spacing: 2px;
     display: block;
@@ -241,7 +229,6 @@ body {
 }
 
 .wrapper-right .other-input label {
-    font-family: "Cinzel", serif;
     font-size: 17px;
     letter-spacing: 2px;
     display: block;
