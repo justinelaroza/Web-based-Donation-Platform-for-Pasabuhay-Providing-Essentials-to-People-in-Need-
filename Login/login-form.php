@@ -16,12 +16,12 @@
                 <div class="input-box">
                     <label>Username:</label>
                     <input type="text" name="username" placeholder="Username">
-                    <img src="../pictures/user-picture.png" alt="user-picture">
+                    <img src="../-Pictures/user-picture.png" alt="user-picture">
                 </div>
                 <div class="input-box">
                     <label>Password:</label>
                     <input type="password" name="password" placeholder="Password">
-                    <img src="../pictures/pass-picture.png" alt="pass-picture">
+                    <img src="../-Pictures/pass-picture.png" alt="pass-picture">
                 </div>
                 <div class="error-message">
                     <?php

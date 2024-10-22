@@ -8,7 +8,7 @@
 .middle-section {
     height: 80vh;
     width: 80vw;
-    background-image: url('../pictures/0x0.png');
+    background-image: url('../-Pictures/0x0.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -21,7 +21,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('../pictures/light-bg.jpg');
+    background-image: url('../-Pictures/light-bg.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
