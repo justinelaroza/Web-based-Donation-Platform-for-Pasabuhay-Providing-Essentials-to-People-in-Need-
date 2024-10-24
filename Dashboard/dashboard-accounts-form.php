@@ -24,6 +24,7 @@
                 <ul>
                     <label class="last">Member Accounts</label>
                     <a href="dashboard-accounts-form.php"><li class="account">Accounts Overview</li></a>
+                    <a href="#"><li>Add Account</li></a>
                     <label class="first">Donations Information</label>
                     <a href="#"><li>Donator's Information</li></a>
                     <a href="#"><li>Edit Information</li></a>

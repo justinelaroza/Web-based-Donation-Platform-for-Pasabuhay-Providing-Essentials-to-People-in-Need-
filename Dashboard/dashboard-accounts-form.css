@@ -29,8 +29,8 @@ body {
 }
 
 .wrapper {
-    width: 90vw;
-    height: 90vh;
+    width: 98vw;
+    height: 95vh;
     border-radius: 50px;
     background-color: rgb(243, 239, 239);
     display: flex;
@@ -207,10 +207,10 @@ body {
 }
 
 .table td {
-    padding: 12px 0 12px 12px;
-    max-width: 300px;
+    padding: 0 0 0 .9%;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    max-width: 160px;
 }
 
 .delete {
@@ -221,16 +221,6 @@ body {
     color: white;
     cursor: pointer;
     width: 50px;
-}
-
-.add {
-    background-color: green;
-    box-shadow: 1px 1px 1px 1px black;
-    border: 1px green solid;
-    height: 50%;
-    color: white;
-    cursor: pointer;
-    width: 40px;
     margin-right: 10%;
 }
 
@@ -244,12 +234,43 @@ body {
     margin-right: 5%;
 }
 
-.datas {
+.save {
+    background-color: green;
+    box-shadow: 1px 1px 1px 1px black;
+    border: 1px green solid;
+    height: 50%;
+    color: white;
+    cursor: pointer;
+    margin-right: 10%;
+}
+
+.cancel {
+    background-color: gray;
+    box-shadow: 1px 1px 1px 1px black;
+    border: 1px gray solid;
+    height: 50%;
+    color: white;
+    cursor: pointer;
+    margin-right: 5%;
+}
+
+.tr_input {
+    display: flex;
+    flex-direction: column;
+    margin-right: 7%;
+    margin-bottom: 3%;
+}
+
+.button_des {
+    margin-right: 5%;
+}
+
+.datas{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.option {
+.option, .button_des {
     display: flex;
 }
