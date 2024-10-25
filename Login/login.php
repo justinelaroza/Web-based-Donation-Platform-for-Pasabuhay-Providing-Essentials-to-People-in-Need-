@@ -27,7 +27,7 @@
                 if (password_verify($password, $hashPassDb)) { //pass is correct
                     $sessionArray = ['firstname', 'lastname', 'address', 'email', 'userRegister', 'origPass'];
                     RedundancyUtil::unsetSession($sessionArray);
-                    header('Location: index.php'); //go to index
+                    header('Location: ../Main/index.php'); //go to index
                     exit(); // used to stop further execution of code na pede mag interfere sa redirection
                 }
                 else { //pass is incorrect

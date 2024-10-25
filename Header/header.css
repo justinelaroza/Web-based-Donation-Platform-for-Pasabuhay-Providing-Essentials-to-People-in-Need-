@@ -1,5 +1,5 @@
-@import url('/fonts/Cinzel/Cinzel-VariableFont_wght.ttf');
-@import url('/fonts/Bebas_Neue/BebasNeue-Regular.ttf');
+@import url('../-Fonts/Cinzel/Cinzel-VariableFont_wght.ttf');
+@import url('../-Fonts/Bebas_Neue/BebasNeue-Regular.ttf');
 
 * {
     margin: 0;

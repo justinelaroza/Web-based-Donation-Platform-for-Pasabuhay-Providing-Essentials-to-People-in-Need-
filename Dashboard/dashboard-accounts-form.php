@@ -24,7 +24,6 @@
                 <ul>
                     <label class="last">Member Accounts</label>
                     <a href="dashboard-accounts-form.php"><li class="account">Accounts Overview</li></a>
-                    <a href="#"><li>Add Account</li></a>
                     <label class="first">Donations Information</label>
                     <a href="#"><li>Donator's Information</li></a>
                     <a href="#"><li>Edit Information</li></a>
@@ -39,6 +38,24 @@
             <div class="header">
                 <h1>Accounts Overview</h1>
             </div>
+            <div class="counter-wrapper">
+                <div class="flex-item"><div class="container-pic"></div></div>
+                <div class="flex-item"><div class="container-pic"></div></div>
+                <div class="flex-item"><div class="container-pic"></div></div>
+                <div class="flex-item"><div class="container-pic"></div></div>
+            </div>
+            <form action="dashboard-accounts-form.php" method="post" class="form-sort">
+                <div class="sort-container">
+                    <label for="sortOptions">Sort by:</label>
+                    <select id="sortOptions" name="sortOptions">
+                        <option value="register_id">Id</option>
+                        <option value="first_name">First Name</option>
+                        <option value="last_name">Last Name</option>
+                        <option value="username">Username</option>
+                    </select>
+                    <button type="submit" name="sort" class="sort">Sort</button>
+                </div>
+            </form>
             <div class="database-wrapper">
                 <div class="table">
                     <table>
@@ -56,6 +73,13 @@
                             $query->selectMembers();
                         ?>
                     </table>
+                </div>
+                <div class="savechanges-wrapper">
+                    <div class="savechanges" <?php Util::session('showDeleteRow') ?>>
+                        <form action="dashboard-accounts-form.php" method="post">
+                            <p>[ Delete row with username: <?php echo $_SESSION['deleteUser']?> ] ? <button class="save-button-delete" name="saveDelete">Save</button> </p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
