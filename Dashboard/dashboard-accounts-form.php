@@ -1,5 +1,5 @@
 <?php 
-    include "./dashboard-backend.php";
+    include "./dashboard-accounts.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,41 +12,70 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="sidebar">
-            <div class="logo">
-                    <img src="../-Pictures/logo.png" alt="pasabuhay_logo">
-                <div class="label">
-                    <label>PASABUHAY</label>
-                    <p>since 2024</p>
-                </div>
-            </div>
-            <div class="contents">
-                <ul>
-                    <label class="last">Member Accounts</label>
-                    <a href="dashboard-accounts-form.php"><li class="account">Accounts Overview</li></a>
-                    <label class="first">Donations Information</label>
-                    <a href="#"><li>Donator's Information</li></a>
-                    <a href="#"><li>Edit Information</li></a>
-                    <a href="#"><li>Delete Information</li></a>
-                </ul>
-                <div class="exit">
-                    <button>LOGOUT</button>
-                </div>
-            </div>
-        </div>
+        <?php include "./sidebar.php"?>
         <div class="data">
             <div class="header">
                 <h1>Accounts Overview</h1>
             </div>
             <div class="counter-wrapper">
-                <div class="flex-item"><div class="container-pic"></div></div>
-                <div class="flex-item"><div class="container-pic"></div></div>
-                <div class="flex-item"><div class="container-pic"></div></div>
-                <div class="flex-item"><div class="container-pic"></div></div>
+                <div class="flex-item">
+                    <div class="container-pic" style="background: linear-gradient(to right, #d9534f, #f5c6cb);">
+                        <img src="../-Pictures/total_members.png">
+                    </div>
+                    <div class="container-showing">
+                        <div class="beside-color">Total Members: <?php echo $query->countAll('register_data')?></div>
+                        <div class="show-last-deleted">
+                            <label>Average Registration Time:</label>
+                            <div class="container-php">
+                                <img src="../-Pictures/tree.jpg">
+                                <div class="truncate">
+                                    <p>...</p>
+                                    <?php echo $query->AvgRegistration(); ?> Days
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="container-pic" style="background: linear-gradient(to right, #3b5998, #8b9dc3);">
+                        <img src="../-Pictures/delete_members.png">
+                    </div>
+                    <div class="container-showing">
+                        <div class="beside-color">Deleted Accounts: <?php echo $query->countAll('recently_deleted')?></div>
+                        <div class="show-last-deleted">
+                            <label>Last Deleted Acc:</label>
+                            <div class="container-php">
+                                <img src="../-Pictures/starlight.jpg">
+                                <div class="truncate">
+                                    <p>...</p>
+                                    <?php echo $query->showLastDeletedAcc(); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="container-pic" style="background: linear-gradient(to right, #4caf50, #a5d6a7);">
+                        <img src="../-Pictures/add_members.png">
+                    </div>
+                    <div class="container-showing">
+                        <div class="beside-color">Daily Created Accounts: <?php echo $query->dailyCreated()?></div>
+                        <div class="show-last-created">
+                        <label>Last Created Acc:</label>
+                            <div class="container-php">
+                                <img src="../-Pictures/moon.jpg">
+                                <div class="truncate">
+                                    <p>...</p>
+                                    <?php echo $query->showLastCreatedAcc(); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <form action="dashboard-accounts-form.php" method="post" class="form-sort">
                 <div class="sort-container">
-                    <label for="sortOptions">Sort by:</label>
+                    <label for="sortOptions">Sort by: </label>
                     <select id="sortOptions" name="sortOptions">
                         <option value="register_id">Id</option>
                         <option value="first_name">First Name</option>

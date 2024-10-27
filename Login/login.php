@@ -259,6 +259,7 @@
                 $stmtLog->execute();
 
                 $_SESSION['codeCorrect'] = 'Registered Successfully!';
+                unset($_SESSION['show']);
                 RedundancyUtil::redirectExit();                                      
             } else {
                 $_SESSION['wrongCode'] = 'Invalid verification code!';     

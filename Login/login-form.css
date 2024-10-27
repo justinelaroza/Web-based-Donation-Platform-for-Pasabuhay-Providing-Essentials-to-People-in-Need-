@@ -105,8 +105,14 @@ body {
     letter-spacing: .5px;
 }
 
-.wrapper .error-message {
+.wrapper .error-message, .wrapper .success-message {
     margin-top: 7%;
+}
+
+.wrapper .success-message {
+    text-align: center;
+    color: green;
+    font-weight: bold;
 }
 
 .wrapper .error-message, .wrapper-right .error-message-reg {

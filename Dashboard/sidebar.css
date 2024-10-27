@@ -1,0 +1,105 @@
+/* Sidebar Container */
+.sidebar {
+    width: 15%;
+    height: 100%;
+    border-radius: 50px 0 0 50px;
+    border-right: 2px solid black;
+}
+
+/* Logo Area in Sidebar */
+.logo {
+    width: 100%;
+    height: 20%;
+    border-radius: 50px 0 0 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.logo img {
+    height: 50%;
+    width: auto;
+    margin: 0 0 0 10%;
+}
+
+.logo p {
+    font-size: .6vw;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Labels in Sidebar */
+.label {
+    margin: 5% 0 0 0;
+    display: flex;
+    flex-direction: column;
+    font-family: "Anton", serif;
+}
+
+.label label {
+    color: red;
+    font-size: .9vw;
+}
+
+/* Sidebar Content Area */
+.contents {
+    width: 100%;
+    height: 80%;
+    border-radius: 0 0 0 50px;
+}
+
+.contents ul label {
+    width: 100%;
+}
+
+.contents .first, .contents .last {
+    font-family: "Archivo_Black", serif;
+    font-size: .9vw;
+    font-weight: 100;
+    padding-left: 7%;
+}
+
+.contents li {
+    list-style: none;
+    width: 80%;
+    height: 5vh;
+    text-align: center;
+    font-size: 1vw;
+    color: black;
+    border: solid 1px black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "BebasNeue", serif;
+    margin: 5% 0 5% 10%;
+    background-color: white;
+    box-shadow: 1px 1px 1px 1px black;
+}
+
+.contents a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Exit Button Area */
+.exit {
+    width: 100%;
+    height: 5vh;
+    margin-top: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.exit button {
+    width: 95%;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+    background-color: slategray;
+    color: white;
+    box-shadow: 1px 1px 1px 1px rgb(87, 96, 105);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1vw;
+    font-weight: bold;
+    cursor: pointer;
+}

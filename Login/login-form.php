@@ -29,6 +29,11 @@
                         RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
+                <div class="success-message">
+                    <?php
+                        RedundancyUtil::sessionManager('codeCorrect');
+                    ?>
+                </div>
                 <div class="forgot">
                     <input type="submit" name="forgot-button" value="Forgot Password?">
                     <!--username check nya sa data base kung meron nga tas yung old pass check din kung tatama yung pass
@@ -135,7 +140,7 @@
                 </div>
                 <div class="correct-message-reg">
                     <?php 
-                        $sessionKeys = ['codeCorrect', 'emailSent'];
+                        $sessionKeys = ['emailSent'];
                         RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>

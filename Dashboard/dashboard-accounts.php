@@ -19,7 +19,7 @@
         }
 
         public function defaultSort() {
-            $query = "SELECT * FROM register_data";
+            $query = "SELECT * FROM register_data ORDER BY register_id";
             $result = $this->db->query($query); //parang nag mysqli_query lang
             return $result;
         }
@@ -40,12 +40,12 @@
 
                     echo "<tr>
                             <form action='dashboard-accounts-form.php' method='post' >
-                                <td>" . $row["register_id"] . "</td>
-                                <td> 
-                                    <div class ='datas' >" . $row["first_name"] . " 
+                                <td style = 'width: 20px'>" . $row["register_id"] . "</td>
+                                <td style = 'max-width: 150px'> 
+                                    <div class ='datas'>" . $row["first_name"] . " 
                                     </div
                                 </td>
-                                <td> 
+                                <td style = 'max-width: 150px'> 
                                     <div class ='datas'> " . $row["last_name"] . "
                                     </div>
                                 </td>
@@ -57,12 +57,12 @@
                                     <div class ='datas'> " . $row["email"] . "
                                     </div>
                                 </td>
-                                <td> 
+                                <td style = 'max-width: 150px'> 
                                     <div class ='datas'> " . $row["username"] . " 
                                     </div>
                                 </td>
                                 <td>" . $row["date_created"] . "</td>
-                                <td> 
+                                <td style = 'width: 120px'> 
                                     <div class ='option'>
                                         <button name = 'delete_user' value='{$row["username"]}' class = 'delete' >Delete</button>
                                         <button name = 'edit_user' value='{$row["register_id"]}' class = 'edit' >Edit</button>
@@ -76,13 +76,13 @@
                                     <form action='dashboard-accounts-form.php' method='post'>
                                         <td>
                                         </td>
-                                        <td>
+                                        <td style = 'max-width: 150px'>
                                             <div class = 'tr_input'>
                                                 <label>First Name:</label>
                                                 <input type='text' name='firstname' class='input'>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style = 'max-width: 150px'>
                                             <div class = 'tr_input'>
                                                 <label>Last Name:</label>
                                                 <input type='text' name='lastname' class='input'>
@@ -100,7 +100,7 @@
                                                 <input type='email' name='email' class='input'>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style = 'max-width: 150px'>
                                             <div class = 'tr_input'>
                                                 <label>Username:</label>
                                                 <input type='text' name='username' class='input'>
@@ -110,7 +110,7 @@
                                         </td>
                                         <td>
                                             <div class='button_des'>
-                                                <button name='save' class='save' >Save</button>
+                                                <button name='save' class='save'>Save</button>
                                                 <button name='cancel' class='cancel' >Cancel</button>
                                             </div>
                                         </td>
@@ -122,6 +122,12 @@
         }
 
         public function deleteUser($data) {
+            //save muna to to recently deleted
+            $querySave = "INSERT INTO recently_deleted (register_id, first_name, last_name, address, email, username, password, date_created)
+            SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM register_data WHERE username = '$data'";
+
+            $this->db->query($querySave);
+            //delete data from table
             $queryDeleteReg = "DELETE FROM register_data WHERE username = '$data'";
             $queryDeleteLog = "DELETE FROM login_data WHERE username = '$data'";
 
@@ -136,12 +142,47 @@
                 $stmt->bind_param('si', $input, $registerId);
                 $stmt->execute();
                 //login
-                if($input == $_POST['username']) {
+                if($input == $_POST['username']) { //kase pag inedit lang username saka lang maeedit ang login
                     $stmt = $this->db->prepare("UPDATE login_data SET $column = ? WHERE login_id = ?");
                     $stmt->bind_param('si', $input, $registerId);
                     $stmt->execute();
                 }
             }
+        }
+
+        public function countAll($table) {
+            $query = "SELECT COUNT(*) AS total FROM $table";
+            $result = $this->db->query($query);
+            $row = $result->fetch_assoc(); 
+            return $row['total'];
+        }
+
+        public function dailyCreated() {
+            $query = "SELECT COUNT(*) AS new FROM register_data WHERE DATE(date_created) = CURDATE()";
+            $result = $this->db->query($query);
+            $row = $result->fetch_assoc(); 
+            return $row['new'];
+        }
+
+        public function AvgRegistration() {
+            $query = "SELECT ROUND(AVG(DATEDIFF(CURDATE(), date_created)), 2) AS ave FROM register_data";
+            $result = $this->db->query($query);
+            $row = $result->fetch_assoc(); 
+            return $row['ave'];
+        }
+
+        public function showLastDeletedAcc() {
+            $query = "SELECT email AS recent FROM recently_deleted ORDER BY date_deleted DESC LIMIT 1";
+            $result = $this->db->query($query);
+            $row = $result->fetch_assoc(); 
+            return $row['recent'];
+        }
+
+        public function showLastCreatedAcc() {
+            $query = "SELECT email AS recent FROM register_data ORDER BY date_created DESC LIMIT 1";
+            $result = $this->db->query($query);
+            $row = $result->fetch_assoc(); 
+            return $row['recent'];
         }
 
     }
