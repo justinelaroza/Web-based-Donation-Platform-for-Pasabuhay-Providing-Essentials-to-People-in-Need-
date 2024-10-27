@@ -74,6 +74,11 @@
                 </div>
             </div>
             <form action="dashboard-accounts-form.php" method="post" class="form-sort">
+                <div class="search-container">
+                    <label>Username:</label>
+                    <input type="text" name="search" class="search">
+                    <button name="searchButton">Search</button>
+                </div>
                 <div class="sort-container">
                     <label for="sortOptions">Sort by: </label>
                     <select id="sortOptions" name="sortOptions">

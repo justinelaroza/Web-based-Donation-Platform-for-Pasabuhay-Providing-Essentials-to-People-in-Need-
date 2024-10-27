@@ -24,13 +24,40 @@
             return $result;
         }
 
+        public function searchData($search) {
+            if (strlen($search) === 1) { //if 1 letter lang nilagay
+                $searchWild = $search . '%';
+                $stmt = $this->db->prepare("SELECT * FROM register_data WHERE username LIKE ?");
+            } else { //if multiple letters
+                $searchWild = '%' . $search . '%';
+                $stmt = $this->db->prepare("SELECT * FROM register_data WHERE username LIKE ?");
+            }
+            $stmt->bind_param('s', $searchWild);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            return $result;
+        }
+
+
         public function selectMembers() {
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sort'])) {
-                $chosenOne = $_POST['sortOptions']; //this mag hohold ng value dun sa mga options
-                $result = $this->sortBy($chosenOne);
+            $result = null; // if hindi na sort or na search
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                if (isset($_POST['searchButton'])) {
+                    $searchData = $_POST['search'];
+                    $result = $this->searchData($searchData);
+                }
+
+                if (isset($_POST['sort'])) {
+                    $chosenOne = $_POST['sortOptions']; //this mag hohold ng value dun sa mga options
+                    $result = $this->sortBy($chosenOne);
+                }
             }
-            else {
+
+            if ($result === null) {
                 $result = $this->defaultSort();
             }
 

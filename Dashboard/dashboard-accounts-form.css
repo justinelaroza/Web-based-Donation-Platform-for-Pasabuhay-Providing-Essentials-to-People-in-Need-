@@ -303,7 +303,7 @@ body {
 }
 
 .sort-container{ 
-    width: 95%;
+    width: 50%;
     height: 4%;
     margin: 0 auto;
     margin-bottom: .5%;
@@ -332,5 +332,47 @@ body {
     border: 1px gray solid;
     color: white;
     cursor: pointer;
-    width: 4%;
+    width: 7%;
+}
+
+/*search-container*/
+
+.search-container {
+    width: 40%;
+    height: 31px;
+    margin: 0 auto;
+    margin-bottom: .5%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.search {
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
+    border: black solid 1px;
+}
+
+.search-container label {
+    margin-right: 2%;
+}
+
+.search-container button {
+    margin-left: 1%;
+    color: white;
+    background-color: green;
+    cursor: pointer;
+    height: 70%;
+    width: 10%;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: rgb(6, 68, 6);
+}
+
+.search:focus {
+    box-shadow: 0 0 5px rgba(0, 115, 230, 0.5); /* Light blue shadow on focus */
 }
