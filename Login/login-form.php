@@ -1,3 +1,7 @@
+<?php 
+    require_once 'login.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +13,7 @@
 <body>
     <div class="middle-section">
         <div class="wrapper">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="login-form.php" method="post">
                 <div class="top-area">
                     <h1>WELCOME</h1>
                 </div>
@@ -30,8 +34,9 @@
                     ?>
                 </div>
                 <div class="success-message">
-                    <?php
-                        RedundancyUtil::sessionManager('codeCorrect');
+                    <?php 
+                        $sessionKeys = ['codeCorrect', 'codeCorrectForgot'];
+                        RedundancyUtil::sessionManager($sessionKeys);
                     ?>
                 </div>
                 <div class="forgot">
@@ -47,7 +52,7 @@
         </div>
         
         <div class="forgot-wrapper"<?php RedundancyUtil::sessionManager('forgot-reveal'); ?>>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="login-form.php" method="post">
                 <div class="reset">
                     <h1>RESET PASSWORD</h1>
                 </div>
@@ -67,13 +72,12 @@
                 </div>
                 <div class="correct-message-forgot">
                     <?php 
-                        $sessionKeys = ['emailSentForgot', 'codeCorrectForgot'];
-                        RedundancyUtil::sessionManager($sessionKeys);
+                        RedundancyUtil::sessionManager('emailSentForgot');
                     ?>
                 </div>
                 <input type="submit" name="forgot-submit" class="forgot-submit" value="Submit" <?php RedundancyUtil::sessionManager('hideForgot'); ?>>
             </form>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="login-form.php" method="post">
                 <div class="code-container-forgot" <?php RedundancyUtil::sessionManager('revealForgot'); ?>>
                     <div class="code-label-forgot">
                         <label>Code sent to: <?php echo $_SESSION['emailForgot']?></label>
@@ -94,7 +98,7 @@
         </div>
         
         <div class="wrapper-right" <?php RedundancyUtil::sessionManager('show'); ?>>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="login-form.php" method="post">
                 <div class="register">
                     <h1>REGISTER</h1>
                 </div>
@@ -146,7 +150,7 @@
                 </div>
                     <button name="new-register" <?php RedundancyUtil::sessionManager('hideReg'); ?>>Register</button>
             </form>
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form action="login-form.php" method="post">
                 <div class="code-container" <?php RedundancyUtil::sessionManager('revealReg');?>>
                     <div class="code-label">
                         <label>Code sent to: <?php echo $_SESSION['email'] ?></label>

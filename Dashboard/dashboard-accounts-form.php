@@ -1,5 +1,5 @@
 <?php 
-    include "./dashboard-accounts.php";
+    require_once "dashboard-accounts.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php include "./sidebar.php"?>
+        <?php include_once "./sidebar.php"?>
         <div class="data">
             <div class="header">
                 <h1>Accounts Overview</h1>

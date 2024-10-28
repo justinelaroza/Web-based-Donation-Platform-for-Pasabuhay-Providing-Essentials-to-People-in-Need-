@@ -1,5 +1,5 @@
 <?php 
-    include "./dashboard-recently-deleted.php";
+    require_once "dashboard-recently-deleted.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <?php include "./sidebar.php"?>
+        <?php include_once "./sidebar.php"?>
         <div class="other-wrapper">
             <div class="header">
                     <h1>Recently Deleted</h1>

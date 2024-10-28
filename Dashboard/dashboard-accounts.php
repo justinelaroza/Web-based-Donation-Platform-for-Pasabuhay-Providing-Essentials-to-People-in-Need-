@@ -1,5 +1,5 @@
 <?php 
-    include "../Database/db.php";
+    require_once "../Database/db.php";
     session_start();
 
     const DISPLAY_BLOCK = "style='display: block !important'";
@@ -156,9 +156,7 @@
             $this->db->query($querySave);
             //delete data from table
             $queryDeleteReg = "DELETE FROM register_data WHERE username = '$data'";
-            $queryDeleteLog = "DELETE FROM login_data WHERE username = '$data'";
 
-            $this->db->query($queryDeleteLog);
             $this->db->query($queryDeleteReg);
         }
 
@@ -168,12 +166,6 @@
                 $stmt = $this->db->prepare("UPDATE register_data SET $column = ? WHERE register_id = ?");
                 $stmt->bind_param('si', $input, $registerId);
                 $stmt->execute();
-                //login
-                if($input == $_POST['username']) { //kase pag inedit lang username saka lang maeedit ang login
-                    $stmt = $this->db->prepare("UPDATE login_data SET $column = ? WHERE login_id = ?");
-                    $stmt->bind_param('si', $input, $registerId);
-                    $stmt->execute();
-                }
             }
         }
 

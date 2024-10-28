@@ -1,5 +1,5 @@
 <?php 
-    include "../Database/db.php";
+    include_once "../Database/db.php";
     session_start();
 
     class Queries {
@@ -81,14 +81,10 @@
             //save muna to register data
             $querySaveReg = "INSERT INTO register_data (register_id, first_name, last_name, address, email, username, password, date_created)
             SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM recently_deleted WHERE register_id = '$data'";
-
-            $querySaveLog = "INSERT INTO login_data (login_id, username, password) SELECT register_id, username, password FROM recently_deleted WHERE register_id = '$data'";
-
             $this->db->query($querySaveReg);
-            $this->db->query($querySaveLog);
+
             //delete data from recently deleted
             $queryDelete = "DELETE FROM recently_deleted WHERE register_id = '$data'";
-
             $this->db->query($queryDelete);
         }
     }
@@ -102,10 +98,5 @@
         $registerId = $_POST['recoverButton']; // hol neto yung register id nung na pic na row
         $query->recoverUser($registerId);
     }
-
-
-
-
-
 
 ?>

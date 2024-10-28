@@ -14,7 +14,7 @@
         //check if username and password input is valid
         public function login($username, $password) {
 
-            $stmt = $this->connection->prepare("SELECT username, password FROM login_data WHERE username = ?");
+            $stmt = $this->connection->prepare("SELECT username, password FROM register_data WHERE username = ?");
             $stmt->bind_param('s', $username);
             $stmt->execute(); //mysqli_query($this->connection, $sqlSelect)
             $result = $stmt->get_result();
@@ -122,7 +122,7 @@
     class RedundancyUtil {
         // Redirect and stop further script execution
         public static function redirectExit() { //way para mag stop ng execution ng next line of codes
-            header("Location: login.php"); 
+            header("Location: login-form.php"); 
             exit();
         }
         // Sanitize input function
@@ -253,11 +253,6 @@
                 $stmtReg->bind_param('ssssss', $_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister'], $hashPass);
                 $stmtReg->execute();
 
-                //prepare and execute login
-                $stmtLog = $db->getConnection()->prepare("INSERT INTO login_data(username, password) VALUES (?, ?)");
-                $stmtLog->bind_param('ss', $_SESSION['userRegister'], $hashPass);
-                $stmtLog->execute();
-
                 $_SESSION['codeCorrect'] = 'Registered Successfully!';
                 unset($_SESSION['show']);
                 RedundancyUtil::redirectExit();                                      
@@ -334,23 +329,13 @@
 
                 $hashPassForgot = password_hash($_SESSION['newPassForgot'], PASSWORD_DEFAULT); //hash the password before going to db
 
-                //we know that email is in the db kasi nag check na tayo if email is in db above
-                $stmtFind = $db->getConnection()->prepare("SELECT username FROM register_data WHERE email = ?");
-                $stmtFind->bind_param('s', $_SESSION['emailForgot']);
-                $stmtFind->execute();
-                $resultFind = $stmtFind->get_result();
-                $rowUsername = $resultFind->fetch_assoc(); // Fetch the associative array containing the username
-
                 //password update for register table
                 $stmtUpdateReg = $db->getConnection()->prepare("UPDATE register_data SET password = ? WHERE email = ?");
                 $stmtUpdateReg->bind_param('ss', $hashPassForgot, $_SESSION['emailForgot']);
                 $stmtUpdateReg->execute();
-                //password update for login table
-                $stmtUpdateLog = $db->getConnection()->prepare("UPDATE login_data SET password = ? WHERE username = ?");
-                $stmtUpdateLog->bind_param('ss', $hashPassForgot, $rowUsername['username']);
-                $stmtUpdateLog->execute();
 
                 $_SESSION['codeCorrectForgot'] = 'Updated Succesfuly!';
+                unset($_SESSION['forgot-reveal']);
                 RedundancyUtil::redirectExit();                          
             } else {
                 $_SESSION['wrongCodeForgot'] = 'Invalid verification code!';     
@@ -361,5 +346,4 @@
         }
     } 
 
-include('login-form.php'); // Include the HTML form after processing the logic kase nag eerror ng Cannot modify header information - headers already sent need muna mauna logic kesa html
 ?>
