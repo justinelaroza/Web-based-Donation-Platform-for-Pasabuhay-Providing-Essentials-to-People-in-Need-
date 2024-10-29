@@ -25,15 +25,14 @@
         }
 
         public function searchData($search) {
-            if (strlen($search) === 1) { //if 1 letter lang nilagay
-                $searchWild = $search . '%';
-                $stmt = $this->db->prepare("SELECT * FROM register_data WHERE username LIKE ?");
-            } else { //if multiple letters
-                $searchWild = '%' . $search . '%';
-                $stmt = $this->db->prepare("SELECT * FROM register_data WHERE username LIKE ?");
-            }
+
+            $query = "SELECT * FROM register_data WHERE email LIKE ?";
+
+            $searchWild = $search . '%';
+            $stmt = $this->db->prepare($query);
+            
             $stmt->bind_param('s', $searchWild);
-            $stmt->execute();
+            $stmt->execute();   
             $result = $stmt->get_result();
             
             return $result;
@@ -224,6 +223,11 @@
     $db = new DataBase();
     $query = new Queries($db);
 
+    if($_SESSION['admin_user'] == false) { //para di ka makapunta sa page nato pag di kapa naka login
+        header("Location: ../Admin_Login/admin-login-form.php"); 
+        exit();
+    } 
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
         $_SESSION['deleteUser'] = $_POST['delete_user']; //containing to ng username ng idedelete
         $_SESSION['showDeleteRow'] = DISPLAY_BLOCK;
@@ -259,5 +263,6 @@
         unset($_SESSION['edit_id']);
         Util::redirectExit();
     }
+
 
 ?>

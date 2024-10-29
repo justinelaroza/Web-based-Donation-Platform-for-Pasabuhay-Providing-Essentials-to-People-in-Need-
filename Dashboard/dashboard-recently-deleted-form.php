@@ -18,6 +18,11 @@
                     <h1>Recently Deleted</h1>
             </div>
             <form action="dashboard-recently-deleted-form.php" method="post" class="form-sort">
+                <div class="search-container">
+                    <label>Email:</label>
+                    <input type="text" name="search" class="search">
+                    <button name="searchButton">Search</button>
+                </div>
                 <div class="sort-container">
                     <label for="sortOptions">Sort by: </label>
                     <select id="sortOptions" name="sortOptions">

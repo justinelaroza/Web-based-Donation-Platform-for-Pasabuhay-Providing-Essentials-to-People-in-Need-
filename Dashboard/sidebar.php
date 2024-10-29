@@ -1,8 +1,16 @@
 <?php 
+
     function checkBasename($fileName) {
         if(basename($_SERVER['PHP_SELF']) == $fileName) { //basename kasi ang return ng PHP_SELF ay buong filepath like Dashboard/dasboard-acc... 
             return 'style="background-color: green; color: white;"';
         }
+    }
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout_button'])) {
+        session_start();
+        $_SESSION['admin_user'] = false;
+        header("Location: ../Admin_Login/admin-login-form.php"); 
+        exit();
     }
 ?>
 
@@ -32,9 +40,11 @@
                     <label class="first">Recently Deleted</label>
                     <a href="dashboard-recently-deleted-form.php"><li class="recently" <?php echo checkBasename('dashboard-recently-deleted-form.php') ?> >Recently Deleted</li></a>
                 </ul>
+            <form action="sidebar.php" method="post">
                 <div class="exit">
-                    <button>LOGOUT</button>
+                    <button name="logout_button">LOGOUT</button>
                 </div>
+            </form>
             </div>
         </div>
 </body>

@@ -25,7 +25,7 @@ body {
     align-items: center;   
     height: 100vh;       
     margin: 0;
-    background-image: url("../-Pictures/light-bg.jpg");      
+    background: linear-gradient(to bottom right, #ffcccc, #ccffff);    
 }
 
 .wrapper {
@@ -300,6 +300,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .sort-container{ 
@@ -352,6 +353,7 @@ body {
     height: 100%;
     border-radius: 10px;
     border: black solid 1px;
+    padding: 10px;
 }
 
 .search-container label {

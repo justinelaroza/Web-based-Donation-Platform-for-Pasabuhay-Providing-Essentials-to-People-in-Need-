@@ -27,13 +27,38 @@
             return $result;
         }
 
+        public function searchData($search) {
+
+            $query = "SELECT * FROM recently_deleted WHERE email LIKE ?";
+
+            $searchWild = $search . '%';
+            $stmt = $this->db->prepare($query);
+            
+            $stmt->bind_param('s', $searchWild);
+            $stmt->execute();   
+            $result = $stmt->get_result();
+            
+            return $result;
+        }
+
         public function showDeleted() {
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sort'])) {
-                $chosenOne = $_POST['sortOptions']; //this mag hohold ng value dun sa mga options
-                $result = $this->sortBy($chosenOne);
+            $result = null;
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                if (isset($_POST['searchButton'])) {
+                    $searchData = $_POST['search'];
+                    $result = $this->searchData($searchData);
+                }
+
+                if (isset($_POST['sort'])) {
+                    $chosenOne = $_POST['sortOptions']; //this mag hohold ng value dun sa mga options
+                    $result = $this->sortBy($chosenOne);
+                }
             }
-            else {
+
+            if ($result === null) {
                 $result = $this->defaultSort();
             }
 
