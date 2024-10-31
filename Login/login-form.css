@@ -12,7 +12,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    box-shadow: 0 0 25px #d2342f; /*horizontal vertical then gano kaitim */
+    box-shadow: 0 0 10px black; /*horizontal vertical then gano kaitim */
     display: flex;
 }
 
@@ -21,7 +21,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('../-Pictures/light-bg.jpg');
+    background: linear-gradient(to bottom right, #3ca55c, #b5e48c, #edf6e5);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

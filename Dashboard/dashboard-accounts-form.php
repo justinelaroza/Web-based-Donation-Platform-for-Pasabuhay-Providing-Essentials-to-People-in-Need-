@@ -61,7 +61,7 @@
                     <div class="container-showing">
                         <div class="beside-color">Daily Created Accounts: <?php echo $query->dailyCreated()?></div>
                         <div class="show-last-created">
-                        <label>Last Created Acc:</label>
+                            <label>Last Created Acc:</label>
                             <div class="container-php">
                                 <img src="../-Pictures/moon.jpg">
                                 <div class="truncate">
