@@ -1,0 +1,279 @@
+@import url('../-Fonts/Cinzel/Cinzel-VariableFont_wght.ttf');
+@import url('../-Fonts/Bebas_Neue/BebasNeue-Regular.ttf');
+
+.donate-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+}
+
+.donator-information {
+    border-right: 1px black solid;
+    height: 100%;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donate-container-goods {
+    height: 96%;
+    width: 96%;
+    overflow: auto;
+}   
+
+.donate-container-money {
+    height: 96%;
+    width: 96%;
+    display: none;
+    overflow: auto;
+}
+
+.other-side {
+    height: 100%;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: white;
+}
+
+.map-wrapper{
+    width: 97%;
+    margin: 0 auto;
+    height:auto;
+    overflow: auto;
+}
+
+.map-label {
+    text-align: center;
+    font-weight: bold;
+    color: #C80000;
+    font-size: 1rem;
+    margin-top: .75%;
+    margin-bottom: .75%;
+}
+
+.payment-wrapper {
+    width: 100%;
+    height: 8.1%;
+    border-top: 1px solid black;
+    background-color: #E6DFD5;
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    line-height: 1.5;
+    letter-spacing: 1.5px;
+    margin-left: 5%;
+}
+
+.pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 100%;
+    margin-right: 10%;
+}
+
+.pic-container img {
+    height: 50%;
+    width: auto;
+    margin-right: 10%;
+}
+
+.welcome {
+    width: 100%;
+    height: 18%;
+    border-bottom: 1px black solid;
+    background-color: #E6DFD5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.donation-type {
+    height: 10%;
+    width: 80%;
+}
+
+.donation-type p {
+    font-size: .7rem;
+}
+
+.type-donation {
+    height: 80%;
+    width: 80%;
+    border: solid 1px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.select-money, .select-goods {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.select-money h2, .select-goods h2 {
+    font-size: 1rem;
+    margin-left: 5%;
+}
+
+.type-donation button {
+    height: 100%;
+    width: 20%;
+    border: none;
+    cursor: pointer;
+    border-left: 1px solid black;
+    background-color: #F0F0F0;
+}
+
+html::-webkit-scrollbar {
+    width: 8px; /* Set scrollbar width */
+    height: 8px; /* Set scrollbar height for horizontal scroll */
+  }
+  
+  html::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color of the scrollbar track */
+    border-left: 1px solid black;
+  }
+  
+  html::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scroll thumb */
+    border-radius: 10px; /* Rounded scroll thumb */
+  }
+
+.all-donation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5%;
+}
+
+.location-wrapper {
+    height: 10vh;
+    width: 80%;
+    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.church{
+    width: 49%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0eded;
+}
+
+.church label, .child-detail label { /*label*/
+    font-size: .8rem;
+    margin: 3% 0 0 3%;
+}
+
+.church select, .child-detail select, .type-goods select {
+    background-color: #f0eded;
+    border: none;
+    height: 80%;
+    padding-left: 5%;
+    color: #242424;
+}
+
+.detail-wrapper {
+    height: 30vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 1%;
+}
+
+.child-detail {
+    height: 31%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.full-name {
+    background-color: #f0eded;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 32.5%;
+}
+
+.full-name input, .age-gender input, .type-goods input {
+    background-color: #f0eded;
+    border: none;
+    height: 80%;
+    padding-left: 5%;
+}
+
+.asterisk {
+    color: red;
+}
+
+.age-gender {
+    background-color: #f0eded;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 49.5%;
+}
+
+.item-wrapper {
+    margin-top: 3%; 
+    height: 33vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.type-goods {
+    width: 100%;
+    height: 32.5%;
+    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.child-type {
+    width: 32.5%;
+    height: 100%;
+    background-color: #F0EDED;
+    display: flex;
+    flex-direction: column;
+}
+
+.child-type2 {
+    width: 49%;
+    height: 100%;
+    background-color: #F0EDED;
+    display: flex;
+    flex-direction: column;
+}
+
+.child-type label, .child-type2 label {
+    font-size: .8rem;
+    margin: 3% 0 0 3%;
+    
+}
+

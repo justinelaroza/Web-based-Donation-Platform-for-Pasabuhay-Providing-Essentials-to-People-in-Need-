@@ -36,7 +36,7 @@
                     <label class="last">Member Accounts</label>
                     <a href="dashboard-accounts-form.php"><li class="account" <?php echo checkBasename('dashboard-accounts-form.php')?> >Accounts Overview</li></a>
                     <label class="first">Donations Information</label>
-                    <a href="#"><li>Donator's Information</li></a>
+                    <a href="#"><li <?php echo checkBasename('dashboard-donation-form.php') ?>>Donator's Information</li></a>
                     <label class="first">Recently Deleted</label>
                     <a href="dashboard-recently-deleted-form.php"><li class="recently" <?php echo checkBasename('dashboard-recently-deleted-form.php') ?> >Recently Deleted</li></a>
                 </ul>

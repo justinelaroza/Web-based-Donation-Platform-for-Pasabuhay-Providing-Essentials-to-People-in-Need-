@@ -4,20 +4,17 @@
     box-sizing: border-box;
 }
 
-body {
-    width: 100vw;
-    height: auto;
-}
-
 .map-container {
     display: flex;
-    width: 50%;
+    width: 100%;
     height: auto; /* Adjust to fit the SVG */
     overflow: hidden;
     padding: none;
     position: relative;
-    background-color: whitesmoke;
-    border: solid 1px black;
+    background-color: rgb(230, 223, 223);
+    border-top: 1px black solid;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
 }
 
 svg {
@@ -42,7 +39,7 @@ svg path:hover {
 .color-container{
     border: solid 1px black;
     width: 40%;
-    height: 100%;
+    height: auto;
     margin: 10% 1% 10% 1%;
     background-color: white;
     display: flex;
@@ -63,7 +60,7 @@ svg path:hover {
 
 .color-box {
     width: 10%; /* Width of the color box */
-    height: 100%; /* Height of the color box */
+    height: 80%; /* Height of the color box */
     margin-right: 5%; /* Space between the color box and the province name */
     border: 1px black solid;
     margin-left: 5%;
