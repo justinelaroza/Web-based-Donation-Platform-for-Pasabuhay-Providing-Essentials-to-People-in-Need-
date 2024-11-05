@@ -82,10 +82,10 @@
                 <div class="sort-container">
                     <label for="sortOptions">Sort by: </label>
                     <select id="sortOptions" name="sortOptions">
-                        <option value="register_id">Id</option>
-                        <option value="first_name">First Name</option>
-                        <option value="last_name">Last Name</option>
-                        <option value="username">Username</option>
+                        <option value="register_id" <?php if ($sortOptions == "register_id") echo 'selected'; ?>>Id</option>
+                        <option value="first_name" <?php if ($sortOptions == "first_name") echo 'selected'; ?>>First Name</option>
+                        <option value="last_name" <?php if ($sortOptions == "last_name") echo 'selected'; ?>>Last Name</option>
+                        <option value="username" <?php if ($sortOptions == "username") echo 'selected'; ?>>Username</option>
                     </select>
                     <button type="submit" name="sort" class="sort">Sort</button>
                 </div>

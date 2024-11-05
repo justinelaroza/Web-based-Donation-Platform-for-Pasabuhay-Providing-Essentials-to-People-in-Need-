@@ -16,7 +16,7 @@
     ?>
     <div class="donate-wrapper">
         <div class="donator-information">
-            <div class="donate-container-goods" <?php Util::sessionManager('hide-goods')?>>
+            <div class="donate-container-goods" <?php Util::setSession('hide-goods')?>>
                 <form action="donate-form.php" method="post" class="all-donation">
                 <label style="color: #C80000; font-weight: bold">DONATOR'S INFORMATION</label>
                     <div class="location-wrapper">
@@ -103,7 +103,7 @@
                         <div class="child-detail">
                             <div class="age-gender">
                                 <label>AGE <span class="asterisk">*</span></label>
-                                <select name="age" onchange="this.form.submit()">
+                                <select name="age">
                                     <option value="<17" <?php if ($age == "<17") echo 'selected'; ?>>17 years old and below</option>
                                     <option value="18-24" <?php if ($age == "18-24") echo 'selected'; ?>>18-24 years old</option>
                                     <option value="25-35" <?php if ($age == "25-35") echo 'selected'; ?>>25-35 years old</option>
@@ -114,7 +114,7 @@
                             </div>
                             <div class="age-gender">
                                 <label>GENDER <span class="asterisk">*</span></label>
-                                <select name="gender" onchange="this.form.submit()">
+                                <select name="gender">
                                     <option value="Male" <?php if ($gender == "Male") echo 'selected'; ?>>Male</option>
                                     <option value="Female" <?php if ($gender == "Female") echo 'selected'; ?>>Female</option>
                                     <option value="Others" <?php if ($gender == "Others") echo 'selected'; ?>>Others</option>
@@ -128,7 +128,7 @@
                         <div class="type-goods">
                             <div class="child-type">
                                 <label>TYPE OF GOODS <span class="asterisk">*</span></label>
-                                <select name="typeOfGoods" onchange="this.form.submit()">
+                                <select name="typeOfGoods">
                                     <option value="Clothes" <?php if ($typeOfGoods == "Clothes") echo 'selected'; ?>>Clothes</option>
                                     <option value="Food" <?php if ($typeOfGoods == "Food") echo 'selected'; ?>>Food</option>
                                     <option value="Essentials" <?php if ($typeOfGoods == "Essentials") echo 'selected'; ?>>Essentials (Daily Needs)</option>
@@ -147,7 +147,7 @@
                         <div class="type-goods">
                             <div class="child-type2">
                                 <label>CONDITION (clothes, essentials etc.) <span class="asterisk">*</span></label>
-                                <select name="condition" onchange="this.form.submit()">
+                                <select name="condition">
                                     <option value="New" <?php if ($condition == "New") echo 'selected'; ?> >New</option>
                                     <option value="Like New" <?php if ($condition == "Like New") echo 'selected'; ?>>Like New</option>
                                     <option value="Slightly Used" <?php if ($condition == "Slightly Used") echo 'selected'; ?>>Slightly Used</option>
@@ -156,7 +156,7 @@
                             </div>
                             <div class="child-type2">
                                 <label>HANDLING INSTRUCTION <span class="asterisk">*</span></label>
-                                <select name="handlingCondition" onchange="this.form.submit()">
+                                <select name="handlingCondition">
                                     <option value="Fragile" <?php if ($handlingCondition == "Fragile") echo 'selected'; ?> >Fragile</option>
                                     <option value="Perishable" <?php if ($handlingCondition == "Perishable") echo 'selected'; ?>>Perishable</option>
                                     <option value="Keep Dry" <?php if ($handlingCondition == "Keep Dry") echo 'selected'; ?>>Keep Dry</option>
@@ -171,19 +171,100 @@
                             </div>
                             <div class="child-type2">
                                 <label>RECEIVE UPDATES FROM PASABUHAY <span class="asterisk">*</span></label>
-                                <select name="updates" onchange="this.form.submit()">
+                                <select name="updates">
                                     <option value="Yes" <?php if ($updates == "Yes") echo 'selected'; ?>>Yes</option>
                                     <option value="No" <?php if ($updates == "No") echo 'selected'; ?>>No</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <div class="error-message" style="margin-top: 1%;">
+                            <?php 
+                                $sessionArray = ['errorInput', 'loginFirst'];
+                                Util::sessionManager($sessionArray);
+                            ?>
+                        </div>
+                    <button class="submit-donate" name="submit-donate">
+                        DONATE
+                    </button>
                 </form>
             </div>
             
-            <div class="donate-container-money" <?php Util::sessionManager('show-money')?>>
-                <form action="donate-form.php" method="post" class="all-donation">
-
+            <div class="donate-container-money" <?php Util::setSession('show-money')?>>
+                <form action="donate-form.php" method="post" class="all-donation" enctype="multipart/form-data">
+                    <div class="input-cash">
+                        <h2>If You Do Donate, Fill out this form <span class="asterisk">*</span></h2>
+                        <div class="child-detail2">
+                            <div class="age-gender2">
+                                <label>FIRST NAME<span class="asterisk">*</span></label>
+                                <input type="text" name="firstNameCash" placeholder="First Name" required>
+                            </div>
+                            <div class="age-gender2">
+                                <label>LAST NAME<span class="asterisk">*</span></label>
+                                <input type="text" name="lastNameCash" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                        <div class="child-detail2">
+                            <div class="age-gender2">
+                                <label>AMOUNT (Philippine Currency)<span class="asterisk">*</span></label>
+                                <input type="number" name="amountCash" placeholder="Amount" required>
+                            </div>
+                            <div class="age-gender2">
+                                <label>MODE OF PAYMENT<span class="asterisk">*</span></label>
+                                <select class="mode-wrapper" name="modeOfPayment">
+                                    <option value="Gcash" <?php if ($modeOfPayment == "Gcash") echo 'selected'; ?>>Gcash</option>
+                                    <option value="BDO" <?php if ($modeOfPayment == "BDO") echo 'selected'; ?>>BDO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="child-detail2">
+                            <div class="age-gender2">
+                                <label>Transaction Number/Hash (optional)</label>
+                                <input type="text" name="transactionNumber" placeholder="Transaction Number">
+                            </div>
+                            <div class="age-gender2">
+                                <label>Proof of Payment (maximum of 3mb) <span class="asterisk">*</span></label>
+                                <input type="file" name="image" placeholder="Proof of Payment" required>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="error-message">
+                            <?php 
+                                $sessionArray = ['fileTooLarge', 'invalidFileType', 'unknownError', 'formError', 'loginFirstCash'];
+                                Util::sessionManager($sessionArray);
+                            ?>
+                        </div>
+                        <div class="button-wrapper">
+                            <button class="donateCash" name="donateCash">
+                                Submit
+                            </button>
+                        </div>
+                    <div class="bdo-wrapper">
+                        <div class="logo-wrapper">
+                            <img src="../-Pictures/bdo.png" alt="BDO Logo" class="bdo-logo">
+                        </div>
+                        <div class="account-details">
+                            <h2>Bank Account Details</h2><br>
+                            <p><strong>Account Name:</strong> Pasabuhay Incorporated</p>
+                            <p><strong>Account Number:</strong> 046700008556</p>
+                            <p><strong>Bank:</strong> BDO Network Bank</p>
+                            <p><strong>Address:</strong> 080 San Miguel, Padre Garcia, Batangas</p>
+                            <p><strong>Phone Number:</strong> 09519659545</p>
+                        </div>
+                    </div>
+                    <div class="gcash-wrapper">
+                        <div class="logo-wrapper">
+                            <img src="../-Pictures/gcash.png" alt="gcash Logo" class="gcash-logo" style="height: 8vh;">
+                        </div>
+                        <div class="account-details">
+                            <h2>Gcash Account Details</h2><br>
+                            <p><strong>Account Name:</strong> Pasabuhay</p>
+                            <p><strong>Account Number:</strong> 09938970057</p>
+                        </div>
+                        <div class="gcash-qr">
+                            <img src="../-Pictures/gcash-qr.jpg" alt="gcash QR">
+                        </div>
+                    </div>
                 </form>
             </div>
 

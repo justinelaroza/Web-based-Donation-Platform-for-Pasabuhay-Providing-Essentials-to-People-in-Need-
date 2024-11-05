@@ -124,4 +124,6 @@
         $query->recoverUser($registerId);
     }
 
+    $sortOptions = isset($_POST['sortOptions']) ? $_POST['sortOptions'] : 'register_id';
+
 ?>

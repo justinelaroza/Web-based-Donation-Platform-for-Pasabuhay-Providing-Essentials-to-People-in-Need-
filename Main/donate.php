@@ -54,15 +54,37 @@
     class Util {
         
         public static function sessionManager($input) {
-            if (isset($_SESSION[$input])) {
-                echo $_SESSION[$input];
-                unset($_SESSION[$input]);
+            if (is_array($input)) {
+                foreach ($input as $values) {
+                    if (isset($_SESSION[$values])) {
+                        echo $_SESSION[$values];
+                        unset($_SESSION[$values]);
+                    }
+                }
+            }
+            else {
+                if (isset($_SESSION[$input])) {
+                    echo $_SESSION[$input];
+                    unset($_SESSION[$input]);
+                }
             }
         }
+
+        public static function setSession($input) {
+            if (isset($_SESSION[$input])) {
+                echo $_SESSION[$input];
+            }
+        }
+
+        public static function redirect() {
+            header("Location: donate-form.php");
+            exit();
+        }
+
     }
 
     $church = new Church();
-
+    $db = new DataBase();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['goods-button'])) { //goods form
         $_SESSION['show-money'] = DISPLAY_NONE;
@@ -93,6 +115,7 @@
     $handlingCondition = isset($_POST['handlingCondition']) ? $_POST['handlingCondition'] : 'Fragile';
     $updates = isset($_POST['updates']) ? $_POST['updates'] : 'Yes';
     $donationDate = isset($_POST['donationDate']) ? $_POST['donationDate'] : date('Y-m-d');
+    $modeOfPayment = isset($_POST['modeOfPayment']) ? $_POST['modeOfPayment'] : 'Gcash';
 
     //input fields
     $firstName = isset($_POST['first_name']) ? $_POST['first_name'] : '';
@@ -102,4 +125,76 @@
     $contactNumber = isset($_POST['contact']) ? $_POST['contact'] : '';
     $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : '';
     $weight = isset($_POST['weight']) ? $_POST['weight'] : '';
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit-donate'])) {
+
+        if(!isset($_SESSION['username'])) {
+            $_SESSION['loginFirst'] = 'Login or Register an account to start donating.';
+            Util::redirect();
+        }
+
+        if (empty(trim($firstName)) || empty(trim($lastName)) || empty(trim($email)) || empty(trim($contactNumber))) {
+            $_SESSION['errorInput'] = 'Please fill in all required fields.';
+            Util::redirect();
+        }
+
+        if (empty(trim($middleName))) { //dahil optional middle name trim them check if empty
+            $middleName = 'N/A';
+        }
+
+        $stmtGoods = $db->getConnection()->prepare("
+            INSERT INTO goods_donation (province, church, first_name, middle_name, last_name, email, contact_number, age, gender, type_of_goods, quantity, weight, condition_goods, handling_instruction, donation_date, updates) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmtGoods->bind_param("ssssssssssiissss",$province, $specificChurch, $firstName, $middleName, $lastName,$email, $contactNumber, $age, $gender, $typeOfGoods,$quantity, $weight, $condition, $handlingCondition, $donationDate, $updates);
+        $stmtGoods->execute();
+        $stmtGoods->close();
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['donateCash'])) {
+
+        if(!isset($_SESSION['username'])) {
+            $_SESSION['loginFirstCash'] = 'Login or Register an account to start donating.';
+            Util::redirect();
+        }
+
+        $firstNameCash = $_POST['firstNameCash'];
+        $lastNameCash = $_POST['lastNameCash'];
+        $amountCash = $_POST['amountCash'];
+        $transactionNumber = $_POST['transactionNumber'];
+
+        if (empty(trim($firstNameCash)) || empty(trim($lastNameCash)) || empty(trim($amountCash))) {
+            $_SESSION['formError'] = 'Please fill in all required fields.';
+            Util::redirect();
+        }
+
+        if (empty(trim($transactionNumber))) {
+            $transactionNumber = 'N/A';
+        }
+
+        $typesOfFiles = ['image/gif', 'image/png', 'image/jpeg', 'image/jpg'];
+        $error = $_FILES['image']['error'];
+
+        if($_FILES['image']['size'] > 3145728){
+            $_SESSION['fileTooLarge'] = 'File is too large (maximum of 3mb)!';
+        }
+        elseif (! in_array($_FILES['image']['type'], $typesOfFiles)) {
+            $_SESSION['invalidFileType'] = 'Invalid file type (gif, png, jpeg/jpg) only!';
+        }
+        elseif ($error === 0) {
+            $fileName = $_FILES['image']['name']; //dito is original name yung store sa 'name' like pic.jpg
+            $tempName = $_FILES['image']['tmp_name']; //dito naman is nag sstore si php ng file sa siang designated na temporary location like "/tmp/php7xYZbT"
+            $folder = 'images/'.$fileName;
+
+            $stmtCash = $db->getConnection()->prepare("INSERT INTO money_donation (first_name, last_name, amount, mop, transaction_number, image) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmtCash->bind_param('ssisss', $firstNameCash, $lastNameCash, $amountCash, $modeOfPayment, $transactionNumber, $fileName);
+            $stmtCash->execute();
+            $stmtCash->close();
+
+            move_uploaded_file($tempName, $folder); //basically from temporary location to a permanent location kasi auto ang php na nilalagay sa temp loc mga uploaded files
+
+        }
+        else {
+            $_SESSION['unknownError'] = 'Unknown error occured, uploading unssuccessful!';
+        }
+    }
 ?>

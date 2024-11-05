@@ -15,7 +15,7 @@
         <div class="wrapper">
             <form action="login-form.php" method="post">
                 <div class="top-area">
-                    <h1>WELCOME</h1>
+                    <h1 style="color: #C80029;">WELCOME</h1>
                 </div>
                 <div class="input-box">
                     <label>Username:</label>
@@ -54,7 +54,7 @@
         <div class="forgot-wrapper"<?php RedundancyUtil::sessionManager('forgot-reveal'); ?>>
             <form action="login-form.php" method="post">
                 <div class="reset">
-                    <h1>RESET PASSWORD</h1>
+                    <h1 style="color: #C80029;">RESET PASSWORD</h1>
                 </div>
                 <div class="forgot-input" id="firstchild">
                     <label>Email Used:</label>
@@ -100,7 +100,7 @@
         <div class="wrapper-right" <?php RedundancyUtil::sessionManager('show'); ?>>
             <form action="login-form.php" method="post">
                 <div class="register">
-                    <h1>REGISTER</h1>
+                    <h1 style="color: #C80029;">REGISTER</h1>
                 </div>
                 <div class="full-name">
                     <div class="name-field">
