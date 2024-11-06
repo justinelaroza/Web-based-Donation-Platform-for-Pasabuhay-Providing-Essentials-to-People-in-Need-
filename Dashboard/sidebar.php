@@ -38,7 +38,7 @@
                     <label class="first">Donations Information</label>
                     <a href="dashboard-donation-form.php"><li <?php echo checkBasename('dashboard-donation-form.php') ?>>Donator's Information</li></a>
                     <label class="first">Recently Deleted</label>
-                    <a href="dashboard-recently-deleted-form.php"><li class="recently" <?php echo checkBasename('dashboard-recently-deleted-form.php') ?> >Recently Deleted</li></a>
+                    <a href="dashboard-recently-deleted-form.php"><li class="recently" <?php echo checkBasename('dashboard-recently-deleted-form.php') ?> >Member Accounts</li></a>
                 </ul>
             <form action="sidebar.php" method="post">
                 <div class="exit">

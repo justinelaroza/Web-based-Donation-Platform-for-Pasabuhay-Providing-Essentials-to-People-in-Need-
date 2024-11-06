@@ -1,6 +1,6 @@
 <?php 
-
-    include('../Database/db.php');
+    require_once '../phpqrcode/qrlib.php';
+    require_once '../Database/db.php';
     session_start();
 
     const DISPLAY_BLOCK = "style='display: block !important'";
@@ -126,6 +126,8 @@
     $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : '';
     $weight = isset($_POST['weight']) ? $_POST['weight'] : '';
 
+    $status = 'Pending';
+
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit-donate'])) {
 
         if(!isset($_SESSION['username'])) {
@@ -142,12 +144,40 @@
             $middleName = 'N/A';
         }
 
+        $username = $_SESSION['username']; //para makuha lang yung usernmae for profile
+        $age .= ' Yrs Old';
+
+        //qrcode
+        $path = '../Main/qr/'; //kasi gagamitin sa dashboard which is nasa labas na folder
+        $qrcode = $path.time().".png";
+        $message = 
+            "Province = ". $province . "\n" . 
+            "Church = " . $specificChurch . "\n" . 
+            "First Name = ". $firstName . "\n" . 
+            "Middle Name = " . $middleName . "\n" . 
+            "Last Name = ". $lastName . "\n" . 
+            "Email = ". $email . "\n" . 
+            "Contact Number = " . $contactNumber . "\n" . 
+            "Age = ". $age . "\n" . 
+            "Gender = " . $gender . "\n" . 
+            "Type of Donation = ". $typeOfGoods . "\n" . 
+            "Quantity = ". $quantity . "\n" . 
+            "Weight = " . $weight . "\n" . 
+            "Condition = ". $condition . "\n" . 
+            "Handling Condition = " . $handlingCondition . "\n" . 
+            "Donation Date = ". $donationDate; 
+
+        QRcode :: png($message, $qrcode, 'H', 4, 4);
+        echo "<img src='". $qrcode ."'>";
+
         $stmtGoods = $db->getConnection()->prepare("
-            INSERT INTO goods_donation (province, church, first_name, middle_name, last_name, email, contact_number, age, gender, type_of_goods, quantity, weight, condition_goods, handling_instruction, donation_date, updates) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmtGoods->bind_param("ssssssssssiissss",$province, $specificChurch, $firstName, $middleName, $lastName,$email, $contactNumber, $age, $gender, $typeOfGoods,$quantity, $weight, $condition, $handlingCondition, $donationDate, $updates);
+            INSERT INTO goods_donation (province, church, first_name, middle_name, last_name, email, contact_number, age, gender, type_of_goods, quantity, weight, condition_goods, handling_instruction, donation_date, updates, status, username, qr) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmtGoods->bind_param("ssssssssssiisssssss",$province, $specificChurch, $firstName, $middleName, $lastName,$email, $contactNumber, $age, $gender, $typeOfGoods, $quantity, $weight, $condition, $handlingCondition, $donationDate, $updates, $status, $username, $qrcode);
         $stmtGoods->execute();
         $stmtGoods->close();
+
+        $_SESSION['successfulDonation'] = 'Thank you for your kind donation! Kindly head to your profile to see the status of your donation.';
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['donateCash'])) {
@@ -171,6 +201,7 @@
             $transactionNumber = 'N/A';
         }
 
+        $username = $_SESSION['username']; 
         $typesOfFiles = ['image/gif', 'image/png', 'image/jpeg', 'image/jpg'];
         $error = $_FILES['image']['error'];
 
@@ -185,8 +216,13 @@
             $tempName = $_FILES['image']['tmp_name']; //dito naman is nag sstore si php ng file sa siang designated na temporary location like "/tmp/php7xYZbT"
             $folder = 'images/'.$fileName;
 
-            $stmtCash = $db->getConnection()->prepare("INSERT INTO money_donation (first_name, last_name, amount, mop, transaction_number, image) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmtCash->bind_param('ssisss', $firstNameCash, $lastNameCash, $amountCash, $modeOfPayment, $transactionNumber, $fileName);
+            $path = '../Main/images/'; //kasi gagamitin to sa ibang folder sa labas
+            $storePath = $path . $fileName;
+
+            $_SESSION['successfulDonationCash'] = 'Thank you for your kind donation! Kindly head to your profile to see the status of your donation.';
+
+            $stmtCash = $db->getConnection()->prepare("INSERT INTO money_donation (first_name, last_name, amount, mop, transaction_number, image, status, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmtCash->bind_param('ssisssss', $firstNameCash, $lastNameCash, $amountCash, $modeOfPayment, $transactionNumber, $storePath, $status, $username);
             $stmtCash->execute();
             $stmtCash->close();
 

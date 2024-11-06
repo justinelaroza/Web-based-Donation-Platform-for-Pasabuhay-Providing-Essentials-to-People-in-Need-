@@ -178,10 +178,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="error-message" style="margin-top: 1%;">
+                        <div class="error-message" style="margin-top: 1%;">
                             <?php 
                                 $sessionArray = ['errorInput', 'loginFirst'];
                                 Util::sessionManager($sessionArray);
+                            ?>
+                        </div>
+                        <div class="success-message" style="margin-top: 1%;">
+                            <?php 
+                                Util::sessionManager('successfulDonation');
                             ?>
                         </div>
                     <button class="submit-donate" name="submit-donate">
@@ -228,6 +233,11 @@
                             </div>
                         </div>
                     </div>
+                        <div class="success-message">
+                            <?php 
+                                Util::sessionManager('successfulDonationCash');
+                            ?>
+                        </div>
                         <div class="error-message">
                             <?php 
                                 $sessionArray = ['fileTooLarge', 'invalidFileType', 'unknownError', 'formError', 'loginFirstCash'];
