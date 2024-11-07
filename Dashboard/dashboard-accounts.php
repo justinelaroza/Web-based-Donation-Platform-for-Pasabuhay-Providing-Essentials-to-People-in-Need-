@@ -18,12 +18,6 @@
             return $result;
         }
 
-        public function defaultSort() {
-            $query = "SELECT * FROM register_data ORDER BY register_id";
-            $result = $this->db->query($query); //parang nag mysqli_query lang
-            return $result;
-        }
-
         public function searchData($search) {
 
             $query = "SELECT * FROM register_data WHERE email LIKE ?";
@@ -57,7 +51,7 @@
             }
 
             if ($result === null) {
-                $result = $this->defaultSort();
+                $result = $this->sortBy('register_id');
             }
 
             if ($result->num_rows > 0) {

@@ -168,7 +168,6 @@
             "Donation Date = ". $donationDate; 
 
         QRcode :: png($message, $qrcode, 'H', 4, 4);
-        echo "<img src='". $qrcode ."'>";
 
         $stmtGoods = $db->getConnection()->prepare("
             INSERT INTO goods_donation (province, church, first_name, middle_name, last_name, email, contact_number, age, gender, type_of_goods, quantity, weight, condition_goods, handling_instruction, donation_date, updates, status, username, qr) 
