@@ -213,10 +213,12 @@
         elseif ($error === 0) {
             $fileName = $_FILES['image']['name']; //dito is original name yung store sa 'name' like pic.jpg
             $tempName = $_FILES['image']['tmp_name']; //dito naman is nag sstore si php ng file sa siang designated na temporary location like "/tmp/php7xYZbT"
-            $folder = 'images/'.$fileName;
+
+            $uniqueFileName = uniqid() . '_' . $fileName; //baka kasi may magkapareha na pangalan ng picture
+            $folder = 'images/'.$uniqueFileName;
 
             $path = '../Main/images/'; //kasi gagamitin to sa ibang folder sa labas
-            $storePath = $path . $fileName;
+            $storePath = $path . $uniqueFileName;
 
             $_SESSION['successfulDonationCash'] = 'Thank you for your kind donation! Kindly head to your profile to see the status of your donation.';
 

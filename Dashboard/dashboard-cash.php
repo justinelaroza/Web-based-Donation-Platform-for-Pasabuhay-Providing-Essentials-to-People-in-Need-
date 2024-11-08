@@ -13,15 +13,15 @@
             $this->db = $conn->getConnection();
         }
 
-        public function sortBy($column = 'donation_date') {
-            $query = "SELECT * FROM goods_donation ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 2 END, $column";
+        public function sortBy($column = 'money_id') {
+            $query = "SELECT * FROM money_donation ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 2 END, $column";
             $result = $this->db->query($query); //parang nag mysqli_query lang
             return $result;
         }
 
         public function searchData($search) {
+            $query = "SELECT * FROM money_donation WHERE transaction_number LIKE ? ";
 
-            $query = "SELECT * FROM goods_donation WHERE first_name LIKE ?";
             $searchWild = $search . '%';
             $stmt = $this->db->prepare($query);
             
@@ -43,9 +43,10 @@
                 }
 
                 if (isset($_POST['sort'])) {
-                    $chosenOne = $_POST['sortOptions']; //this mag hohold ng value dun sa mga options
+                    $chosenOne = $_POST['sortOptions'];
                     $result = $this->sortBy($chosenOne);
                 }
+
             }
 
             if ($result === null) {
@@ -63,29 +64,27 @@
                     }
 
                     echo "<tr>
-                    <form action='dashboard-donation-form.php' method='post' >
-                        <td>" . $row['goods_id'] . "</td>
-                        <td>" . $row['status'] . " <div class='orange' $green></div> </td>
-                        <td>" . $row['province'] . "</td>
-                        <td>" . $row['church'] . "</td>
+                    <form action='dashboard-cash-form.php' method='post' >
+                        <td>" . $row['money_id'] . "</td>
+                        <td>" . $row['status'] . " <div class='orange' $green ></div> </td>
                         <td>" . $row['first_name'] . "</td>
-                        <td>" . $row['middle_name'] . "</td>
                         <td>" . $row['last_name'] . "</td>
-                        <td>" . $row['type_of_goods'] . "</td>
-                        <td>" . $row['donation_date'] . "</td>
+                        <td> ₱ " . $row['amount'] . "</td>
+                        <td>" . $row['mop'] . "</td>
+                        <td>" . $row['transaction_number'] . "</td>
                         <td class ='button-td'>  
                             <div class='button-container'>  
-                                <button name='show-button' style='background-color: orange;' value='". $row['goods_id'] ."'>
-                                    <img src='../-Pictures/show.png' alt ='eye picture'>
+                                <button name='show-button' style='background-color: black;' value='". $row['money_id'] ."'>
+                                    <img src='".$row['image']."' alt ='eye picture'>
                                 </button>
                             </div>
                             <div class='button-container'>  
-                                <button name='approve-button' style='background-color: green;' value='". $row['goods_id'] ."'>
+                                <button name='approve-button' style='background-color: green;' value='". $row['money_id'] ."'>
                                     <img src='../-Pictures/approve.png' alt ='check picture'>
                                 </button>
                             </div>
                             <div class='button-container'>  
-                                <button name='cancel-button' style='background-color: red;' value='". $row['goods_id'] ."'>
+                                <button name='cancel-button' style='background-color: red;' value='". $row['money_id'] ."'>
                                     <img src='../-Pictures/cancel.png' alt ='cross picture'>
                                 </button>
                             </div>
@@ -94,38 +93,30 @@
                 </tr>";
                 }
             }
-
         }
 
         public function deleteDonation($input) {
-            $query = "DELETE FROM goods_donation WHERE goods_id = '$input'";
+            $query = "DELETE FROM money_donation WHERE money_id = '$input'";
             $this->db->query($query);
         }
 
         public function completeDonation($input) {
-            $query = "UPDATE goods_donation SET status = 'Completed' WHERE goods_id = '$input'";
+            $query = "UPDATE money_donation SET status = 'Completed' WHERE money_id = '$input'";
             $this->db->query($query);
         }
 
-        public function showAddDetails($input) {
-            $query = "SELECT email, contact_number, age, gender, quantity, weight, condition_goods, handling_instruction, updates FROM goods_donation WHERE goods_id = '$input'";
+        public function showPic($input) {
+            $query = "SELECT image FROM money_donation WHERE money_id = '$input'";
             $result = $this->db->query($query);
 
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc(); // Return all details as an associative array
-            }
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    return $row['image']; // Return the image path or URL
+                } 
+                else {
+                    return '';
+                }
         }
-
-        public function showQr($input) {
-            $query = "SELECT qr FROM goods_donation WHERE goods_id = '$input'";
-            $result = $this->db->query($query);
-
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                return $row['qr'];
-            }
-        }
-
     }
 
     class Util {
@@ -140,30 +131,37 @@
     $db = new DataBase();
     $queries = new Queries($db);
 
+    $sortOptions = isset($_POST['sortOptions']) ? $_POST['sortOptions'] : 'money_id';
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel-button'])) { // cancel donation form show
-        $_SESSION['id'] = $_POST['cancel-button'];
-        $_SESSION['showCancel'] = DISPLAY_BLOCK;
+        $_SESSION['idCash'] = $_POST['cancel-button'];
+        $_SESSION['showCancelCash'] = DISPLAY_BLOCK;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveDel'])) { 
-        $queries->deleteDonation($_SESSION['id']);
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveDelCash'])) { 
+        $queries->deleteDonation($_SESSION['idCash']);
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve-button'])) {// completed donation form show
-        $_SESSION['idApprove'] = $_POST['approve-button'];
-        $_SESSION['showComplete'] = DISPLAY_BLOCK;
+        $_SESSION['idApproveCash'] = $_POST['approve-button'];
+        $_SESSION['showCompleteCash'] = DISPLAY_BLOCK;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveApprove'])) {
-        $queries->completeDonation($_SESSION['idApprove']);
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveApproveCash'])) {
+        $queries->completeDonation($_SESSION['idApproveCash']);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['show-button'])) {// additional details donation form show
-        $_SESSION['idShow'] = $_POST['show-button'];
-        $_SESSION['changeHeight'] = "style='height: 40% !important'";
-        $_SESSION['showDetails'] = DISPLAY_BLOCK;
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['show-button'])) {
+        $_SESSION['showPicId'] = $_POST['show-button'];
+        $_SESSION['showPopUp'] = DISPLAY_BLOCK;
     }
 
-    $sortOptions = isset($_POST['sortOptions']) ? $_POST['sortOptions'] : 'donation_date'; //for sort
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['back-button'])) {
+        unset($_SESSION['showPopUp']);
+        header('Location: dashboard-cash-form.php');
+        exit();
+    }
+
+    
 
 ?>
