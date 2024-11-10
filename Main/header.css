@@ -68,8 +68,9 @@
 
 .profile-wrapper{
     height: 100%;
-    width: 12%;
+    width: 10%;
     border-left: 1px black solid;
+    background-color: #E6DFDF;
 }
 
 .profile-wrapper button {
@@ -78,17 +79,8 @@
     width: 100%;
     cursor: pointer;
     font-size: 1rem;
-    background-color: #9c0606;
-    color: white;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth color and scale transitions */
-    font-family: Cinzel, sans-serif;
-}
-
-.profile-wrapper button:hover {
-    background-color: #d40a0a;
-    color: white;
-    transform: scale(1.05); /* Slight zoom-in effect */
+    background-color: transparent;
+    color: black;
 }
 
 .profile-display {
@@ -97,18 +89,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #A60000;
-    color: white;
     font-family: BebasNeue, sans-serif;
     font-size: .9rem;
     cursor: pointer;
 }
 
 .profile-image {
-    width: 30%;
+    width: 35%;
     border: solid 1px black;
     border-radius: 50%;
-    height: 70%;
+    height: 65%;
     overflow: hidden;
 }
 
@@ -131,6 +121,8 @@
 
 .label-profile label {
     font-size: .8rem;
+    color: black;
 }
+
 
 

@@ -14,7 +14,7 @@
         }
 
         public function sortBy($column = 'donation_date') {
-            $query = "SELECT * FROM goods_donation ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 2 END, $column";
+            $query = "SELECT * FROM goods_donation ORDER BY CASE status WHEN 'At Church' THEN 0 WHEN 'Pending' THEN 1 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END, $column";
             $result = $this->db->query($query); //parang nag mysqli_query lang
             return $result;
         }
@@ -56,16 +56,23 @@
 
                 while ($row = $result->fetch_assoc()) {
 
-                    if($row['status'] == 'Completed') {
-                        $green = 'style="background-color: green;"';
-                    } else {
-                        $green = null;
+                    if($row['status'] == 'Completed') { //yung kulay sa baba nila for readability
+                        $color = 'style="background-color: green;"';
+                    } 
+                    elseif($row['status'] == 'At Church') {
+                        $color = 'style="background-color: yellow;"'; 
+                    }
+                    elseif($row['status'] == 'Cancelled') {
+                        $color = 'style="background-color: red;"'; 
+                    }
+                    else {
+                        $color = null;
                     }
 
                     echo "<tr>
                     <form action='dashboard-donation-form.php' method='post' >
                         <td>" . $row['goods_id'] . "</td>
-                        <td>" . $row['status'] . " <div class='orange' $green></div> </td>
+                        <td>" . $row['status'] . " <div class='orange' $color></div> </td>
                         <td>" . $row['province'] . "</td>
                         <td>" . $row['church'] . "</td>
                         <td>" . $row['first_name'] . "</td>
@@ -76,7 +83,7 @@
                         <td class ='button-td'>  
                             <div class='button-container'>  
                                 <button name='show-button' style='background-color: orange;' value='". $row['goods_id'] ."'>
-                                    <img src='../-Pictures/show.png' alt ='eye picture'>
+                                    <img src='../-Pictures/qr-logo.png' alt ='eye picture'>
                                 </button>
                             </div>
                             <div class='button-container'>  
@@ -116,7 +123,7 @@
             }
         }
 
-        public function showQr($input) {
+        public function showQr($input) { //pinapakita image ng qr from db path ng qr
             $query = "SELECT qr FROM goods_donation WHERE goods_id = '$input'";
             $result = $this->db->query($query);
 
@@ -124,6 +131,11 @@
                 $row = $result->fetch_assoc();
                 return $row['qr'];
             }
+        }
+
+        public function deletePendingExceed() { //pag yung donation date at di pa napupunta sa church and donation auto delete pag nakalagpas ng 14days 
+            $query = "DELETE FROM goods_donation WHERE status = 'Pending' AND DATEDIFF(CURDATE(), donation_date) >= 14";
+            $this->db->query($query);
         }
 
     }
@@ -139,6 +151,8 @@
 
     $db = new DataBase();
     $queries = new Queries($db);
+
+    $queries->deletePendingExceed(); //deletes donation if exceeded 14 days prior sa donation date estimate
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel-button'])) { // cancel donation form show
         $_SESSION['id'] = $_POST['cancel-button'];

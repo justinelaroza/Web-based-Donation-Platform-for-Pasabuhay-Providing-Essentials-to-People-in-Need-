@@ -155,6 +155,7 @@ body {
 .orange {
     width: 66%;
     height: 5px;
+    border: solid .5px black;
     background-color: orange;
 }
 

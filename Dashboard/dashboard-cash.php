@@ -74,8 +74,8 @@
                         <td>" . $row['transaction_number'] . "</td>
                         <td class ='button-td'>  
                             <div class='button-container'>  
-                                <button name='show-button' style='background-color: black;' value='". $row['money_id'] ."'>
-                                    <img src='".$row['image']."' alt ='eye picture'>
+                                <button name='show-button' style='background-color: orange;' value='". $row['money_id'] ."'>
+                                    <img src='../-Pictures/show.png' alt ='eye picture'>
                                 </button>
                             </div>
                             <div class='button-container'>  
@@ -138,7 +138,7 @@
         $_SESSION['showCancelCash'] = DISPLAY_BLOCK;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveDelCash'])) { 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveDelCash'])) {  //delete the data in fb
         $queries->deleteDonation($_SESSION['idCash']);
     }
 
@@ -147,16 +147,16 @@
         $_SESSION['showCompleteCash'] = DISPLAY_BLOCK;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveApproveCash'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['saveApproveCash'])) { // mark the data in db as completed
         $queries->completeDonation($_SESSION['idApproveCash']);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['show-button'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['show-button'])) { //pakita yung image
         $_SESSION['showPicId'] = $_POST['show-button'];
         $_SESSION['showPopUp'] = DISPLAY_BLOCK;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['back-button'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['back-button'])) { //click the cross sign to back
         unset($_SESSION['showPopUp']);
         header('Location: dashboard-cash-form.php');
         exit();
