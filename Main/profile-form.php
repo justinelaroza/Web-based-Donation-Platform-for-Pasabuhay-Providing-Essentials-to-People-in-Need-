@@ -15,29 +15,64 @@
         include_once 'header.php';
     ?>
     <div class="wrapper-profile">
-        <div class="profile-pic-wrapper">
-            <div class="pic-logout-wrapper">
-                <div class="profile-pic">
-                    <img src='<?php echo $query->checkProfilePic($_SESSION['username'])?>'  alt='Profile Picture'>
-                </div>
-                <p>↓ Upload Profile Pic ↓</p>
-                <form action="profile-form.php" method="post" class="upload-wrapper" enctype="multipart/form-data">
-                    <input type="file" name="image">
-                    <button name="upload-button">
-                        Upload
-                    </button>
-                    <div class="error-message">
-                        <?php 
-                            $sessionArray = ['fileTooLarge', 'invalidFileType', 'unknownError'];
-                            Util::sessionManager($sessionArray);
-                        ?>
+        <div class="profile-legend-wrapper">
+            <div class="profile-pic-wrapper">
+                <div class="pic-logout-wrapper">
+                    <div class="profile-pic">
+                        <img src='<?php echo $query->checkProfilePic($_SESSION['username'])?>'  alt='Profile Picture'>
                     </div>
-                </form>
+                    <p>↓ Upload Profile Pic ↓</p>
+                    <form action="profile-form.php" method="post" class="upload-wrapper" enctype="multipart/form-data">
+                        <input type="file" name="image">
+                        <button name="upload-button">
+                            Upload
+                        </button>
+                        <div class="error-message">
+                            <?php 
+                                $sessionArray = ['fileTooLarge', 'invalidFileType', 'unknownError'];
+                                Util::sessionManager($sessionArray);
+                            ?>
+                        </div>
+                    </form>
+                </div>
+                <div class="details-wrapper">
+                    <div class="widget-wrapper">
+                        <div class="widget">
+                            <h5>All Pending Goods Donations: </h5>
+                            <?php echo $queryGoods->countPendingBoth('goods_donation', $_SESSION['username']); ?>
+                        </div>
+                        <div class="widget">
+                            <h5>All Pending Money Donations: </h5> 
+                            <?php echo $queryGoods->countPendingBoth('money_donation', $_SESSION['username']); ?>
+                        </div>
+                        <div class="widget">
+                            <h5>Total completed donations: </h5>
+                            <?php echo $queryGoods->countAllDonation($_SESSION['username']); ?>
+                        </div>
+                    </div>
+                    <form action="profile-form.php" method="post" class="logout-wrapper">
+                        <button name="logout">Logout</button>
+                    </form>
+                </div>
             </div>
-            <div class="details-wrapper">
-                <form action="profile-form.php" method="post" class="logout-wrapper">
-                    <button name="logout">Logout</button>
-                </form>
+            <div class="legend-wrapper">
+                <div class="h4-container">
+                    <h4>Donation Status Legend</h4>
+                </div>
+                <div class="legend-container">
+                    <div class="legend">
+                        <img src="../-Pictures/qr-logo.png" alt="QR code">
+                        <div class="instruct">Show Details: Click and scan the "QR" code for more details about your donation.</div>
+                    </div>
+                    <div class="legend">
+                        <img src="../-Pictures/church.png" alt="At Church" style="background-color: green;">
+                        <div class="instruct">At Church: Click the green button if your donation has reached the church.</div>
+                    </div>
+                    <div class="legend">
+                        <img src="../-Pictures/x.png" alt="Cancel" style="background-color: red;">
+                        <div class="instruct">Cancel: Click the red "X" button to cancel your donation.</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="all-donation">

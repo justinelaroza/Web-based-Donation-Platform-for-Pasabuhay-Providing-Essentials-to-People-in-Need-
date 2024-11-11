@@ -125,6 +125,21 @@
             }
         }
 
+        public function countPendingBoth($table, $user) {
+            $query = "SELECT COUNT(*) AS total FROM $table WHERE status = 'Pending' AND username = '$user'";
+            $result = $this->connection->query($query);
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }
+
+        public function countAllDonation($user) {
+            $query = "SELECT COUNT(*) AS total FROM (SELECT status FROM goods_donation WHERE status = 'Completed' AND username = '$user'
+            UNION ALL SELECT status FROM money_donation WHERE status = 'Completed' AND username = '$user') AS combined_count"; //since union all gamit need same number ng column kaya specific lang na status kinuha di all
+            
+            $result = $this->connection->query($query);
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        }
     }
 
     class QueryCash {
