@@ -18,6 +18,10 @@ html::-webkit-scrollbar-thumb {
   background-color: #888; /* Color of the scroll thumb */
 }
 
+body {
+  background-color: rgb(168, 168, 168);
+}
+
 .wrapper-profile {
   width: 99.6vw;
   height: 190vh;

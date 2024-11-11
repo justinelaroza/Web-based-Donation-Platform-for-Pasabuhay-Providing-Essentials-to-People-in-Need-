@@ -212,4 +212,5 @@ body {
     padding: .5% 0 .5% 0;
     border-bottom: 2px solid black;
     color: red;
+    font-weight: bold;
 }

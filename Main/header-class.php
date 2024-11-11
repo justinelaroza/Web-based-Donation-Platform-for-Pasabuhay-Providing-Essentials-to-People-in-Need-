@@ -55,6 +55,12 @@
         }
     }
 
+	function checkIfProfile($fileName) {
+		if(basename($_SERVER['PHP_SELF']) == $fileName) { //kaya kahiwalay kasi background color
+            return 'style="background-color: rgb(220, 60, 60);"';
+        }
+	}
+
 	if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['buttonLogin'])) { //pag hindi naka loggin lalabas tong button then return sa login
 		header("Location: ../Login/login-form.php");
 		exit();

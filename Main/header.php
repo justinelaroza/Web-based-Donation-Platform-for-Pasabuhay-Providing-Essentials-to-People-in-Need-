@@ -27,7 +27,7 @@
 						<li><a href="reach-out.php" <?php echo checkBasename('reach-out.php')?>>REACH OUT</a></li>
 					</ul>
 				</div>
-			<form action="header.php" method="post" class="profile-wrapper">
+			<form action="header.php" method="post" class="profile-wrapper" <?php echo checkIfProfile('profile-form.php')?>>
 				<?php 
 					$query->checkIfLoggedIn();
 				?>
