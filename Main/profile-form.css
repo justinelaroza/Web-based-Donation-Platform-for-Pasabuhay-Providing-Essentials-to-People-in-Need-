@@ -120,6 +120,7 @@ html::-webkit-scrollbar-thumb {
   border: solid 1px black;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 .table td {
@@ -222,12 +223,59 @@ html::-webkit-scrollbar-thumb {
   height: 80%;
   display: flex;
   align-items: center;
+  justify-content: center;
   border: solid 1px black;
   flex-direction: column;
   background-color: #E6DFD5;
   margin-top: 3%;
+  position: relative;
 }
 
+.qr-container {
+  position: absolute;
+  width: 50%;
+  height: 75%;
+  background-color: white;
+  border: solid 1px black;
+  z-index: 10;
+  display: none;
+}
+
+.back-wrapper {
+  border-bottom: 1px solid black;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  background-color: #4CAF50;
+}
+
+.qr-container button {
+  width: 7%;
+  height: 100%;
+  border: none;
+  border-left: 1px black solid;
+  background-color: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.picture-wrapper {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.picture-wrapper .image {
+  width: auto;
+  height: 90%;
+  border: solid 1px black;
+}
 
 .upload-wrapper {
   width: 100%;
@@ -261,4 +309,26 @@ html::-webkit-scrollbar-thumb {
   text-align: center;
   font-size: .8rem;
   color: red;
+}
+
+.message-wrapper {
+  width: 100%;
+  height: auto;
+  margin-top: .8%;
+  text-align: center;
+  display: none;
+}
+
+.message-wrapper p {
+  font-style: italic;
+}
+.message-wrapper button {
+  height: 30px;
+  width: 5%;
+  border: solid 1px black;
+  background-color: green;
+  box-shadow: .5px .5px .5px .5px black;
+  margin-left: 1%;
+  color: white;
+  cursor: pointer;
 }

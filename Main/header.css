@@ -113,15 +113,21 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    white-space: nowrap; /* Prevent text from wrapping to the next line */
-    overflow: hidden; /* Hide the overflowing text */
-    text-overflow: ellipsis;
     margin-left: 5%;
 }
 
 .label-profile label {
     font-size: .8rem;
     color: black;
+    cursor: pointer;
+}
+
+.username {
+    white-space: nowrap;       
+    overflow: hidden;      
+    text-overflow: ellipsis;       
+    max-width: 100%;           
+    display: inline-block;         
 }
 
 

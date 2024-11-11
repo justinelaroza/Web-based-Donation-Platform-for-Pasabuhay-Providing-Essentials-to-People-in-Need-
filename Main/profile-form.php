@@ -41,6 +41,16 @@
             </div>
         </div>
         <div class="all-donation">
+            <div class="qr-container" <?php Util::sessionManager('showPopUpProfile') ?>>
+                <form action="profile-form.php" method="post" class="back-wrapper">
+                    <button name="back-button">
+                        <img src="../-Pictures/back.png" alt="back">
+                    </button>
+                </form>
+                <div class="picture-wrapper">
+                    <img src="<?php echo $queryGoods->showQr($_SESSION['showPicIdProfile']);?>" alt="additional details" class="image">
+                </div>
+            </div>
             <div class="header-label">
                 <h2>Goods Donation</h2>
             </div>
@@ -82,6 +92,12 @@
                         </table>
                     </div>
                 </div>
+                <form action="profile-form.php" method="post" class="message-wrapper" <?php Util::sessionManager('show-message') ?> >
+                    <p>Have you completed your donation at the church? Click 'Save' to confirm donation with id = [<?php echo $_SESSION['churchId'] ?>] <button name="bttn-church">Save</button></p>
+                </form>
+                <form action="profile-form.php" method="post" class="message-wrapper" <?php Util::sessionManager('show-message-cancel') ?> >
+                    <p>Are you sure you want to cancel your donation? Click 'Save' to confirm donation with id = [<?php echo $_SESSION['churchIdCancel'] ?>] <button name="bttn-cancel">Save</button></p>
+                </form>
             </div>
         </div>
         <div class="all-donation">

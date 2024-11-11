@@ -2,6 +2,9 @@
     require_once '../Database/db.php';
     session_start();
 
+    const DISPLAY_BLOCK = "style='display: block !important'";
+    const DISPLAY_NONE = "style='display: none !important'";
+
     class QueryGoods{
         private $connection;
 
@@ -82,6 +85,13 @@
                                     </button>
                                 </div>";
                         }
+                        else {
+                            echo "<div class='button-container'>  
+                                    <button name='show-button' style='background-color: orange;' value='" . $row['goods_id'] . "'>
+                                        <img src='../-Pictures/qr-logo.png' alt='eye picture'>
+                                    </button>
+                                </div>";
+                        }
 
                         echo "</td>
                     </form>
@@ -103,6 +113,16 @@
         public function cancelDonation($id) { //cancel donation
             $query = "UPDATE goods_donation SET status = 'Cancelled' WHERE goods_id = '$id'";
             $this->connection->query($query);
+        }
+
+        public function showQr($input) { //pinapakita image ng qr from db path ng qr
+            $query = "SELECT qr FROM goods_donation WHERE goods_id = '$input'";
+            $result = $this->connection->query($query);
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                return $row['qr'];
+            }
         }
 
     }
@@ -214,18 +234,25 @@
         Util::exitToLogin();
     }
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['church-button'])) { //when click will change status to at church
-        $id = $_POST['church-button'];
-        $queryGoods->atChurch($id);
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['church-button'])) { //when click lalabas confirm message
+        $_SESSION['show-message'] = DISPLAY_BLOCK;
+        $_SESSION['churchId'] = $_POST['church-button'];
     }
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel-button'])) { //when click will change status to cancelled
-        $id = $_POST['cancel-button'];
-        $queryGoods->cancelDonation($id);
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['bttn-church'])) { //when click will change status to at church
+        $queryGoods->atChurch($_SESSION['churchId']);
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload-button'])) { //profile pic upload
-        
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel-button'])) { //when click lalabas confirm message cancel
+        $_SESSION['show-message-cancel'] = DISPLAY_BLOCK;
+        $_SESSION['churchIdCancel'] = $_POST['cancel-button'];
+    }
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['bttn-cancel'])) { //when click will change status to cancel
+        $queryGoods->cancelDonation($_SESSION['churchIdCancel']);
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload-button'])) { //profile pic upload       
         $username = $_SESSION['username']; 
         $typesOfFiles = ['image/gif', 'image/png', 'image/jpeg', 'image/jpg']; //MIME types
         $error = $_FILES['image']['error'];
@@ -256,6 +283,17 @@
         else {
             $_SESSION['unknownError'] = 'Unknown error occured, uploading unssuccessful!';
         }
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['show-button'])) { //pakita yung qr
+        $_SESSION['showPicIdProfile'] = $_POST['show-button'];
+        $_SESSION['showPopUpProfile'] = DISPLAY_BLOCK;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['back-button'])) { //click the cross sign to back
+        unset($_SESSION['showPopUpProfile']);
+        header('Location: profile-form.php');
+        exit();
     }
         
 ?>
