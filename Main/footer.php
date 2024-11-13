@@ -16,11 +16,10 @@
         <div class="section get-involved">
             <h3>GET INVOLVED</h3>
             <ul>
-                <li><a href="#">Donate</a></li>
-                <li><a href="#">Become a Member</a></li>
-                <li><a href="#">Partner with Us</a></li>
-                <li><a href="#">Volunteer</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="../Main/donate-form.php">Donate</a></li>
+                <li><a href="../Main/who-we-are.php">Become a Member</a></li>
+                <li><a href="../Main/reach-out.php">Volunteer</a></li>
+                <li><a href="mailto:pasabuhay.donations@gmail.com">Contact</a></li>
             </ul>
         </div>
 
