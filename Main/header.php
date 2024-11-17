@@ -24,7 +24,7 @@
 						<li><a href="what-we-do.php" <?php echo checkBasename('what-we-do.php')?>>WHAT WE DO</a></li>
 						<li><a href="who-we-are.php" <?php echo checkBasename('who-we-are.php')?>>WHO WE ARE</a></li>
 						<li><a href="donate-form.php" <?php echo checkBasename('donate-form.php')?>>DONATE NOW</a></li>
-						<li><a href="reach-out.php" <?php echo checkBasename('reach-out.php')?>>REACH OUT</a></li>
+						<li><a href="reach-out-form.php" <?php echo checkBasename('reach-out-form.php')?>>REACH OUT</a></li>
 					</ul>
 				</div>
 			<form action="header.php" method="post" class="profile-wrapper" <?php echo checkIfProfile('profile-form.php')?>>

@@ -17,8 +17,8 @@
             <h3>GET INVOLVED</h3>
             <ul>
                 <li><a href="../Main/donate-form.php">Donate</a></li>
-                <li><a href="../Main/who-we-are.php">Become a Member</a></li>
-                <li><a href="../Main/reach-out.php">Volunteer</a></li>
+                <li><a href="../Login/login-form.php">Become a Member</a></li>
+                <li><a href="../Main/who-we-are.php#become-member">Volunteer</a></li>
                 <li><a href="mailto:pasabuhay.donations@gmail.com">Contact</a></li>
             </ul>
         </div>
