@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    height: 100vh;       
+    margin: 0;
+    background: linear-gradient(to bottom right, #ffcccc, #ccffff);   
+}
+
+.wrapper {
+    width: 99vw;
+    height: 95vh;
+    border-radius: 50px;
+    background-color: rgb(243, 239, 239);
+    display: flex;
+    border: solid 1px black;
+}
+
+.other-wrapper {
+    height: 100%;
+    width: 85%;
+    border-radius: 0 50px 50px 0;
+    display: flex; 
+    flex-direction: column;
+}
+
+.header {
+    box-sizing: border-box;
+    width: 100%;
+    height: 7.5%;
+    border-radius: 0 50px 0 0;
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px gray solid;
+}
+
+.header h1 {
+    padding-left: 3%;
+}
+
+.messages-wrapper {
+    width: 100%;
+    height: 95%;
+    border-radius: 0 0 50px 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-wrapper {
+    width: 20%;
+    height: 100%;
+    border-right: solid 1px black;
+    overflow-y: auto;
+}
+
+.each-message {
+    border: none;
+    border-bottom: solid 1px black;
+    background-color: rgba(255, 255, 255, 0.26);
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image-wrapper {
+    margin-left: 10%;
+    margin-right: 5%;
+    width: 60px;
+    height: 60px;
+    border: solid 1px black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.each-message img {
+    width: auto;
+    height: 100%;
+}
+
+.last-message {
+    height: 80%;
+    width: 45%;
+    margin-right: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    align-items: left;
+    padding: 5%;
+}
+
+.each-message .timestamp {
+    font-size: .7rem;
+    color: rgb(58, 57, 57);
+}
+
+.last-message .name {
+    font-weight: bold;
+}
+
+.last-message p {
+    white-space: nowrap;       /* Prevent text from wrapping to a new line */
+    overflow: hidden;          /* Hide any overflowing content */
+    text-overflow: ellipsis;
+}
+
+
+.right-wrapper {
+    width: 80%;
+    height: 100%;
+}
+

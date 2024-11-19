@@ -38,6 +38,8 @@
                     <label class="first">Donations Information</label>
                     <a href="dashboard-donation-form.php"><li <?php echo checkBasename('dashboard-donation-form.php') ?>>Goods Donation</li></a>
                     <a href="dashboard-cash-form.php"><li <?php echo checkBasename('dashboard-cash-form.php') ?>>Cash Donation</li></a>
+                    <label class="first">Inquiry</label>
+                    <a href="dashboard-messages-form.php"><li class="recently" <?php echo checkBasename('dashboard-messages-form.php') ?> >Messages</li></a>
                     <label class="first">Recently Deleted</label>
                     <a href="dashboard-recently-deleted-form.php"><li class="recently" <?php echo checkBasename('dashboard-recently-deleted-form.php') ?> >Member Accounts</li></a>
                 </ul>
