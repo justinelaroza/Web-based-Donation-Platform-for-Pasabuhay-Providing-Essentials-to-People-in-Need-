@@ -8,7 +8,7 @@
         private $db_name;
         private $connection;
 
-        public function __construct($db_server = "localhost", $db_user = "root", $db_pass = "", $db_name = "user_login") {
+        public function __construct($db_server = "localhost", $db_user = "root", $db_pass = "", $db_name = "pasabuhay_donation") {
 
             $this->db_server = $db_server;
             $this->db_user = $db_user;
