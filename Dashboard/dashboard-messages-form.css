@@ -119,9 +119,126 @@ body {
     text-overflow: ellipsis;
 }
 
-
 .right-wrapper {
     width: 80%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-send {
+    width: 100%;
+    height: 8%;
+    border-bottom: solid 1px black;
+    background-color: #E6DFDF;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.image-top {
+    width: 4.5%;
+    height: 85%;
+    margin-left: 3%;
+    margin-right: 2%;
+    border: solid 1px black;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.image-top img {
+    width: 100%;
+    height: 100%;
+}
+
+.top-send p {
+    font-size: 1.1rem;
+}
+
+.bottom-send {
+    width: 100%;
+    height: 10%;
+    border-top: solid 1px black;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #E6DFDF;
+}
+
+.img-contain {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.bottom-send input {
+    padding: 1%;
+    border: solid 1px black;
+    border-radius: 20px;
+    height: 70%;
+    width: 90%;
+}
+
+.body-message {
+    width: 100%;
+    height: 82%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.user-message {
+    width: 95%;
+    height: auto;
+    padding: 1%;
+    text-align: left;
+    margin-bottom: .5%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+  
+.user-message p {
+    width: auto;
+    max-width: 70%;
+    word-wrap: break-word;
+    border: solid 1px blue;
+    padding: .5%;
+    border-radius: 20px;
+    color: white;
+    background-color: blue;
+    font-size: .9rem;
+}
+  
+.admin-message {
+    width: 95%;
+    height: auto;
+    padding: 1%;
+    text-align: left;
+    margin-bottom: .5%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+  
+.admin-message p {
+    width: auto;
+    max-width: 70%;
+    word-wrap: break-word;
+    border: solid 1px #C80000;
+    padding: .5%;
+    border-radius: 20px;
+    color: white;
+    background-color: #C80000;
+    font-size: .9rem;
+}
+  
+.timestamp {
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 

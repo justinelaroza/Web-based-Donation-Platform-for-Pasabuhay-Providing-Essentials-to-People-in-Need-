@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recently Deleted</title>
+    <title>Member's Inquiry</title>
     <link rel="stylesheet" href="dashboard-messages-form.css">
 </head>
     <body>
@@ -24,7 +24,22 @@
                         ?>
                     </div>
                     <div class="right-wrapper">
-                        
+                        <div class="top-send">
+                            <?php 
+                                $QueryMessages->showProfile($_SESSION['userChat']);
+                            ?>
+                        </div>
+                        <div class="body-message">
+                            <?php 
+                                $QueryMessages->displayMessages($_SESSION['userChat']);
+                            ?>
+                        </div>
+                        <div class="bottom-send">
+                            <input type="text" name="chat">
+                            <button class="img-contain">
+                                <img src="../-Pictures/send.png" alt="send">
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -113,6 +113,11 @@
 
     $query->toDelete(); //deleted data taht exceeds 30 days
 
+    if($_SESSION['admin_user'] == false) { //para di ka makapunta sa page nato pag di kapa naka login
+        header("Location: ../Admin_Login/admin-login-form.php"); 
+        exit();
+    }
+
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['recoverButton'])){
         $registerId = $_POST['recoverButton']; // hol neto yung register id nung na pic na row
         $query->recoverUser($registerId);

@@ -6,6 +6,11 @@
         }
     }
 
+    if($_SESSION['admin_user'] == false) { //para di ka makapunta sa page nato pag di kapa naka login
+        header("Location: ../Admin_Login/admin-login-form.php"); 
+        exit();
+    }
+
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout_button'])) {
         session_start();
         $_SESSION['admin_user'] = false;

@@ -154,6 +154,11 @@
 
     $queries->deletePendingExceed(); //deletes donation if exceeded 14 days prior sa donation date estimate
 
+    if($_SESSION['admin_user'] == false) { //para di ka makapunta sa page nato pag di kapa naka login
+        header("Location: ../Admin_Login/admin-login-form.php"); 
+        exit();
+    } 
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel-button'])) { // cancel donation form show
         $_SESSION['id'] = $_POST['cancel-button'];
         $_SESSION['showCancel'] = DISPLAY_BLOCK;

@@ -154,11 +154,20 @@
         }
 
         public function checkAndUpdate($input, $registerId, $column) {
-            if (!empty(trim($input))) {
+            try {
+                if (!empty(trim($input))) {
                 //register
                 $stmt = $this->db->prepare("UPDATE register_data SET $column = ? WHERE register_id = ?");
                 $stmt->bind_param('si', $input, $registerId);
                 $stmt->execute();
+                }
+            } catch (mysqli_sql_exception $e) {
+                if ($e->getCode() === 1062) { // Error code for duplicate entry
+                    echo "Error: The username data already exists. Please choose a different value.";
+                } else {
+                    // For other errors, show a generic message
+                    echo "An error occurred. Please try again later.";
+                }
             }
         }
 
