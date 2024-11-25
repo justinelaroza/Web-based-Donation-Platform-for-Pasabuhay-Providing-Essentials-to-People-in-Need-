@@ -1,0 +1,134 @@
+@import url('../-Fonts/Cinzel/Cinzel-VariableFont_wght.ttf');
+@import url('../-Fonts/Bebas_Neue/BebasNeue-Regular.ttf');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    background-color: #F0F0F0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+    width: auto;
+    border-bottom: 1px black solid;
+}
+
+.image-container {
+    margin-left: 1.5%;
+    height: 75%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.image-container label {
+    color: #403A34;
+    margin-left: -9%;
+    margin-top: 6%;
+    font-weight: bold;
+    font-family: Cinzel;
+    font-size: .8rem;
+}
+
+.image-container img {
+    height: 100%;
+    width: auto;
+}
+
+.nav-bar {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav ul li {
+    list-style: none;
+    height: 100%;
+    width: auto;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: Cinzel;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.733);
+}
+
+.profile-wrapper{
+    height: 100%;
+    width: 10%;
+    border-left: 1px black solid;
+    background-color: #E6DFDF;
+}
+
+.profile-wrapper button {
+    border: none;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: transparent;
+    color: black;
+}
+
+.profile-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: BebasNeue, sans-serif;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.profile-image {
+    width: 35%;
+    border: solid 1px black;
+    border-radius: 50%;
+    height: 65%;
+    overflow: hidden;
+}
+
+.profile-image img {
+    height: 100%;
+    width: 100%;
+}
+
+.label-profile {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 5%;
+}
+
+.label-profile label {
+    font-size: .8rem;
+    color: black;
+    cursor: pointer;
+}
+
+.username {
+    white-space: nowrap;       
+    overflow: hidden;      
+    text-overflow: ellipsis;       
+    max-width: 100%;           
+    display: inline-block;         
+}
+
+
+

@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html::-webkit-scrollbar {
+    width: 8px; /* Set scrollbar width */
+    height: 8px; /* Set scrollbar height for horizontal scroll */
+  }
+  
+  html::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color of the scrollbar track */
+    border-left: 1px solid black;
+  }
+  
+  html::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scroll thumb */
+  }
+
+.whole-upper {
+  width: 99.6vw;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: url(../-Pictures/pic6.jpg) ;
+  background-size: cover;                  
+  background-repeat: no-repeat;     
+  background-position: center;         
+}
+
+.upper-text {
+  width: 99.6vw;
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-top: 1px black solid;
+  border-bottom: 1px black solid;
+  background-color: white;
+}
+
+.upper-text h2 {
+  margin-bottom: 1%;
+  color: #403A34;
+  font-size: 2.5rem;
+}
+
+.upper-text p {
+  color: #403A34;
+  font-size: 1.1rem;
+}
+
+.upper-text strong {
+  color: red;
+}
+
+.info-wrapper {
+  width: 99.6vw;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #EDEDED;
+}
+
+.child-info {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.text-info {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  height: 80%;
+}
+
+.text-info p {
+  line-height: 1.6;
+  font-size: 1.2rem;
+  color: #403A34;
+}
+
+.image-info {
+  width: 80%;
+  height: 80%;
+  overflow: hidden;
+  border: solid 10px gray;
+  transform: rotate(8deg);
+
+}
+
+.image-info img, .smaller-pic img {
+  height: 100%;
+  width: auto;
+}
+
+.smaller-pic {
+  position: absolute;
+  width: 45%;
+  height: 40%;
+  overflow: hidden;
+  border: solid 10px gray;
+  z-index: 2;
+  transform: rotate(-10deg);
+  top: -8%;
+  right: 15%;
+}
+
+.become-member {
+  width: 99.6vw;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-top: solid 1px black;
+}
+
+.become-member label {
+  margin-bottom: 2%;
+}
+
+.member-text {
+  width: 50%;
+  height: 10%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #403A34;
+  margin-bottom: 3%;
+}
+
+.member-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1%;
+}
+
+.input-member {
+  width: 80%;
+  height: 60%;
+  border: solid 1px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #E6DFD5;
+}
+
+.input-member .become {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #403A34;
+}
+
+.form-member {
+  width: 80%;
+  height: 70%;
+  margin-left: 7%;
+}
+
+.name-wrapper {
+  width: 100%;
+  height: 22%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  
+}
+
+.name-wrapper .name-first {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+}
+
+.input-member strong {
+  color: red;
+}
+
+.name-wrapper input {
+  padding-left: 2%;
+  border: 1px black solid;
+}
+
+.fullname {
+  width: 90%;
+  height: 100%;
+}
+
+.name-wrapper label {
+  font-weight: bold;
+  font-size: .8rem;
+}
+
+.text p {
+  font-weight: bold;
+  font-size: .8rem;
+  margin-bottom: 1%;
+}
+
+.text {
+  width: 100%;
+  height: 60%;  
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 2%;
+}
+
+.text textarea {
+  height: 100%;
+  width: 95%;
+  padding-left: 1%;
+  padding-top: 1%;
+  padding-right: 3%;
+  border: 1px black solid;
+  resize: none; 
+}
+
+.submit-message {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 12%;
+  margin-top: .5%;
+}
+
+.submit-message button {
+  height: 100%;
+  width: 10%;
+  border: solid 1px black;
+  background-color: #485664;
+  color: white;
+  box-shadow: .5px .5px .4px .5px black;
+  cursor: pointer;
+}
+
+.error-message {
+  width: 95%;
+  margin-top: .3%;
+  color: red;
+}
