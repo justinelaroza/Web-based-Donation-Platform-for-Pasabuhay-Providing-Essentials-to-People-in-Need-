@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.map-container {
+    display: flex;
+    width: 100%;
+    height: auto; /* Adjust to fit the SVG */
+    overflow: hidden;
+    padding: none;
+    position: relative;
+    background-color: rgb(230, 223, 223);
+    border-top: 1px black solid;
+    border-left: 1px black solid;
+    border-right: 1px black solid;
+}
+
+svg {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Constrain SVG to fit within the container */
+    display: block; /* Remove any default inline spacing around SVG */
+}
+
+
+svg path {
+    stroke: black;
+    stroke-width: .5;
+}
+
+svg path:hover {
+    fill: #555555 !important;
+    transition: 0.6s !important;
+    cursor: pointer !important;
+}
+
+.color-container{
+    border: solid 1px black;
+    width: 40%;
+    height: auto;
+    margin: 10% 1% 10% 1%;
+    background-color: white;
+    display: flex;
+    flex-direction: column; /* Stack indicators vertically */
+    overflow-y: auto;
+}
+
+.province-indicator {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    height: 20px;
+    margin: 2% 0 2% 0;
+}
+
+.province-indicator span {
+    font-size: .7rem;
+}
+
+.color-box {
+    width: 10%; /* Width of the color box */
+    height: 80%; /* Height of the color box */
+    margin-right: 5%; /* Space between the color box and the province name */
+    border: 1px black solid;
+    margin-left: 5%;
+}
