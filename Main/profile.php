@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php
+=======
+<?php 
+>>>>>>> e31290af57d9cfc018053e6448395892bfddf42d
     require_once '../Database/db.php';
     session_start();
 
