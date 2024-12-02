@@ -285,7 +285,7 @@
             $uniqueFileName = uniqid() . '_' . $fileName; //baka kasi may magkapareha na pangalan ng picture
             $folder = 'profile/'.$uniqueFileName;
 
-            $path = '../Main/profile/'; //kasi gagamitin to sa ibang folder sa labas
+            $path = '../../Main/profile/'; //kasi gagamitin to sa ibang folder sa labas
             $storePath = $path . $uniqueFileName;
 
             $stmt = $dbProfile->getConnection()->prepare("UPDATE register_data SET profile_picture = ? WHERE username = ?");

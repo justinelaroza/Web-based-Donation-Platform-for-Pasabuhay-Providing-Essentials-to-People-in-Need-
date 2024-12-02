@@ -35,6 +35,8 @@
 
     }
 
+    $db = new DataBase();
+
     //Test if connected to the database
     /*
         $conn = new DataBase();

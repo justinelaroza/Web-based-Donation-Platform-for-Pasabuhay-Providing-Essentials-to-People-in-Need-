@@ -162,7 +162,7 @@
         $age .= ' Yrs Old';
 
         //qrcode
-        $path = '../Main/qr/'; //kasi gagamitin sa dashboard which is nasa labas na folder
+        $path = '../../Main/qr/'; //kasi gagamitin sa dashboard which is nasa labas na folder
         $qrcode = $path.time().".png";
         $message = 
             "Province = ". $province . "\n" . 
@@ -237,7 +237,7 @@
             $uniqueFileName = uniqid() . '_' . $fileName; //baka kasi may magkapareha na pangalan ng picture
             $folder = 'images/'.$uniqueFileName;
 
-            $path = '../Main/images/'; //kasi gagamitin to sa ibang folder sa labas
+            $path = '../../Main/images/'; //kasi gagamitin to sa ibang folder sa labas
             $storePath = $path . $uniqueFileName;
 
             $_SESSION['successfulDonationCash'] = 'Thank you for your kind donation! Kindly head to your profile to see the status of your donation.';

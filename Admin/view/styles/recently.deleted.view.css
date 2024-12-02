@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 body {
@@ -45,21 +46,23 @@ body {
     padding-left: 3%;
 }
 
+/*copy until this*/
+
 .table-wrapper {
+    height: 70%;
     width: 100%;
-    height: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0 auto;
 }
 
 .table {
+    height: 100%;
     width: 95%;
     border: solid 2px black;
-    height: 95%;
+    margin: 0 auto;
+    margin-top: none;
     background-color: white;
     overflow: auto; 
-}   
+}
 
 .table table {
     width: 100%;
@@ -69,101 +72,57 @@ body {
 .table th {
     background-color: #4CAF50;
     color: black; 
-    padding: 2px;
+    padding: 12px;
     height: 20px;
-    text-align: center;
+    text-align: left;
     border: solid 1px black;
     position: sticky;
     top: 0;
 }
 
 .table td {
-    padding-left: 1%;
+    padding: 1% 1% 1% 1%;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     border-left: 1px solid black;
     font-size: .9rem;
     max-width: 200px;
-    height: 50px;
 }
 
-.button-td {
+.recover {
+    background-color: greenyellow;
+    box-shadow: 1px 1px 1px 1px black;
+    border: 1px black solid;
+    color: black;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: auto;
 }
 
-.button-container {
-    width: 30%; 
-    height: 100%;
-    display: flex; 
-    justify-content: center; 
+.datas{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    word-wrap: break-word; /* Allows words to wrap onto the next line */
+    word-break: break-word; /* Breaks long words to fit within cell */
+    white-space: normal;   /* Enables wrapping at word boundaries */
+    line-height: 1.5;
 }
 
-.button-container button {
-    height: 60%;
-    width: 70%;
-    cursor: pointer;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    border: solid 1px black;
-    border-radius: 5px;
-}
-
-.button-container img {
-    width: 25px;
-    height: auto;
-}
-
-.show-confirmation {
+.table img {
+    height: 100%;
     width: 100%;
-    height: 4%;
-    display: none;
+    margin: 1px;
 }
 
-.message {
-    height: 75%;
-    width: 30%;
-    border: solid 1px black;
-    display: flex; 
-    text-align: center;
-    justify-content: center; 
-    margin: 0 auto;
-    align-items: center;
-    box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(99, 98, 98);
-    background-color: rgba(245, 245, 245, 0.541);
-}
-
-.message button {
-    background-color: green;
-    box-shadow: 1px 1px 1px 1px black;
-    border: 1px green solid;
-    color: white;
-    cursor: pointer;
-    margin-left: 3%;
-    width: 13%;
-}
-
-.message p {
-    font-style: italic;
-}
-
-.orange {
-    width: 66%;
-    height: 5px;
-    border: solid .5px black;
-    background-color: orange;
-}
+/*sort*/
 
 .form-sort {
     display: flex;
     justify-content: right;
     align-items: center;
-    margin: 1% 0 0 0;
+    margin: 1% 0 .5% 0;
 }
 
 .sort-container{ 
@@ -240,67 +199,19 @@ body {
     box-shadow: 0 0 5px rgba(0, 115, 230, 0.5); /* Light blue shadow on focus */
 }
 
-.dissappear {
+.label_recently_deleted{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1% 0 0 2.5%;
     width: 95%;
-    height: 40%;
-    margin: 0 auto;
-    display: none;
+    text-align: center;
+    font-size: 1.5rem;  
+    font-family:'Times New Roman', Times, serif;
 }
-
-.extra-wrapper {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 1%;
-}
-
-.additional-info {
-    border: solid 1px black;
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 10px 10px gray;
-}
-
-.arrow {
-    border: solid 2px black;
-    background-color: wheat;
-    border-radius: 20px;
-    width: 20%;
-    height: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.arrow label {
-    margin-left: 5%;
-}
-
-.arrow p {
-    font-size: 1.2rem;
+.label_recently_deleted label {
+    padding: .5% 0 .5% 0;
+    border-bottom: 2px solid black;
+    color: red;
     font-weight: bold;
-}
-
-.details {
-    height: 90%;
-    width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.details h2 {
-    margin-bottom: 10%;
-}
-
-.details img {
-    height: 100%;
-    width: auto;
 }
