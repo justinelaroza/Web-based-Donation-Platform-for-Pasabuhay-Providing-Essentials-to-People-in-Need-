@@ -153,7 +153,12 @@ class MessagesQuery {
     public function lastMessagedPerson() {
         $query = "SELECT username FROM messages ORDER BY timestamp DESC LIMIT 1";
         $result = $this->conn->query($query);
-        return $result;
+
+        if ($row = $result->fetch_assoc()) {
+            return $row['username']; // Set the last messaged user as default
+        } else {
+            return null;
+        }
     }
 
 }

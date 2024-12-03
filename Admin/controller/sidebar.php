@@ -10,7 +10,6 @@
     Util::checkIfLoggedIn();
 
     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout_button'])) {
-        session_start();
         $_SESSION['admin_user'] = false;
         header("Location: login.php");
         exit();

@@ -10,15 +10,8 @@
 
     // Set a default value for userChat if not already set
     if (!isset($_SESSION['userChat'])) {
-
         // Query to get the username of the last person who messaged
-        $result = $query->lastMessagedPerson();
-
-        if ($row = $result->fetch_assoc()) {
-            $_SESSION['userChat'] = $row['username']; // Set the last messaged user as default
-        } else {
-            $_SESSION['userChat'] = null;
-        }
+        $_SESSION['userChat'] = $query->lastMessagedPerson();
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -33,8 +26,7 @@
             $chat = $message = filter_input(INPUT_POST, 'chat', FILTER_SANITIZE_SPECIAL_CHARS);;
 
             if(empty(trim($chat))) {
-                header("Location: messages.php");
-                exit();
+                Util::redirectExit();
             }
         
             $user = $_SESSION['userChat']; //kunin lang value sa session
