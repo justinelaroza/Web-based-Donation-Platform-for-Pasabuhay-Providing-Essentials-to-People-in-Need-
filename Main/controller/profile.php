@@ -14,9 +14,9 @@
     function storeProfilePic($fileName, $tempName) {
 
         $uniqueFileName = uniqid() . '_' . $fileName; //baka kasi may magkapareha na pangalan ng picture
-        $folder = '../profile/'.$uniqueFileName;
+        $folder = '../_upload/profile/'.$uniqueFileName;
 
-        $path = '../../Main/profile/'; //kasi gagamitin to sa ibang folder sa labas
+        $path = '../../Main/_upload/profile/'; //kasi gagamitin to sa ibang folder sa labas
         $storePath = $path . $uniqueFileName;
 
         move_uploaded_file($tempName, $folder); //basically from temporary location to a permanent location kasi auto ang php na nilalagay sa temp loc mga uploaded files

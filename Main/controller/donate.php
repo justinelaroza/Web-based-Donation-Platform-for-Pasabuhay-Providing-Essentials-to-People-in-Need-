@@ -78,9 +78,9 @@
 
         public function storeTxPic($fileName, $tempName) {
             $uniqueFileName = uniqid() . '_' . $fileName; //baka kasi may magkapareha na pangalan ng picture
-            $folder = '../images/'.$uniqueFileName;
+            $folder = '../_upload/payment/'.$uniqueFileName;
 
-            $path = '../../Main/images/'; //kasi gagamitin to sa ibang folder sa labas
+            $path = '../../Main/_upload/payment/'; //kasi gagamitin to sa ibang folder sa labas
             $storePath = $path . $uniqueFileName;
             
             move_uploaded_file($tempName, $folder); //basically from temporary location to a permanent location kasi auto ang php na nilalagay sa temp loc mga uploaded files
@@ -201,7 +201,7 @@
             $age .= ' Yrs Old';
 
             //qrcode
-            $path = '../../Main/qr/'; //kasi gagamitin sa dashboard which is nasa labas na folder
+            $path = '../../Main/_upload/qr/'; //kasi gagamitin sa dashboard which is nasa labas na folder
             $qrcode = $path.time().".png";
 
             $extras->createQr($province, $specificChurch, $firstName, $middleName, $lastName, $email, $contactNumber, $age, $gender, $typeOfGoods, $quantity, $weight, $condition, $handlingCondition, $donationDate, $qrcode);
