@@ -1,7 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../Database/db.php';
-    require_once __DIR__ . '/utility/util.php';
-    require_once __DIR__ . '/../model/index.model.php';
+    require_once __DIR__ . '/../controller/config/autoload.php';
     session_start();
  
     $query = new IndexQueries($db);
@@ -48,6 +46,7 @@
             Util::redirectExit();
         }
     }
+
+    require_once __DIR__ . "/../view/index.view.php";
 ?>
 
-<?php require_once __DIR__ . "/../view/index.view.php"; ?>

@@ -24,12 +24,7 @@
                 <input type="password" id="password" name="password" placeholder="PASSWORD" required>
             </div>
             <div style="margin-bottom: 5%; color: red;">
-                <?php 
-                    if (isset($_SESSION['error_message'])) {
-                        echo $_SESSION['error_message'];
-                        unset($_SESSION['error_message']);
-                    } 
-                ?>
+                <?php Util::session('error_message'); ?>
             </div>
             <button name="login_button" type="submit" class="login-button">LOGIN</button>
         </form>

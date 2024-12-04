@@ -1,7 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../Database/db.php';
-    require_once __DIR__ . '/utility/util.php';
-    require_once __DIR__ . '/../model/recently.deleted.model.php';
+    require_once __DIR__ . '/../controller/config/autoload.php';
     session_start();
 
     $query = new RecentlyQuery($db);
@@ -17,6 +15,5 @@
 
     $sortOptions = isset($_POST['sortOptions']) ? $_POST['sortOptions'] : 'register_id';
 
+    require_once __DIR__ . "/../view/recently.deleted.view.php";
 ?>
-
-<?php require_once __DIR__ . "/../view/recently.deleted.view.php"; ?>

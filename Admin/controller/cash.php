@@ -1,7 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../Database/db.php';
-    require_once __DIR__ . '/utility/util.php';
-    require_once __DIR__ . '/../model/cash.model.php';
+    require_once __DIR__ . '/../controller/config/autoload.php';
     
     session_start();
 
@@ -43,6 +41,5 @@
         }
     }
 
+    require_once __DIR__ . "/../view/cash.view.php";
 ?>
-
-<?php require_once __DIR__ . "/../view/cash.view.php"; ?>

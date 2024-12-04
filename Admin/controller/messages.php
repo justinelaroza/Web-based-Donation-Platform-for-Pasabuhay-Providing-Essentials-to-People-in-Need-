@@ -1,7 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../Database/db.php';
-    require_once __DIR__ . '/utility/util.php';
-    require_once __DIR__ . '/../model/messages.model.php';
+    require_once __DIR__ . '/../controller/config/autoload.php';
     session_start();
 
     $query = new MessagesQuery($db);
@@ -39,6 +37,5 @@
 
     }
 
+    require_once __DIR__ . "/../view/messages.view.php"
 ?>
-
-<?php require_once __DIR__ . "/../view/messages.view.php"; ?>

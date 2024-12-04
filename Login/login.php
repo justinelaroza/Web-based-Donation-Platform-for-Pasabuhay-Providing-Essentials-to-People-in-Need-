@@ -28,7 +28,7 @@
                     $sessionArray = ['firstname', 'lastname', 'address', 'email', 'userRegister', 'origPass'];
                     RedundancyUtil::unsetSession($sessionArray);
                     $_SESSION['username'] = $username; //for each profile validation
-                    header('Location: ../Main/what-we-do.php'); //go to main page
+                    header('Location: ../Main/controller/index.php'); //go to main page
                     exit(); // used to stop further execution of code na pede mag interfere sa redirection
                 }
                 else { //pass is incorrect

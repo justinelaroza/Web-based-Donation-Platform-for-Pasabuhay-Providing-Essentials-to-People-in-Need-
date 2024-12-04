@@ -1,6 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../Database/db.php';
-    require_once __DIR__ . '/../model/login.model.php';
+    require_once __DIR__ . '/../controller/config/autoload.php';
     session_start();
 
     $loginQuery = new LoginQuery($db);
