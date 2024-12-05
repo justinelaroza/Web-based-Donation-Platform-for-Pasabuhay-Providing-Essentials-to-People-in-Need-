@@ -132,8 +132,7 @@
     $extras = new DonationExtras();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['goods-button'])) { //goods form
-        $_SESSION['show-money'] = DISPLAY_NONE;
-        $_SESSION['hide-goods'] = DISPLAY_BLOCK;
+        Util::hideReveal('show-money', 'hide-goods');
     }
 
         $province = isset($_POST['province']) ? $_POST['province'] : 'Abra';
@@ -212,8 +211,7 @@
         }
     //money donation
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['money-button'])) { //money form
-        $_SESSION['show-money'] = DISPLAY_BLOCK;
-        $_SESSION['hide-goods'] = DISPLAY_NONE;
+        Util::hideReveal('hide-goods', 'show-money');
     }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['donateCash'])) {

@@ -8,8 +8,7 @@
 
         if(isset($_POST['customer-button'])) { //will diplay the chat box after clicking the customer support
 
-            $_SESSION['hideSupport'] = DISPLAY_NONE;
-            $_SESSION['showChat'] = DISPLAY_BLOCK;
+            Util::hideReveal('hideSupport', 'showChat');
 
             if (isset($_SESSION['username'])) {
 
@@ -23,17 +22,14 @@
         }
 
         if(isset($_POST['back-bttn'])) { //maalis chatbox mababalik sa customer support
-
-            $_SESSION['hideSupport'] = DISPLAY_BLOCK;
-            $_SESSION['showChat'] = DISPLAY_NONE;
+            
+            Util::hideReveal('showChat', 'hideSupport');
         }
 
         if(isset($_POST['send-button'])) { //send button ng message
 
             // Keep the chatbox open after sending a message
-            $_SESSION['hideSupport'] = DISPLAY_NONE;
-            $_SESSION['showChat'] = DISPLAY_BLOCK;
-
+            Util::hideReveal('hideSupport', 'showChat');
 
             if (isset($_SESSION['username'])) {
 

@@ -5,5 +5,4 @@
         $baseName = pathinfo(basename($_SERVER['PHP_SELF']), PATHINFO_FILENAME);
         return "../view/styles/{$baseName}.view.css";
     }
-
 ?>
