@@ -3,29 +3,29 @@
 class IndexQueries {
 
     private $db;
+    private $tb_name = "register_data";
+    private $tb_name2 = "recently_deleted";
     
     public function __construct(DataBase $conn){
         $this->db = $conn->getConnection();
     }
 
     public function sortBy($column) {
-        $query = "SELECT * FROM register_data ORDER BY $column";
-        $result = $this->db->query($query); //parang nag mysqli_query lang
-        return $result;
+        $query = "SELECT * FROM {$this->tb_name} ORDER BY $column";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(); 
+        return $stmt->fetchAll(); 
     }
 
     public function searchData($search) {
 
-        $query = "SELECT * FROM register_data WHERE email LIKE ?";
-
-        $searchWild = $search . '%';
+        $query = "SELECT * FROM {$this->tb_name} WHERE email LIKE :email";
         $stmt = $this->db->prepare($query);
+        $searchWild = $search . '%';
         
-        $stmt->bind_param('s', $searchWild);
+        $stmt->bindParam(':email', $searchWild);
         $stmt->execute();   
-        $result = $stmt->get_result();
-        
-        return $result;
+        return $stmt->fetchAll();
     }
 
 
@@ -50,9 +50,9 @@ class IndexQueries {
             $result = $this->sortBy('register_id');
         }
 
-        if ($result->num_rows > 0) {
+        if ($result) {
 
-            while ($row = $result->fetch_assoc()) {
+            foreach ($result as $row) {
 
                 echo "<tr>
                         <td style = 'width: 20px'>" . $row["register_id"] . "</td>
@@ -134,24 +134,40 @@ class IndexQueries {
     }
 
     public function deleteUser($data) {
-        //save muna to to recently deleted
-        $querySave = "INSERT INTO recently_deleted (register_id, first_name, last_name, address, email, username, password, date_created)
-        SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM register_data WHERE username = '$data'";
 
-        $this->db->query($querySave);
-        //delete data from table
-        $queryDeleteReg = "DELETE FROM register_data WHERE username = '$data'";
+        try {
+            $this->db->beginTransaction();
 
-        $this->db->query($queryDeleteReg);
+            //save muna to to recently deleted
+            $querySave = "INSERT INTO {$this->tb_name2} (register_id, first_name, last_name, address, email, username, password, date_created) SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM {$this->tb_name} WHERE username = :save_username";
+            $stmtSave = $this->db->prepare($querySave);
+            $stmtSave->bindParam(':save_username', $data);
+            $stmtSave->execute();  
+
+            //delete data from table
+            $queryDelete = "DELETE FROM {$this->tb_name} WHERE username = :del_username";
+            $stmtDel = $this->db->prepare($queryDelete);
+            $stmtDel->bindParam(':del_username', $data);
+            $stmtDel->execute(); 
+            
+            $this->db->commit();
+        }
+        catch (Exception $e) {
+            // Rollback the transaction if something goes wrong
+            $this->db->rollBack();
+            echo "Failed: " . $e->getMessage();
+        }
     }
 
     public function checkAndUpdate($input, $registerId, $column) { //pag edit ng data
         try {
             if (!empty(trim($input))) {
-            //register
-            $stmt = $this->db->prepare("UPDATE register_data SET $column = ? WHERE register_id = ?");
-            $stmt->bind_param('si', $input, $registerId);
-            $stmt->execute();
+                //register
+                $query = "UPDATE {$this->tb_name} SET $column = :input WHERE register_id = :register_id";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':input', $input);
+                $stmt->bindParam(':register_id', $registerId);
+                $stmt->execute(); 
             }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() === 1062) { // Error code for duplicate entry
@@ -165,36 +181,56 @@ class IndexQueries {
 
     public function countAll($table) {
         $query = "SELECT COUNT(*) AS total FROM $table";
-        $result = $this->db->query($query);
-        $row = $result->fetch_assoc(); 
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
+
+        if ($row === false) {
+            return 'No account'; // No results, return null or handle the error as needed
+        }
+
         return $row['total'];
     }
 
     public function dailyCreated() {
-        $query = "SELECT COUNT(*) AS new FROM register_data WHERE DATE(date_created) = CURDATE()";
-        $result = $this->db->query($query);
-        $row = $result->fetch_assoc(); 
+        $query = "SELECT COUNT(*) AS new FROM {$this->tb_name} WHERE DATE(date_created) = CURDATE()";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
         return $row['new'];
     }
 
     public function AvgRegistration() {
-        $query = "SELECT ROUND(AVG(DATEDIFF(CURDATE(), date_created)), 2) AS ave FROM register_data";
-        $result = $this->db->query($query);
-        $row = $result->fetch_assoc(); 
+        $query = "SELECT ROUND(AVG(DATEDIFF(CURDATE(), date_created)), 2) AS ave FROM {$this->tb_name}";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
         return $row['ave'];
     }
 
     public function showLastDeletedAcc() {
-        $query = "SELECT email AS recent FROM recently_deleted ORDER BY date_deleted DESC LIMIT 1";
-        $result = $this->db->query($query);
-        $row = $result->fetch_assoc(); 
+        $query = "SELECT email AS recent FROM {$this->tb_name2} ORDER BY date_deleted DESC LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
+
+        if ($row === false) {
+            return 'No such account'; // No results, return null or handle the error as needed
+        }
+
         return $row['recent'];
     }
 
     public function showLastCreatedAcc() {
-        $query = "SELECT email AS recent FROM register_data ORDER BY date_created DESC LIMIT 1";
-        $result = $this->db->query($query);
-        $row = $result->fetch_assoc(); 
+        $query = "SELECT email AS recent FROM {$this->tb_name} ORDER BY date_created DESC LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(); 
+
+        if ($row === false) {
+            return 'No such account'; // No results, return null or handle the error as needed
+        }
+
         return $row['recent'];
     }
 

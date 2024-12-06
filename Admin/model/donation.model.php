@@ -3,28 +3,28 @@
 class DonationQueries {
 
     private $db;
+    private $tb_name = "goods_donation";
 
     public function __construct(DataBase $conn){
         $this->db = $conn->getConnection();
     }
 
     public function sortBy($column = 'donation_date') {
-        $query = "SELECT * FROM goods_donation ORDER BY CASE status WHEN 'At Church' THEN 0 WHEN 'Pending' THEN 1 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END, $column";
-        $result = $this->db->query($query); //parang nag mysqli_query lang
-        return $result;
+        $query = "SELECT * FROM {$this->tb_name} ORDER BY CASE status WHEN 'At Church' THEN 0 WHEN 'Pending' THEN 1 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END, $column";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(); 
+        return $stmt->fetchAll();
     }
 
     public function searchData($search) {
 
-        $query = "SELECT * FROM goods_donation WHERE first_name LIKE ?";
-        $searchWild = $search . '%';
+        $query = "SELECT * FROM {$this->tb_name} WHERE first_name LIKE :first_name";
         $stmt = $this->db->prepare($query);
+        $searchWild = $search . '%';
         
-        $stmt->bind_param('s', $searchWild);
+        $stmt->bindParam(':first_name', $searchWild);
         $stmt->execute();   
-        $result = $stmt->get_result();
-        
-        return $result;
+        return $stmt->fetchAll();
     }
 
     public function showDonation() {
@@ -47,22 +47,17 @@ class DonationQueries {
             $result = $this->sortBy();
         }
 
-        if ($result->num_rows > 0) {
+        if ($result) {
 
-            while ($row = $result->fetch_assoc()) {
+            foreach ($result as $row) {
 
-                if($row['status'] == 'Completed') { //yung kulay sa baba nila for readability
-                    $color = 'style="background-color: green;"';
-                } 
-                elseif($row['status'] == 'At Church') {
-                    $color = 'style="background-color: yellow;"'; 
-                }
-                elseif($row['status'] == 'Cancelled') {
-                    $color = 'style="background-color: red;"'; 
-                }
-                else {
-                    $color = null;
-                }
+                $colors = [
+                    'Completed' => 'style="background-color: green;"',
+                    'At Church' => 'style="background-color: yellow;"',
+                    'Cancelled' => 'style="background-color: red;"'
+                ];
+                
+                $color = $colors[$row['status']] ?? null;
 
                 echo "<tr>
                 <td>" . $row['goods_id'] . "</td>
@@ -98,37 +93,43 @@ class DonationQueries {
     }
 
     public function deleteDonation($input) {
-        $query = "DELETE FROM goods_donation WHERE goods_id = '$input'";
-        $this->db->query($query);
+        $query = "DELETE FROM {$this->tb_name} WHERE goods_id = :goods_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':goods_id', $input);
+        $stmt->execute(); 
     }
 
     public function completeDonation($input) {
-        $query = "UPDATE goods_donation SET status = 'Completed' WHERE goods_id = '$input'";
-        $this->db->query($query);
+        $query = "UPDATE {$this->tb_name} SET status = 'Completed' WHERE goods_id = :goods_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':goods_id', $input);
+        $stmt->execute();
     }
 
     public function showAddDetails($input) {
-        $query = "SELECT email, contact_number, age, gender, quantity, weight, condition_goods, handling_instruction, updates FROM goods_donation WHERE goods_id = '$input'";
-        $result = $this->db->query($query);
-
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc(); // Return all details as an associative array
-        }
+        $query = "SELECT email, contact_number, age, gender, quantity, weight, condition_goods, handling_instruction, updates FROM {$this->tb_name} WHERE goods_id = :goods_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':goods_id', $input);
+        $stmt->execute();
+        return $stmt->fetch(); // Return all details as an associative array
     }
 
     public function showQr($input) { //pinapakita image ng qr from db path ng qr
-        $query = "SELECT qr FROM goods_donation WHERE goods_id = '$input'";
-        $result = $this->db->query($query);
+        $query = "SELECT qr FROM {$this->tb_name} WHERE goods_id = :goods_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':goods_id', $input);
+        $stmt->execute();
+        $row = $stmt->fetch();
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+        if ($row) {
             return $row['qr'];
         }
     }
 
     public function deletePendingExceed() { //pag yung donation date at di pa napupunta sa church and donation auto delete pag nakalagpas ng 14days 
-        $query = "DELETE FROM goods_donation WHERE status = 'Pending' AND DATEDIFF(CURDATE(), donation_date) >= 14";
-        $this->db->query($query);
+        $query = "DELETE FROM {$this->tb_name} WHERE status = 'Pending' AND DATEDIFF(CURDATE(), donation_date) >= 14";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
     }
 
 }

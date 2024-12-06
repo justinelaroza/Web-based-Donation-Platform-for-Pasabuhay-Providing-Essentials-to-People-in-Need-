@@ -3,17 +3,18 @@
 class LoginQuery {
 
     private $db;
+    private $tb_name = "admin_table";
 
     public function __construct(DataBase $conn){
         $this->db = $conn->getConnection();
     }
 
     public function checkCredentials($username) {
-        $stmt = $this->db->prepare("SELECT admin_user, admin_pass FROM admin_table WHERE admin_user = ?");
-        $stmt->bind_param('s', $username);
+        $query = "SELECT admin_user, admin_pass FROM {$this->tb_name} WHERE admin_user = :admin_user";
+        $stmt = $this->db->prepare($query); 
+        $stmt->bindParam(':admin_user', $username); 
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result;
+        return $stmt->fetch(); 
     }
 }
 

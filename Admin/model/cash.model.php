@@ -3,28 +3,27 @@
 class CashQueries {
 
     private $db;
+    private $tb_name = "money_donation";
 
     public function __construct(DataBase $conn){
         $this->db = $conn->getConnection();
     }
 
     public function sortBy($column = 'money_id') {
-        $query = "SELECT * FROM money_donation ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 2 END, $column";
-        $result = $this->db->query($query); //parang nag mysqli_query lang
-        return $result;
+        $query = "SELECT * FROM {$this->tb_name} ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 2 END, $column";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(); 
+        return $stmt->fetchAll(); 
     }
 
     public function searchData($search) {
-        $query = "SELECT * FROM money_donation WHERE transaction_number LIKE ? ";
-
-        $searchWild = $search . '%';
+        $query = "SELECT * FROM {$this->tb_name} WHERE transaction_number LIKE :tx ";
         $stmt = $this->db->prepare($query);
-        
-        $stmt->bind_param('s', $searchWild);
+        $searchWild = $search . '%';
+
+        $stmt->bindParam(':tx', $searchWild);
         $stmt->execute();   
-        $result = $stmt->get_result();
-        
-        return $result;
+        return $stmt->fetchAll();
     }
 
     public function showDonation() {
@@ -48,15 +47,11 @@ class CashQueries {
             $result = $this->sortBy();
         }
 
-        if ($result->num_rows > 0) {
+        if ($result) {
 
-            while ($row = $result->fetch_assoc()) {
+            foreach ($result as $row) {
 
-                if($row['status'] == 'Completed') {
-                    $green = 'style="background-color: green;"';
-                } else {
-                    $green = null;
-                }
+                $green = ($row['status'] == 'Completed') ? 'style="background-color: green;"' : '';
 
                 echo "<tr>
                 <td>" . $row['money_id'] . "</td>
@@ -89,26 +84,31 @@ class CashQueries {
     }
 
     public function deleteDonation($input) {
-        $query = "DELETE FROM money_donation WHERE money_id = '$input'";
-        $this->db->query($query);
+        $query = "DELETE FROM {$this->tb_name} WHERE money_id = :money_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':money_id', $input);
+        $stmt->execute(); 
     }
 
     public function completeDonation($input) {
-        $query = "UPDATE money_donation SET status = 'Completed' WHERE money_id = '$input'";
-        $this->db->query($query);
+        $query = "UPDATE {$this->tb_name} SET status = 'Completed' WHERE money_id = :money_id";
+        $stmt = $this->db->prepare($query); 
+        $stmt->bindParam(':money_id', $input); 
+        $stmt->execute();
     }
 
     public function showPic($input) {
-        $query = "SELECT image FROM money_donation WHERE money_id = '$input'";
-        $result = $this->db->query($query);
+        $query = "SELECT image FROM {$this->tb_name} WHERE money_id = :money_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':money_id', $input);
+        $stmt->execute(); 
+        $row= $stmt->fetch();
 
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                return $row['image']; // Return the image path or URL
-            } 
-            else {
-                return '';
-            }
+        if ($row) {
+            return $row['image']; 
+        } else {
+            return ''; 
+        }
     }
 }
 

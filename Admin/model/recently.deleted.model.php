@@ -3,34 +3,34 @@
 class RecentlyQuery {
 
     private $db;
+    private $tb_name = "recently_deleted";
+    private $tb_name2 = "register_data";
 
     public function __construct(DataBase $conn){
         $this->db = $conn->getConnection();
     }
 
     public function toDelete() {
-        $query = "DELETE FROM recently_deleted WHERE DATEDIFF(CURDATE(), date_deleted) >= 30";
-        $this->db->query($query);
+        $query = "DELETE FROM {$this->tb_name} WHERE DATEDIFF(CURDATE(), date_deleted) >= 30";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
     }
 
     public function sortBy($column) {
-        $query = "SELECT * FROM recently_deleted ORDER BY $column";
-        $result = $this->db->query($query); //parang nag mysqli_query lang
-        return $result;
+        $query = "SELECT * FROM {$this->tb_name} ORDER BY $column";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(); 
+        return $stmt->fetchAll(); 
     }
 
     public function searchData($search) {
-
-        $query = "SELECT * FROM recently_deleted WHERE email LIKE ?";
-
-        $searchWild = $search . '%';
+        $query = "SELECT * FROM {$this->tb_name} WHERE email LIKE :email";
         $stmt = $this->db->prepare($query);
+        $searchWild = $search . '%';
         
-        $stmt->bind_param('s', $searchWild);
+        $stmt->bindParam(':email', $searchWild);
         $stmt->execute();   
-        $result = $stmt->get_result();
-        
-        return $result;
+        return $stmt->fetchAll();
     }
 
     public function showDeleted() {
@@ -54,9 +54,9 @@ class RecentlyQuery {
             $result = $this->sortBy('register_id');
         }
 
-        if ($result->num_rows > 0) {
+        if ($result) {
 
-            while ($row = $result->fetch_assoc()) {
+            foreach ($result as $row) {
 
                 echo "<tr>
                 <td style = 'width: 20px'>" . $row["register_id"] . "</td>
@@ -93,15 +93,31 @@ class RecentlyQuery {
     }
 
     public function recoverUser($data) {
-        //save muna to register data
-        $querySaveReg = "INSERT INTO register_data (register_id, first_name, last_name, address, email, username, password, date_created)
-        SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM recently_deleted WHERE register_id = '$data'";
-        $this->db->query($querySaveReg);
 
-        //delete data from recently deleted
-        $queryDelete = "DELETE FROM recently_deleted WHERE register_id = '$data'";
-        $this->db->query($queryDelete);
+        try {
+            $this->db->beginTransaction();
+
+            //save muna to register data
+            $querySave = "INSERT INTO {$this->tb_name2} (register_id, first_name, last_name, address, email, username, password, date_created) SELECT register_id, first_name, last_name, address, email, username, password, date_created FROM {$this->tb_name} WHERE register_id = :save_data";
+            $stmtSave = $this->db->prepare($querySave);
+            $stmtSave->bindParam(':save_data', $data);
+            $stmtSave->execute();
+
+            //delete data from recently deleted
+            $queryDelete = "DELETE FROM {$this->tb_name} WHERE register_id = :del_data";
+            $stmtDel = $this->db->prepare($queryDelete);
+            $stmtDel->bindParam(':del_data', $data);
+            $stmtDel->execute();
+
+            $this->db->commit();
+        }
+        catch (Exception $e) {
+            // Rollback the transaction if something goes wrong
+            $this->db->rollBack();
+            echo "Failed: " . $e->getMessage();
+        }
     }
+
 }
 
 ?>

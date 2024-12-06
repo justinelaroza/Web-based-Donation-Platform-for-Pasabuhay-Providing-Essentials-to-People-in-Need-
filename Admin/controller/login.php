@@ -9,10 +9,10 @@
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $result = $loginQuery->checkCredentials($username);
+        $row = $loginQuery->checkCredentials($username);
 
-        if($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+        if($row) {
+           
             $hashPass = $row['admin_pass'];
 
             if(password_verify($password, $hashPass)) {

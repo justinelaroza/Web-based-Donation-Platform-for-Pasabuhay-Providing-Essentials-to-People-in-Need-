@@ -1,5 +1,4 @@
 <?php 
-
     class DataBase {
 
         private $db_server;
@@ -9,28 +8,25 @@
         private $connection;
 
         public function __construct($db_server = "localhost", $db_user = "root", $db_pass = "", $db_name = "pasabuhay_donation") {
-
             $this->db_server = $db_server;
             $this->db_user = $db_user;
             $this->db_pass = $db_pass;
             $this->db_name = $db_name;
 
-            $this->connection = mysqli_connect($this->db_server, $this->db_user, $this->db_pass, $this->db_name);
-
-            if (!$this->connection) {
-                die('Could not connect to the database: ' . mysqli_connect_error());
+            try {
+                $this->connection = new PDO("mysql:host=" . $this->db_server . ";dbname=" . $this->db_name, $this->db_user, $this->db_pass,
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+            } catch (PDOException $exception) {
+                die('Could not connect to the database: ' . $exception->getMessage());
             }
-
         }
 
         public function getConnection() {
             return $this->connection;
         }
 
-        public function __destruct(){ //auto na to pag natapos php script
-            if ($this->connection) { //pag naka open ang connection i c-close
-                mysqli_close($this->connection);
-            }
+        public function __destruct() {
+            $this->connection = null; // Ensure the PDO connection is closed
         }
 
     }
