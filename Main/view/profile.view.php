@@ -71,7 +71,7 @@
                 <img src="<?= $queryGoods->showQr($_SESSION['showPicIdProfile']);?>" alt="additional details" class="image">
             </div>
         </div>
-        <div class="header-label">
+        <div class="header-label" id='goods_header'>
             <h2>Goods Donation</h2>
         </div>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="sort-wrapper">
@@ -121,7 +121,7 @@
         </div>
     </div>
     <div class="all-donation">
-        <div class="header-label">
+        <div class="header-label" id='money_header'>
             <h2>Money Donation</h2>
         </div>
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="sort-wrapper">

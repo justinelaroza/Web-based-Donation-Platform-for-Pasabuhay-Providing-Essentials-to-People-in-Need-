@@ -56,7 +56,7 @@ class QueryGoods{
                 }
 
                 echo "<tr>
-                <form action='profile-form.php' method='post' >
+                <form action='profile.php' method='post' >
                     <td>" . $row['goods_id'] . "</td>
                     <td>" . $row['status'] . " <div class='orange' $color></div> </td>
                     <td>" . $row['province'] . "</td>
@@ -199,7 +199,7 @@ class QueryCash {
                 }
 
                 echo "<tr>
-                    <form action='profile-form.php' method='post' >
+                    <form action='profile.php' method='post' >
                         <td>" . $row['money_id'] . "</td>
                         <td>" . $row['status'] . " <div class='orange' $color ></div> </td>
                         <td>" . $row['first_name'] . "</td>
