@@ -9,15 +9,21 @@ class QueryGoods{
 
     public function sortStatus($status, $username) { //sort status
 
-        if ($status == "All") { //lahat ng donation regardless ng status
-            $query = "SELECT * FROM goods_donation WHERE username = '$username' ORDER BY CASE status WHEN 'At Church' THEN 1 WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END";
-            $result = $this->connection->query($query);
-            return $result;
+        if ($status == "All") {
+            $query = "SELECT * FROM goods_donation WHERE username = :username ORDER BY CASE status WHEN 'At Church' THEN 1 WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END";
+        } else {
+            $query = "SELECT * FROM goods_donation WHERE username = :username AND status = :status ORDER BY CASE status WHEN 'At Church' THEN 1 WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END";
         }
-        //eto specific na status
-        $query = "SELECT * FROM goods_donation WHERE status = '$status' AND username = '$username' ORDER BY CASE status WHEN 'At Church' THEN 1 WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 2 WHEN 'Cancelled' THEN 3 ELSE 4 END";
-        $result = $this->connection->query($query);
-        return $result;
+    
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':username', $username);
+    
+        if ($status != "All") {
+            $stmt->bindParam(':status', $status);
+        }
+    
+        $stmt->execute();
+        return $stmt->fetchAll(); 
     }
 
     public function ongoingDonationGoods($username) {
@@ -33,8 +39,8 @@ class QueryGoods{
             $result = $this->sortStatus('Pending', $username);
         }
 
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
+        if ($result) {
+            foreach ($result as $row) {
 
                 if($row['status'] == 'Completed') { //yung kulay sa baba nila for readability
                     $color = 'style="background-color: green;"';
@@ -101,38 +107,44 @@ class QueryGoods{
     }
 
     public function atChurch($id) { //set status to at church
-        $query = "UPDATE goods_donation SET status = 'At Church' WHERE goods_id = '$id' ";
-        $this->connection->query($query);
+        $query = "UPDATE goods_donation SET status = 'At Church' WHERE goods_id = :goods_id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':goods_id', $id);
+        $stmt->execute();
     }
 
     public function cancelDonation($id) { //cancel donation
-        $query = "UPDATE goods_donation SET status = 'Cancelled' WHERE goods_id = '$id'";
-        $this->connection->query($query);
+        $query = "UPDATE goods_donation SET status = 'Cancelled' WHERE goods_id = :goods_id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':goods_id', $id);
+        $stmt->execute();
     }
 
     public function showQr($input) { //pinapakita image ng qr from db path ng qr
-        $query = "SELECT qr FROM goods_donation WHERE goods_id = '$input'";
-        $result = $this->connection->query($query);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return $row['qr'];
-        }
+        $query = "SELECT qr FROM goods_donation WHERE goods_id = :goods_id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':goods_id', $input);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return $row['qr'];
     }
 
     public function countPendingBoth($table, $user) {
-        $query = "SELECT COUNT(*) AS total FROM $table WHERE status = 'Pending' AND username = '$user'";
-        $result = $this->connection->query($query);
-        $row = $result->fetch_assoc();
+        $query = "SELECT COUNT(*) AS total FROM $table WHERE status = 'Pending' AND username = :username";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':username', $user);
+        $stmt->execute();
+        $row = $stmt->fetch();
         return $row['total'];
     }
 
     public function countAllDonation($user) {
-        $query = "SELECT COUNT(*) AS total FROM (SELECT status FROM goods_donation WHERE status = 'Completed' AND username = '$user'
-        UNION ALL SELECT status FROM money_donation WHERE status = 'Completed' AND username = '$user') AS combined_count"; //since union all gamit need same number ng column kaya specific lang na status kinuha di all
-        
-        $result = $this->connection->query($query);
-        $row = $result->fetch_assoc();
+        $query = "SELECT COUNT(*) AS total FROM (SELECT status FROM goods_donation WHERE status = 'Completed' AND username = :username
+                  UNION ALL SELECT status FROM money_donation WHERE status = 'Completed' AND username = :username) AS combined_count";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':username', $user);
+        $stmt->execute();
+        $row = $stmt->fetch();
         return $row['total'];
     }
 }
@@ -146,15 +158,21 @@ class QueryCash {
 
     public function sortStatusCash($status, $username) { //sort status
 
-        if ($status == "All") { //lahat ng donation regardless ng status
-            $query = "SELECT * FROM money_donation WHERE username = '$username' ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 4 END";
-            $result = $this->connection->query($query);
-            return $result;
+        if ($status == "All") {
+            $query = "SELECT * FROM money_donation WHERE username = :username ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 4 END";
+        } else {
+            $query = "SELECT * FROM money_donation WHERE status = :status AND username = :username ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 4 END";
         }
-        //eto specific na status
-        $query = "SELECT * FROM money_donation WHERE status = '$status' AND username = '$username' ORDER BY CASE status WHEN 'Pending' THEN 0 WHEN 'Completed' THEN 1 ELSE 4 END";
-        $result = $this->connection->query($query);
-        return $result;
+    
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':username', $username);
+    
+        if ($status != "All") {
+            $stmt->bindParam(':status', $status);
+        }
+    
+        $stmt->execute();
+        return $stmt->fetchAll(); 
     }
 
     public function ongoingDonationCash($username) {
@@ -170,8 +188,8 @@ class QueryCash {
             $result = $this->sortStatusCash('Pending', $username);
         }
 
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
+        if ($result) {
+            foreach ($result as $row) {
 
                 if($row['status'] == 'Completed') { //yung kulay sa baba nila for readability
                     $color = 'style="background-color: green;"';
@@ -210,8 +228,9 @@ class QueryProfilePic {
     }
 
     public function setProfilePic($storePath, $username) {
-        $stmt = $this->conn->prepare("UPDATE register_data SET profile_picture = ? WHERE username = ?");
-        $stmt->bind_param('ss', $storePath, $username);
+        $stmt = $this->conn->prepare("UPDATE register_data SET profile_picture = :profile_picture WHERE username = :username");
+        $stmt->bindParam(':profile_picture', $storePath);
+        $stmt->bindParam(':username', $username);
         $stmt->execute();
     }
 }

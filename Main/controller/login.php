@@ -2,8 +2,52 @@
     require_once __DIR__ . '/../controller/config/autoload.php';
     session_start();
 
+    class SendEmail {
+        // Generate a random code
+        public function generateCode($length = 6) {
+            $randomNum = [];
+            for ($i = 0; $i < $length; $i++) {
+                $randomNum[$i] = rand(0, 9); 
+            }
+            return $randomNum;
+        }
+        // Send email
+        public function sendEmail($to, $subject, $message) {
+            $headers = "From: pasabuhay.donations@gmail.com" . "\r\n" . 
+                        "Reply-To: pasabuhay.donations@gmail.com" . "\r\n" . 
+                        "X-Mailer: PHP/" . phpversion();
+    
+            return mail($to, $subject, $message, $headers);
+        }
+    }
+    
+    class VerificationCode {
+    
+        // Check if each verification code input is set and not empty
+        public static function verifyEachCode($first, $second, $third, $fourth, $fifth, $sixth) {
+            if (isset($_POST[$first], $_POST[$second], $_POST[$third], $_POST[$fourth], $_POST[$fifth], $_POST[$sixth])  && 
+                !empty($_POST[$first]) || !empty($_POST[$second]) || !empty($_POST[$third]) || !empty($_POST[$fourth]) || !empty($_POST[$fifth]) || !empty($_POST[$sixth])) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // Verify if the entered codes match the generated codes
+        public static function verifyCorrectCode($first, $second, $third, $fourth, $fifth, $sixth, $randomNum) {
+            if ($_POST[$first] == $_SESSION[$randomNum][0] && $_POST[$second] == $_SESSION[$randomNum][1] && $_POST[$third] == $_SESSION[$randomNum][2] 
+            && $_POST[$fourth] == $_SESSION[$randomNum][3] && $_POST[$fifth] == $_SESSION[$randomNum][4] && $_POST[$sixth] == $_SESSION[$randomNum][5]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
     $login = new UserLogin($db); //lagay lang natin si connection sa db as argument
     $register = new UserRegister($db);
+    $forgot = new ForgotPass($db);
     $sendEmail = new SendEmail();
 
     //login part
@@ -94,12 +138,15 @@
         if (VerificationCode::verifyEachCode('firstNum', 'secondNum', 'thirdNum', 'fourthNum', 'fifthNum', 'sixthNum')) {   
             if (VerificationCode::verifyCorrectCode('firstNum', 'secondNum', 'thirdNum', 'fourthNum', 'fifthNum', 'sixthNum', 'randomNum')) { 
 
+                $firstname = $_SESSION['firstname'];
+                $lastname = $_SESSION['lastname'];
+                $address = $_SESSION['address'];
+                $email = $_SESSION['email'];
+                $username = $_SESSION['userRegister'];
                 $hashPass = password_hash($_SESSION['origPass'], PASSWORD_DEFAULT); //hash the password before going to db
 
                 //prepare and execute register
-                $stmtReg = $db->getConnection()->prepare("INSERT INTO register_data(first_name, last_name, address, email, username, password) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmtReg->bind_param('ssssss', $_SESSION['firstname'], $_SESSION['lastname'], $_SESSION['address'], $_SESSION['email'], $_SESSION['userRegister'], $hashPass);
-                $stmtReg->execute();
+                $register->insertRegister($firstname, $lastname, $address, $email, $username, $hashPass);
 
                 $_SESSION['codeCorrect'] = 'Registered Successfully!';
                 unset($_SESSION['show']);
@@ -126,16 +173,12 @@
         if (isset($_POST['forgot-email']) && !empty($_POST['forgot-email']) && isset($_POST['forgot-pass']) && !empty($_POST['forgot-pass']) ) { //if may input
             $_SESSION['forgot-reveal'] = DISPLAY_BLOCK;
 
-            $emailForgot = $_POST['forgot-email']; //store natin sa variable mga user input
-            $newPass = $_POST['forgot-pass'];
+            $emailForgot = Util::sanitizeInput('forgot-email', FILTER_SANITIZE_EMAIL); //store natin sa variable mga user input
+            $newPass = Util::sanitizeInput('forgot-pass');
 
-            // Query to check if the email exists
-            $stmtForgot = $db->getConnection()->prepare("SELECT email, password FROM register_data WHERE email = ?");
-            $stmtForgot->bind_param('s', $emailForgot);
-            $stmtForgot->execute();
-            $resultForgot = $stmtForgot->get_result();
+            $result = $forgot->checkIfEmailExists($emailForgot);//check if may email nga na ganon
 
-            if ($resultForgot->num_rows > 0) {
+            if ($result > 0) {
                 // If the email is found, generate random number
                 if (!isset($_SESSION['randomNumForgot'])) { 
                     $_SESSION['randomNumForgot'] = $sendEmail->generateCode();
@@ -177,12 +220,11 @@
 
             if (VerificationCode::verifyCorrectCode('firstForgot', 'secondForgot', 'thirdForgot', 'fourthForgot', 'fifthForgot', 'sixthForgot', 'randomNumForgot')) { 
 
+                $emailForgot = $_SESSION['emailForgot'];
                 $hashPassForgot = password_hash($_SESSION['newPassForgot'], PASSWORD_DEFAULT); //hash the password before going to db
 
                 //password update for register table
-                $stmtUpdateReg = $db->getConnection()->prepare("UPDATE register_data SET password = ? WHERE email = ?");
-                $stmtUpdateReg->bind_param('ss', $hashPassForgot, $_SESSION['emailForgot']);
-                $stmtUpdateReg->execute();
+                $forgot->updatePassword($hashPassForgot, $emailForgot);
 
                 $_SESSION['codeCorrectForgot'] = 'Updated Succesfuly!';
                 unset($_SESSION['forgot-reveal']);

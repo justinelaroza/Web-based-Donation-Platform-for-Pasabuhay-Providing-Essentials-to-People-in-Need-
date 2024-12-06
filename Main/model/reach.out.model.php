@@ -9,31 +9,29 @@ class ReachOutQuery {
     }
 
     public function getIdByUser($username) {
-        $stmt = $this->conn->prepare("SELECT register_id AS Id FROM register_data WHERE username = ?");
-        $stmt->bind_param('s', $username);
+        $query = "SELECT register_id AS Id FROM register_data WHERE username = :username";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
         $stmt->execute();
-
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        $stmt->close();
+        $row = $stmt->fetch();
         return $row['Id'];
     }
 
     public function displayMessages($id) {
 
         if (isset($_SESSION['username'])) {
-            $stmt = $this->conn->prepare("SELECT message, sender_type, timestamp FROM messages WHERE user_id = ? AND (sender_type = 'user' OR sender_type = 'admin') ORDER BY timestamp ASC");
-            $stmt->bind_param('i', $id);
+            $query = "SELECT message, sender_type, timestamp FROM messages WHERE user_id = :user_id AND (sender_type = 'user' OR sender_type = 'admin') ORDER BY timestamp ASC";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':user_id', $id);
             $stmt->execute();
-            $result = $stmt->get_result();
+            $result = $stmt->fetchAll();
 
-            if ($result->num_rows >= 1) {
+            if ($result) {
 
                 $lastTimestamp = null;
                 $lastDate = null;
-
-                while ($row = $result->fetch_assoc()) {
+                
+                foreach ($result as $row) {
 
                     $currentTimestamp = strtotime($row['timestamp']);
                     $currentDate = date("Y-m-d", $currentTimestamp);   // Extract the date
@@ -79,15 +77,17 @@ class ReachOutQuery {
             else {
                 echo "No messages found.";
             } 
-            $stmt->close();
+            
         }   
     }
 
     public function insertMessages($id, $username, $message) {
-        $stmt = $this->conn->prepare("INSERT INTO messages(user_id, username, message) VALUES(?, ?, ?)"); //insert into db mga messages
-        $stmt->bind_param('iss', $id, $username, $message);
+        $query = "INSERT INTO messages (user_id, username, message) VALUES (:user_id, :username, :message)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':message', $message);
         $stmt->execute();
-        $stmt->close();
     }
 
 }

@@ -7,11 +7,15 @@
             $this->conn = $db->getConnection();
         }
 
-        public function insertVolunteer($fullname, $phone, $message) {
-            $stmt = $this->conn->prepare("INSERT INTO volunteer(name, phone, message) VALUES (?, ?, ?) ");
-            $stmt->bind_param("sss", $fullname, $phone, $message);
+        public function insertVolunteer($fullname, $phone, $message, $username) {
+
+            $query = "INSERT INTO volunteer(name, phone, message, username) VALUES (:fullname, :phone, :message, :username)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':fullname', $fullname);
+            $stmt->bindParam(':phone', $phone);
+            $stmt->bindParam(':message', $message);
+            $stmt->bindParam(':username', $username);
             $stmt->execute();
-            $stmt->close();
         }
     }
 

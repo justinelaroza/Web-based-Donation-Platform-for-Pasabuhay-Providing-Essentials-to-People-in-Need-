@@ -47,6 +47,7 @@
             </div>
             <div class="error-message" >
                 <p style="text-align: center;">
+                    <?= Util::sessionManager('loginFirst') ?>
                     <?= Util::sessionManager('errorVolunteer') ?>
                     <?= Util::sessionManager('successVolunteer') ?>
                 </p>

@@ -8,11 +8,13 @@ class HeaderQuery {
     }
 
     public function checkProfilePic($input) { //check if may profile pic na yung user based sa database
-        $query = "SELECT profile_picture FROM register_data WHERE username = '$input'";
-        $result = $this->connection->query($query);
+        $query = "SELECT profile_picture FROM register_data WHERE username = :username";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(':username', $input);
+        $stmt->execute();
+        $row= $stmt->fetch();
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+        if ($row) {
             if (!empty($row['profile_picture'])) { //minsan pag meron na tas dinelete na rerecognize padin as set kaya may ganto to prevent
                 return $row['profile_picture'];
             }
